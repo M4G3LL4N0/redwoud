@@ -1,0 +1,10 @@
+{
+  "name": "ai-dev-workflow-starter",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "verify": "bash ./scripts/verify-repo.sh",
+    "lint": "echo \"lint step placeholder\"",
+    "test": "echo \"test step placeholder\""
+  }
+}
