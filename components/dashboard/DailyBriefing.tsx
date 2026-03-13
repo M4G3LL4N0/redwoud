@@ -1,10 +1,10 @@
 import type { DailyBriefing } from "@/lib/mockData";
 
-interface DailyBriefingProps {
+interface DailyBriefingSectionProps {
   briefing: DailyBriefing;
 }
 
-export function DailyBriefingSection({ briefing }: DailyBriefingProps) {
+export function DailyBriefingSection({ briefing }: DailyBriefingSectionProps) {
   return (
     <section className="rw-card flex flex-col overflow-hidden">
       <header className="flex items-center justify-between border-b border-rw-border/80 px-4 py-3">
@@ -62,4 +62,3 @@ export function DailyBriefingSection({ briefing }: DailyBriefingProps) {
     </section>
   );
 }
-

@@ -47,4 +47,3 @@ export function WhyThisMatters({ focalEvents }: WhyThisMattersProps) {
     </section>
   );
 }
-

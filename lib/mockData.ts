@@ -189,4 +189,3 @@ export const mockDailyBriefing: DailyBriefing = {
     "Diversification of logistics partners and route options ahead of peak seasonal flows.",
   ],
 };
-

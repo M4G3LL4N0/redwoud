@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   mockDailyBriefing,
@@ -50,4 +52,3 @@ export default function HomePage() {
     </div>
   );
 }
-
