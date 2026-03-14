@@ -57,11 +57,11 @@ export function HeroSection() {
             <div className="h-full w-3/5 bg-gradient-to-r from-emerald-400 via-amber-300 to-rose-400" />
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-slate-300">
-            Today’s environment is defined by{" "}
+            Today's environment is defined by{" "}
             <span className="font-semibold text-slate-50">
               cyber, energy, and logistics
             </span>{" "}
-            pressure across North America, Europe, and Asia–Pacific.
+            pressure across North America, Europe, and Asia-Pacific.
           </p>
           <div className="mt-3 flex flex-wrap gap-1.5">
             <span className="rw-pill-muted">Financial infrastructure</span>
