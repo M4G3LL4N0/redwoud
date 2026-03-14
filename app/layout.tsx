@@ -1,16 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { SiteHeader } from "@/components/ui/site-header";
 
 export const metadata: Metadata = {
-  title: "REDWOUD | Real-Time Global Intelligence",
-  description: "AI-powered real-time global intelligence platform. Monitor geopolitical risks, market signals, and strategic developments worldwide.",
-  keywords: ["intelligence", "geopolitical risk", "global monitoring", "AI", "real-time data"],
-  authors: [{ name: "REDWOUD" }],
-  openGraph: {
-    title: "REDWOUD | Real-Time Global Intelligence",
-    description: "AI-powered real-time global intelligence platform",
-    type: "website",
-  },
+  title: "REDWOUD",
+  description: "AI-powered real-time global intelligence platform",
 };
 
 export default function RootLayout({
@@ -19,8 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="pattern-grid min-h-screen">{children}</body>
+    <html lang="en">
+      <body className="bg-slate-950 text-slate-100 antialiased">
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }
