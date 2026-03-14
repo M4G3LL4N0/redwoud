@@ -43,37 +43,37 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-950/90 to-slate-950/50">
+        <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
             REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
           </div>
 
-          <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
+          <h1 className="max-w-4xl text-5xl font-semibold leading-tight sm:text-7xl">
             Understand the world in real time.
           </h1>
 
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+          <p className="mt-8 max-w-3xl text-xl leading-8 text-slate-300">
             REDWOUD turns worldwide data, geopolitical developments, market signals,
             economic indicators, and public information into structured, actionable intelligence.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-12 flex flex-wrap gap-4">
             <Link
               href="/product"
-              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950"
+              className="rounded-lg bg-white px-6 py-4 text-sm font-semibold text-slate-950 hover:bg-white/90 transition-all duration-200 hover:scale-[1.02]"
             >
               Explore Product
             </Link>
             <Link
               href="/investors"
-              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+              className="rounded-lg border border-slate-700 px-6 py-4 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:bg-slate-800/50 transition-all duration-200"
             >
               Investor Overview
             </Link>
             <Link
               href="/briefing"
-              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+              className="rounded-lg border border-slate-700 px-6 py-4 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:bg-slate-800/50 transition-all duration-200"
             >
               Daily Briefing
             </Link>
