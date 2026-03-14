@@ -1,5 +1,7 @@
 "use client";
 
+.
+
 import { useState } from "react";
 import {
   mockDailyBriefing,
@@ -30,7 +32,7 @@ export default function HomePage() {
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 pb-4">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       <HeroSection />
       <FiltersBar
         selectedRegion={region}
@@ -38,17 +40,21 @@ export default function HomePage() {
         onRegionChange={setRegion}
         onTopicChange={setTopic}
       />
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1.2fr)]">
-        <div className="space-y-4">
-          <EventFeed events={filteredEvents} />
-          <WhyThisMatters focalEvents={filteredEvents.length ? filteredEvents : mockEvents} />
-        </div>
-        <div className="space-y-4">
-          <MapSection activeRegion={region} />
+      <main className="container mx-auto px-4 py-8">
+        <div className="space-y-8">
           <DailyBriefingSection briefing={mockDailyBriefing} />
+          <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1.2fr] gap-8">
+            <div className="space-y-6">
+              <EventFeed events={filteredEvents} />
+              <WhyThisMatters focalEvents={filteredEvents.length ? filteredEvents : mockEvents} />
+            </div>
+            <div className="space-y-6">
+              <MapSection activeRegion={region} />
+              <TrendSummaries trends={mockTrends} />
+            </div>
+          </div>
         </div>
-      </div>
-      <TrendSummaries trends={mockTrends} />
+      </main>
     </div>
   );
 }

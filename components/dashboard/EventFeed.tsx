@@ -23,8 +23,7 @@ export function EventFeed({ events }: EventFeedProps) {
       </header>
       <div className="divide-y divide-rw-border/70">
         {events.map((event) => (
-          <article
-            key={event.id}
+          <article            key={event.id}
             className="flex gap-3 px-4 py-3.5 hover:bg-slate-800/50 transition-colors"
           >
             <div className="mt-1 flex flex-col items-center gap-2">

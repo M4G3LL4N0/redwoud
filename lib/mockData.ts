@@ -120,6 +120,32 @@ export const mockEvents: IntelligenceEvent[] = [
     whyItMatters:
       "Elevates tail-risk of miscalculation affecting trade flows, insurance costs, and regional risk premia.",
   },
+  {
+    id: "evt-5",
+    title: "Central bank signals divergent policy paths",
+    region: "Global",
+    topic: "Markets",
+    timeAgo: "3 hours ago",
+    intensity: "medium",
+    confidence: "high",
+    summary:
+      "Major central banks show increasing divergence in interest rate outlook, creating currency volatility.",
+    whyItMatters:
+      "Diverging monetary policies increase hedging costs and complicate international investment decisions.",
+  },
+  {
+    id: "evt-6",
+    title: "Arctic shipping routes see early ice melt",
+    region: "Global",
+    topic: "Climate",
+    timeAgo: "5 hours ago",
+    intensity: "low",
+    confidence: "medium",
+    summary:
+      "Satellite observations show accelerated ice melt in key Arctic passages, opening seasonal shipping windows earlier.",
+    whyItMatters:
+      "Earlier opening creates both opportunities for reduced transit times and risks of increased geopolitical tension.",
+  },
 ];
 
 export const mockTrends: TrendSummary[] = [
@@ -166,6 +192,17 @@ export const mockTrends: TrendSummary[] = [
     signalStrength: 61,
     narrative:
       "Differing central bank guidance is widening rate expectations and repricing cross‑border capital flows.",
+  },
+  {
+    id: "tr-5",
+    title: "Renewable energy investment acceleration",
+    region: "Global",
+    topic: "Climate",
+    direction: "rising",
+    horizon: "months",
+    signalStrength: 58,
+    narrative:
+      "Policy incentives and corporate commitments are driving faster-than-expected deployment of wind and solar capacity.",
   },
 ];
 

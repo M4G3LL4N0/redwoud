@@ -19,8 +19,7 @@ export function HeroSection() {
             .
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300 md:text-[0.92rem]">
-            REDWOUD continuously assembles global events, economic indicators, and
-            market signals into a structured picture of risk, pressure, and opportunity.
+            REDWOUD continuously assembles global events, economic indicators, and            market signals into a structured picture of risk, pressure, and opportunity.
           </p>
           <dl className="mt-5 grid grid-cols-3 gap-3 text-xs text-slate-300 md:max-w-sm">
             <div>
