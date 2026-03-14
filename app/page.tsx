@@ -26,17 +26,23 @@ const trendCards = [
   {
     title: "Geopolitical Risk",
     value: "Rising",
+    direction: "rising",
     detail: "Conflict-adjacent signals are clustering across multiple regions.",
+    signalStrength: 78,
   },
   {
     title: "Macro Stress",
     value: "Elevated",
+    direction: "stabilizing",
     detail: "Inflation, rates, and trade uncertainty remain tightly linked.",
+    signalStrength: 65,
   },
   {
     title: "Supply Chain Pressure",
     value: "Watch",
+    direction: "rising",
     detail: "Transport chokepoints and industrial dependency risks are increasing.",
+    signalStrength: 72,
   },
 ];
 
@@ -47,138 +53,202 @@ const filters = {
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
+    <main className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative border-b border-slate-800/60 bg-gradient-to-b from-slate-900/50 to-slate-950">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-cyan-500/5 to-emerald-500/5" />
+        <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:px-8">
+          <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-semibold tracking-wider text-emerald-300 backdrop-blur-sm">
+            <span className="mr-2 h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
             REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
           </div>
 
-          <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
-            Understand the world in real time.
+          <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+            <span className="block text-slate-100">Understand the world</span>
+            <span className="block gradient-text">in real time</span>
           </h1>
 
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            REDWOUD turns worldwide data, geopolitical developments, market signals,
+          <p className="mt-8 max-w-3xl text-lg leading-7 text-slate-300 sm:text-xl">
+            REDWOUD transforms worldwide data, geopolitical developments, market signals,
             economic indicators, and public information into structured, actionable intelligence.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950">
+          <div className="mt-10 flex flex-wrap gap-4">
+            <button className="btn-primary">
               Open Intelligence Dashboard
             </button>
-            <button className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200">
+            <button className="btn-secondary">
               View Daily Briefing
             </button>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-12">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-            Topic Filters
-          </h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {filters.topics.map((topic) => (
-              <span
-                key={topic}
-                className="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-200"
-              >
-                {topic}
-              </span>
-            ))}
-          </div>
+      {/* Main Dashboard Grid */}
+      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-12 lg:gap-8 xl:px-8">
+        {/* Filters Sidebar */}
+        <div className="glass-card rounded-2xl p-5 lg:col-span-3">
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                Topic Filters
+              </h2>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {filters.topics.map((topic) => (
+                  <button
+                    key={topic}
+                    className="rounded-full border border-slate-700/60 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-all duration-200 hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:text-emerald-300"
+                  >
+                    {topic}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          <h2 className="mt-8 text-sm font-semibold uppercase tracking-wide text-slate-400">
-            Region Filters
-          </h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {filters.regions.map((region) => (
-              <span
-                key={region}
-                className="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-200"
-              >
-                {region}
-              </span>
-            ))}
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                Region Filters
+              </h2>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {filters.regions.map((region) => (
+                  <button
+                    key={region}
+                    className="rounded-full border border-slate-700/60 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-all duration-200 hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:text-cyan-300"
+                  >
+                    {region}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-6">
+        {/* Live Event Feed */}
+        <div className="glass-card rounded-2xl p-5 lg:col-span-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Live Event Feed</h2>
-            <span className="text-sm text-emerald-300">Live monitoring</span>
+            <h2 className="text-lg font-semibold text-slate-100">Live Event Feed</h2>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              <span className="text-sm font-medium text-emerald-300">Live monitoring</span>
+            </div>
           </div>
 
-          <div className="mt-5 space-y-4">
+          <div className="mt-6 space-y-3">
             {liveEvents.map((event) => (
               <article
                 key={event.title}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                className="group card-hover rounded-xl border border-slate-800/60 bg-slate-900/40 p-4"
               >
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-xs uppercase tracking-wide text-slate-400">
+                  <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
                     {event.region}
                   </span>
-                  <span className="rounded-full bg-amber-500/15 px-2 py-1 text-xs font-medium text-amber-300">
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                      event.impact === "High"
+                        ? "bg-rose-500/15 text-rose-300 border border-rose-500/30"
+                        : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+                    }`}
+                  >
                     {event.impact} Impact
                   </span>
                 </div>
-                <h3 className="mt-2 text-base font-semibold">{event.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{event.summary}</p>
+                <h3 className="mt-2.5 text-base font-semibold leading-snug text-slate-100 group-hover:text-emerald-300 transition-colors">
+                  {event.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                  {event.summary}
+                </p>
               </article>
             ))}
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-3">
-          <h2 className="text-lg font-semibold">Daily AI Briefing</h2>
-          <p className="mt-4 text-sm leading-6 text-slate-300">
-            Global risk signals are clustering around trade pressure, energy transport uncertainty,
-            and strategic technology controls. The highest immediate attention areas are route security,
-            policy escalation, and cross-market volatility.
-          </p>
+        {/* Daily AI Briefing */}
+        <div className="gradient-border glass-card rounded-2xl p-5 lg:col-span-3">
+          <div className="flex h-full flex-col">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-slate-100">Daily AI Briefing</h2>
+              <span className="rounded-md bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-300">
+                Today
+              </span>
+            </div>
 
-          <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-            <h3 className="text-sm font-semibold text-slate-200">Why this matters</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-300">
-              Seemingly separate developments are beginning to connect into broader strategic pressure.
-              Users should watch for second-order impacts on pricing, trade exposure, and regional policy reactions.
+            <p className="flex-1 text-sm leading-relaxed text-slate-300">
+              Global risk signals are clustering around trade pressure, energy transport uncertainty,
+              and strategic technology controls. The highest immediate attention areas are route security,
+              policy escalation, and cross-market volatility.
             </p>
+
+            <div className="mt-6 rounded-xl border border-slate-800/60 bg-slate-950/60 p-4">
+              <h3 className="text-sm font-semibold text-slate-200">Why this matters</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                Seemingly separate developments are beginning to connect into broader strategic pressure.
+                Users should watch for second-order impacts on pricing, trade exposure, and regional policy reactions.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
+      {/* Second Row: Map and Trends */}
+      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-16 lg:grid-cols-12 lg:gap-8 xl:px-8">
+        {/* Global Event Map */}
+        <div className="glass-card rounded-2xl p-5 lg:col-span-7">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Global Event Map</h2>
-            <span className="text-sm text-slate-400">Map placeholder</span>
+            <h2 className="text-lg font-semibold text-slate-100">Global Event Map</h2>
+            <span className="text-sm font-medium text-slate-400">Interactive</span>
           </div>
-          <div className="mt-5 flex h-80 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-sm text-slate-400">
-            Interactive global intelligence map will render here.
+          <div className="mt-5 flex h-80 items-center justify-center rounded-xl border border-slate-800/60 bg-slate-950/40 text-center">
+            <div className="max-w-md px-4">
+              <div className="mb-3 text-4xl">🗺️</div>
+              <p className="text-sm text-slate-400">
+                Interactive global intelligence map with real-time event plotting, spatial risk corridors,
+                and regional heatmaps will render here.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
-          <h2 className="text-lg font-semibold">Trend Summaries</h2>
-          <div className="mt-5 space-y-4">
-            {trendCards.map((card) => (
-              <div
-                key={card.title}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-sm font-semibold">{card.title}</h3>
-                  <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
+        {/* Trend Summaries */}
+        <div className="lg:col-span-5 space-y-4">
+          {trendCards.map((card) => (
+            <div
+              key={card.title}
+              className="glass-card card-hover rounded-xl p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-slate-200">{card.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-400">
+                    {card.detail}
+                  </p>
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                      card.direction === "rising"
+                        ? "bg-rose-500/15 text-rose-300 border border-rose-500/30"
+                        : card.direction === "falling"
+                        ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                        : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+                    }`}
+                  >
                     {card.value}
                   </span>
+                  <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-800/60">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500 transition-all duration-1000"
+                      style={{ width: `${card.signalStrength}%` }}
+                    />
+                  </div>
                 </div>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
     </main>
