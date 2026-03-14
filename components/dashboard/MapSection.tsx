@@ -1,5 +1,7 @@
+import type { Region } from "@/lib/mockData";
+
 interface MapSectionProps {
-  activeRegion: string;
+  activeRegion: Region;
 }
 
 export function MapSection({ activeRegion }: MapSectionProps) {
@@ -30,7 +32,7 @@ export function MapSection({ activeRegion }: MapSectionProps) {
               Spatial risk surface
             </p>
             <span className="rw-chip text-[10px] text-slate-200">
-              {activeRegion === "All" ? "Global" : activeRegion} view
+              {activeRegion === "All"? "Global" : activeRegion} view
             </span>
           </div>
           <p className="max-w-sm text-[0.78rem] leading-relaxed text-slate-300">
@@ -40,7 +42,7 @@ export function MapSection({ activeRegion }: MapSectionProps) {
             <span className="font-medium text-slate-50">
               single global intelligence surface
             </span>
-            .
+           .
           </p>
           <div className="mt-2 grid grid-cols-3 gap-2 text-[10px] text-slate-300">
             <div className="rounded-xl border border-rw-border/80 bg-black/40 p-2">
@@ -67,4 +69,3 @@ export function MapSection({ activeRegion }: MapSectionProps) {
     </section>
   );
 }
-
