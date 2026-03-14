@@ -36,3 +36,5 @@ venv/
 
 # Aider
 .aider*
+.vercel
+.env*.local
