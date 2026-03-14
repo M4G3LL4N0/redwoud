@@ -1,5 +1,3 @@
- file listings.
-
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -16,13 +14,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="rw-page min-h-screen">
+      <body className="rw-page min-h-screen bg-slate-950 text-slate-100 antialiased">
         <div className="rw-grid-overlay pointer-events-none fixed inset-0 -z-10" />
         <div className="relative flex min-h-screen flex-col">
-          <header className="border-b border-rw-border/80 bg-gradient-to-b from-black/40 to-transparent px-6 py-4 md:px-12 md:py-5">
+          <header className="border-b border-rw-border/80 bg-gradient-to-b from-black/60 to-transparent px-6 py-4 md:px-12 md:py-5">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-rw-accent/20 ring-1 ring-rw-accent/60">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-rw-accent/20 ring-1 ring-rw-accent/60 shadow-lg">
                   <span className="text-[18px] font-semibold tracking-tight text-slate-50">
                     R
                   </span>
@@ -40,21 +38,21 @@ export default function RootLayout({
                     AI-native global intelligence layer for a complex world.
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="hidden items-center gap-2 text-xs text-rw-muted md:flex">
-                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.35)]" />
-                    <span>Signals active</span>
-                  </div>
-                  <button className="hidden rounded-full border border-rw-border bg-rw-surface/70 px-3.5 py-1.5 text-xs font-medium text-slate-100 shadow-sm hover:border-rw-accent/70 hover:text-white md:inline-flex">
-                    Request early access
-                  </button>
-                </div>
               </div>
-            </header>
-            <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-10 pt-6 md:px-8 md:pt-7">
-              {children}
-            </main>
-          </div>
+              <div className="flex items-center gap-3">
+                <div className="hidden items-center gap-2 text-xs text-rw-muted md:flex">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.35)]" />
+                  <span>Signals active</span>
+                </div>
+                <button className="hidden rounded-full border border-rw-border/60 bg-rw-surface/50 px-3.5 py-1.5 text-xs font-medium text-slate-100 shadow-sm backdrop-blur-sm transition-all hover:border-rw-accent/70 hover:bg-rw-accent/20 hover:text-white md:inline-flex">
+                  Request early access
+                </button>
+              </div>
+            </div>
+          </header>
+          <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-10 pt-6 md:px-8 md:pt-7">
+            {children}
+          </main>
         </div>
       </body>
     </html>
