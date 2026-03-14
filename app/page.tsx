@@ -54,13 +54,33 @@ const filters = {
 export default function HomePage() {
   return (
     <main className="min-h-screen">
+      {/* Navigation */}
+      <nav className="fixed top-0 z-50 w-full border-b border-slate-800/60 bg-slate-950/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+              <span className="text-sm font-semibold tracking-wider text-emerald-300">REDWOUD</span>
+            </div>
+            <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+              <a href="/product" className="hover:text-emerald-300 transition-colors">Product</a>
+              <a href="/pricing" className="hover:text-emerald-300 transition-colors">Pricing</a>
+              <a href="/briefing" className="hover:text-emerald-300 transition-colors">Briefing</a>
+              <a href="/trends" className="hover:text-emerald-300 transition-colors">Trends</a>
+              <a href="/investors" className="hover:text-emerald-300 transition-colors">Investors</a>
+            </div>
+          </div>
+          <button className="btn-primary">Get Started</button>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section className="relative border-b border-slate-800/60 bg-gradient-to-b from-slate-900/50 to-slate-950">
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-cyan-500/5 to-emerald-500/5" />
-        <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-6 pt-32 pb-24 sm:pt-36 sm:pb-28 lg:px-8">
           <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-semibold tracking-wider text-emerald-300 backdrop-blur-sm">
             <span className="mr-2 h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
+            REAL-TIME GLOBAL INTELLIGENCE
           </div>
 
           <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
@@ -73,13 +93,32 @@ export default function HomePage() {
             economic indicators, and public information into structured, actionable intelligence.
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-4">
-            <button className="btn-primary">
+          <div className="mt-12 flex flex-wrap gap-6">
+            <button className="btn-primary px-8 py-4 text-base">
               Open Intelligence Dashboard
             </button>
-            <button className="btn-secondary">
+            <button className="btn-secondary px-8 py-4 text-base">
               View Daily Briefing
             </button>
+          </div>
+
+          <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-3xl font-bold text-emerald-300">24/7</span>
+              <span className="text-sm text-slate-400">Monitoring</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-3xl font-bold text-emerald-300">150+</span>
+              <span className="text-sm text-slate-400">Data Sources</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-3xl font-bold text-emerald-300">95%</span>
+              <span className="text-sm text-slate-400">Accuracy</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-3xl font-bold text-emerald-300">10s</span>
+              <span className="text-sm text-slate-400">Response Time</span>
+            </div>
           </div>
         </div>
       </section>
