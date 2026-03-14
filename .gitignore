@@ -1,2 +1,34 @@
-node_modules
-.aider*
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editors
+.vscode/
+.idea/
+
+# Supabase local temp
+.supabase/
