@@ -39,4 +39,3 @@ body {
 .rw-pill-muted {
   @apply inline-flex items-center gap-1 rounded-full bg-rw-surface-alt/80 px-2.5 py-1 text-[11px] font-medium text-rw-muted;
 }
-
