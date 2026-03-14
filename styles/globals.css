@@ -4,6 +4,48 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-slate-950 text-slate-100 antialiased;
+  }
+}
+
+@layer components {
+  .rw-card {
+    @apply bg-slate-900/50 border border-slate-700/80 rounded-xl overflow-hidden shadow-lg backdrop-blur-sm transition-shadow hover:shadow-xl;
+  }
+  .rw-pill-muted {
+    @apply inline-flex items-center gap-1 rounded-full bg-slate-800/60 px-2 py-1 text-[10px] font-medium text-slate-300 border border-slate-700/60;
+  }
+  .rw-chip {
+    @apply inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-1 text-[11px] font-medium text-emerald-300 border border-emerald-500/30;
+  }
+  .rw-pill-accent {
+    @apply inline-flex items-center gap-1 rounded-full bg-rw-accent/15 px-2 py-1 text-[11px] font-medium text-rw-accent-300 border border-rw-accent/30;
+  }
+  .rw-border {
+    @apply border border-slate-700/80;
+  }
+  .rw-surface {
+    @apply bg-slate-800/60;
+  }
+  .rw-surface-alt {
+    @apply bg-slate-800/40;
+  }
+  .rw-grid-overlay {
+    background-image: 
+      linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+@layer utilities {
+  .text-rw-muted {
+    color: #94a3b8;
+  }
+  .text-rw-accent-300 {
+    color: #60a5fa;
+  }
+  .bg-rw-accent-soft {
+    background-color: rgba(37, 99, 235, 0.08);
   }
 }

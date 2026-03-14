@@ -16,7 +16,7 @@ export function EventFeed({ events }: EventFeedProps) {
             AI-normalized events from global data, news, and signals.
           </p>
         </div>
-        <span className="rw-chip text-[11px] text-slate-200">
+        <span className="rw-chip">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
           {events.length} surfaced now
         </span>
@@ -25,7 +25,7 @@ export function EventFeed({ events }: EventFeedProps) {
         {events.map((event) => (
           <article
             key={event.id}
-            className="flex gap-3 px-4 py-3.5 hover:bg-rw-surface-alt/70"
+            className="flex gap-3 px-4 py-3.5 hover:bg-slate-800/50 transition-colors"
           >
             <div className="mt-1 flex flex-col items-center gap-2">
               <span
@@ -38,7 +38,7 @@ export function EventFeed({ events }: EventFeedProps) {
                     : "bg-emerald-400",
                 ].join(" ")}
               />
-              <span className="h-10 w-px bg-gradient-to-b from-slate-500/60 via-slate-600/20 to-transparent" />
+              <span className="h-10 w-px bg-gradient-to-b from-slate-600/60 via-slate-700/20 to-transparent" />
             </div>
             <div className="flex flex-1 flex-col gap-1">
               <div className="flex flex-wrap items-center justify-between gap-1">
@@ -91,4 +91,3 @@ export function EventFeed({ events }: EventFeedProps) {
     </section>
   );
 }
-

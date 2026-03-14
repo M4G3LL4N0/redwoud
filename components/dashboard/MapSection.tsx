@@ -31,8 +31,8 @@ export function MapSection({ activeRegion }: MapSectionProps) {
             <p className="text-xs font-medium text-slate-100">
               Spatial risk surface
             </p>
-            <span className="rw-chip text-[10px] text-slate-200">
-              {activeRegion === "All"? "Global" : activeRegion} view
+            <span className="rw-chip text-[10px]">
+              {activeRegion === "All" ? "Global" : activeRegion} view
             </span>
           </div>
           <p className="max-w-sm text-[0.78rem] leading-relaxed text-slate-300">
@@ -42,7 +42,7 @@ export function MapSection({ activeRegion }: MapSectionProps) {
             <span className="font-medium text-slate-50">
               single global intelligence surface
             </span>
-           .
+            .
           </p>
           <div className="mt-2 grid grid-cols-3 gap-2 text-[10px] text-slate-300">
             <div className="rounded-xl border border-rw-border/80 bg-black/40 p-2">

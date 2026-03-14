@@ -68,7 +68,7 @@ function FilterSelect({ label, value, options, onChange }: FilterSelectProps) {
           <option
             key={option}
             value={option}
-            className="bg-rw-surface text-slate-900"
+            className="bg-slate-800 text-slate-100"
           >
             {option}
           </option>
@@ -77,4 +77,3 @@ function FilterSelect({ label, value, options, onChange }: FilterSelectProps) {
     </label>
   );
 }
-

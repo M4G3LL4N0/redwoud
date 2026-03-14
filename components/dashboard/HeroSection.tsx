@@ -2,8 +2,8 @@ export function HeroSection() {
   return (
     <section className="rw-card relative overflow-hidden p-5 md:p-7">
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute inset-y-0 right-[-20%] w-1/2 rotate-6 bg-gradient-to-br from-rw-accent/40 via-sky-500/10 to-transparent blur-3xl" />
-        <div className="absolute inset-y-0 left-[-30%] w-1/3 -rotate-6 bg-gradient-to-tr from-slate-900/0 via-rw-accent/60 to-transparent blur-3xl" />
+        <div className="absolute inset-y-0 right-[-20%] w-1/2 rotate-6 bg-gradient-to-br from-rw-accent/30 via-sky-500/10 to-transparent blur-3xl" />
+        <div className="absolute inset-y-0 left-[-30%] w-1/3 -rotate-6 bg-gradient-to-tr from-slate-900/0 via-rw-accent/40 to-transparent blur-3xl" />
       </div>
       <div className="relative flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <div className="max-w-xl">
@@ -37,7 +37,8 @@ export function HeroSection() {
             </div>
             <div>
               <dt className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
-                Risk corridors              </dt>
+                Risk corridors
+              </dt>
               <dd className="mt-1 text-sm font-semibold text-slate-50">19</dd>
             </div>
           </dl>
@@ -47,7 +48,7 @@ export function HeroSection() {
             <span className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
               Signal posture
             </span>
-            <span className="rw-chip bg-emerald-500/10 text-[11px] text-emerald-300">
+            <span className="rw-chip">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               Elevated watch
             </span>

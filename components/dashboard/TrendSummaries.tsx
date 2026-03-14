@@ -67,7 +67,7 @@ function SignalGauge({ strength }: { strength: number }) {
   return (
     <div className="flex flex-col items-end gap-1 text-[10px] text-slate-400">
       <span>Signal</span>
-      <div className="h-1.5 w-20 overflow-hidden rounded-full bg-rw-surface">
+      <div className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-800">
         <div
           className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-amber-300 to-rose-400"
           style={{ width: `${clamped}%` }}
@@ -77,4 +77,3 @@ function SignalGauge({ strength }: { strength: number }) {
     </div>
   );
 }
-

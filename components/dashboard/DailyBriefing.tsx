@@ -14,7 +14,9 @@ export function DailyBriefingSection({ briefing }: DailyBriefingSectionProps) {
           </p>
           <p className="mt-1 text-xs text-slate-400">{briefing.dateLabel}</p>
         </div>
-        <span className="rw-pill-muted text-[10px]">Generated from live signal set</span>
+        <span className="rw-pill-muted text-[10px]">
+          Generated from live signal set
+        </span>
       </header>
       <div className="grid gap-4 px-4 py-3.5 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
         <div>
