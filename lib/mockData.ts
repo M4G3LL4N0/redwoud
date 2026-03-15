@@ -16,6 +16,7 @@ export type Topic =
 
 export interface EventItem {
   id: string;
+  entity: string;
   region: Region;
   topic: Topic;
   title: string;
@@ -69,6 +70,7 @@ export const topics: Topic[] = [
 export const liveEvents: EventItem[] = [
   {
     id: "evt-europe-energy",
+    entity: "European energy corridor",
     region: "Europe",
     topic: "Energy",
     title: "Energy corridor tensions raise regional supply concerns",
@@ -83,6 +85,7 @@ export const liveEvents: EventItem[] = [
   },
   {
     id: "evt-asia-chips",
+    entity: "Strategic semiconductor supply chain",
     region: "Asia",
     topic: "Technology",
     title: "Export controls discussion intensifies around strategic chips",
@@ -97,6 +100,7 @@ export const liveEvents: EventItem[] = [
   },
   {
     id: "evt-me-shipping",
+    entity: "Regional shipping corridor",
     region: "Middle East",
     topic: "Trade",
     title: "Shipping route disruption risk edges higher",

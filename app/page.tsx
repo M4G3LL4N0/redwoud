@@ -1,29 +1,19 @@
 import Link from "next/link";
-import { dailyBriefing, liveEvents as fallbackEvents } from "@/lib/mockData";
-import { IntelligenceMap } from "@/components/dashboard/IntelligenceMap";
+import {
+  dailyBriefing,
+  liveEvents as fallbackEvents,
+  trendCards,
+  type IntelligenceEvent,
+} from "@/lib/mockData";
 import DailyBriefingSection from "@/components/dashboard/DailyBriefing";
 
-type FeedEvent = {
-  id: string;
-  title: string;
-  region: string;
-  topic: string;
-  intensity: "low" | "medium" | "high";
-  confidence: "low" | "medium" | "high";
-  timeAgo: string;
-  summary: string;
-  whyItMatters: string;
-};
-
-async function getLiveEvents(): Promise<FeedEvent[]> {
+async function getLiveEvents(): Promise<IntelligenceEvent[]> {
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      process.env.VERCEL_URL?.startsWith("http")
-        ? process.env.VERCEL_URL
-        : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
     const response = await fetch(`${baseUrl}/api/feed`, {
       next: { revalidate: 300 },
@@ -43,47 +33,39 @@ async function getLiveEvents(): Promise<FeedEvent[]> {
 export default async function HomePage() {
   const liveEvents = await getLiveEvents();
 
-  const activeRegions: Record<string, { events: number; conflict: boolean; economic: boolean }> = {
-    Americas: { events: 12, conflict: false, economic: true },
-    Europe: { events: 8, conflict: true, economic: true },
-    Asia: { events: 15, conflict: true, economic: true },
-    "Middle East": { events: 6, conflict: true, economic: false },
-    Africa: { events: 4, conflict: false, economic: false },
-  };
-
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-950/90 to-slate-950/50">
-        <div className="mx-auto max-w-7xl px-6 py-24">
+      <section className="border-b border-slate-800">
+        <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
             REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
           </div>
 
-          <h1 className="max-w-4xl text-5xl font-semibold leading-tight sm:text-7xl">
+          <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
             Understand the world in real time.
           </h1>
 
-          <p className="mt-8 max-w-3xl text-xl leading-8 text-slate-300">
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
             REDWOUD turns worldwide data, geopolitical developments, market signals,
             economic indicators, and public information into structured, actionable intelligence.
           </p>
 
-          <div className="mt-12 flex flex-wrap gap-4">
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/product"
-              className="rounded-lg bg-white px-6 py-4 text-sm font-semibold text-slate-950 hover:bg-white/90 transition-all duration-200 hover:scale-[1.02]"
+              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950"
             >
               Explore Product
             </Link>
             <Link
               href="/investors"
-              className="rounded-lg border border-slate-700 px-6 py-4 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:bg-slate-800/50 transition-all duration-200"
+              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
             >
               Investor Overview
             </Link>
             <Link
               href="/briefing"
-              className="rounded-lg border border-slate-700 px-6 py-4 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:bg-slate-800/50 transition-all duration-200"
+              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
             >
               Daily Briefing
             </Link>
@@ -149,6 +131,8 @@ export default async function HomePage() {
                 <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
                   <span>{event.topic}</span>
                   <span>•</span>
+                  <span>{event.entity}</span>
+                  <span>•</span>
                   <span>Confidence {event.confidence}</span>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
@@ -162,13 +146,19 @@ export default async function HomePage() {
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-3">
-          <DailyBriefingSection events={liveEvents} />
+          <DailyBriefingSection briefing={dailyBriefing} />
         </div>
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
-          <IntelligenceMap activeRegions={activeRegions} />
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Global Event Map</h2>
+            <span className="text-sm text-slate-400">Intelligence view</span>
+          </div>
+          <div className="mt-5 flex h-80 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-sm text-slate-400">
+            Interactive global intelligence map will render here.
+          </div>
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
