@@ -161,7 +161,7 @@ export function IntelligenceMap({ events, activeRegions }: IntelligenceMapProps)
         </div>
       </div>
 
-      <div className="grid flex-1 grid-cols-1 gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3 bg-slate-900/50">
+      <div className="grid flex-1 grid-cols-1 gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4 bg-gradient-to-br from-slate-900/70 to-slate-800/50">
         {displayRegions.map(({ region, count, conflictScore, economicScore }) => (
           <div key={region} className="group rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-900 transition-colors p-4">
             {region === topRegion.region && (
