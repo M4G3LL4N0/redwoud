@@ -148,7 +148,7 @@ export function IntelligenceMap({ events, activeRegions }: IntelligenceMapProps)
       <div className="grid flex-1 grid-cols-1 gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3 bg-slate-900/50">
         {displayRegions.map(({ region, count, conflictScore, economicScore }) => (
           <div key={region} className="group rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-900 transition-colors p-4">
-            {region.region === topRegion.region && (
+            {region === topRegion.region && (
               <div className="-mt-4 -mx-4 mb-3 px-4 py-2 bg-indigo-900/30 border-b border-indigo-800/30">
                 <p className="text-xs font-semibold text-indigo-300 flex items-center gap-1">
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
