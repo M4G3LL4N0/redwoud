@@ -1,25 +1,20 @@
 import { detectTrends } from "./trend-detection";
-import type { IntelligenceEvent, TrendSummary } from "./mockData";
+import type { IntelligenceEvent } from "@/lib/mockData";
 
-interface TrendSummary {
+export interface TrendSummary {
   id: string;
   title: string;
-  value: number;
+  value: string;
   detail: string;
-  direction: string;
-  strength: string;
 }
 
-export function TrendSummaries({ events }: { events: IntelligenceEvent[] }): TrendSummary[] {
+export function buildTrendSummaries(events: IntelligenceEvent[]): TrendSummary[] {
   const trends = detectTrends(events);
-  const trendSummaries: TrendSummary[] = trends.map((trend) => ({
-    id: `${trend.topic}-${trend.region}`,
-    title: `${trend.topic} - ${trend.region}`,
-    value: trend.count.toString(),
-    detail: `Strength: ${trend.strength} (${trend.prevCount} → ${trend.count})`,
-    direction: trend.strength === "up" ? "up" : trend.strength === "down" ? "down" : "stable",
-    strength: trend.strength === "up" ? "High" : trend.strength === "down" ? "Medium" : "Low",
-  }));
 
-  return trendSummaries;
+  return trends.slice(0, 6).map((trend) => ({
+    id: `${trend.topic}-${trend.region}`.toLowerCase().replace(/\s+/g, "-"),
+    title: `${trend.topic} · ${trend.region}`,
+    value: trend.strength === "high" ? "Rising" : trend.strength === "medium" ? "Active" : "Watch",
+    detail: `${trend.count} related signals detected across ${trend.region}.`,
+  }));
 }
