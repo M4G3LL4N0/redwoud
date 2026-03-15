@@ -63,16 +63,18 @@ export function IntelligenceMap({ events, activeRegions }: IntelligenceMapProps)
     : regionList;
 
   // Color helpers
-  const getConflictColor = (score: number) => {
-    if (score >= 5) return "bg-red-500";
-    if (score >= 3) return "bg-orange-500";
-    return "bg-emerald-500";
+  const getThreatLevel = (score: number) => {
+    if (score >= 8) return { label: 'CRITICAL', color: 'bg-red-600', text: 'text-red-400' };
+    if (score >= 6) return { label: 'HIGH', color: 'bg-orange-600', text: 'text-orange-400' };
+    if (score >= 4) return { label: 'ELEVATED', color: 'bg-yellow-600', text: 'text-yellow-400' };
+    return { label: 'GUARDED', color: 'bg-emerald-600', text: 'text-emerald-400' };
   };
 
-  const getEconomicColor = (score: number) => {
-    if (score >= 5) return "bg-amber-500";
-    if (score >= 3) return "bg-yellow-500";
-    return "bg-slate-500";
+  const getEconomicLevel = (score: number) => {
+    if (score >= 8) return { label: 'VOLATILE', color: 'bg-purple-600', text: 'text-purple-400' };
+    if (score >= 6) return { label: 'ACTIVE', color: 'bg-amber-600', text: 'text-amber-400' };
+    if (score >= 4) return { label: 'STABLE', color: 'bg-blue-600', text: 'text-blue-400' };
+    return { label: 'CALM', color: 'bg-slate-600', text: 'text-slate-400' };
   };
 
   // Find the top region
@@ -130,11 +132,25 @@ export function IntelligenceMap({ events, activeRegions }: IntelligenceMapProps)
             </div>
             <div className="flex flex-col">
               <p className="text-xs text-slate-400">CONFLICT</p>
-              <p className={`text-2xl font-bold ${getConflictColor(topRegion.conflictScore).replace('bg-', 'text-')}`}>{topRegion.conflictScore}</p>
+              <div className="flex items-center gap-1">
+                <span className={`text-2xl font-bold ${getThreatLevel(topRegion.conflictScore).text}`}>
+                  {topRegion.conflictScore}
+                </span>
+                <span className={`text-xs px-1 py-0.5 rounded ${getThreatLevel(topRegion.conflictScore).color} ${getThreatLevel(topRegion.conflictScore).text}`}>
+                  {getThreatLevel(topRegion.conflictScore).label}
+                </span>
+              </div>
             </div>
             <div className="flex flex-col">
               <p className="text-xs text-slate-400">ECONOMIC</p>
-              <p className={`text-2xl font-bold ${getEconomicColor(topRegion.economicScore).replace('bg-', 'text-')}`}>{topRegion.economicScore}</p>
+              <div className="flex items-center gap-1">
+                <span className={`text-2xl font-bold ${getEconomicLevel(topRegion.economicScore).text}`}>
+                  {topRegion.economicScore}
+                </span>
+                <span className={`text-xs px-1 py-0.5 rounded ${getEconomicLevel(topRegion.economicScore).color} ${getEconomicLevel(topRegion.economicScore).text}`}>
+                  {getEconomicLevel(topRegion.economicScore).label}
+                </span>
+              </div>
             </div>
           </div>
         </div>
