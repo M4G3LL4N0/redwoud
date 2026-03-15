@@ -1,18 +1,65 @@
+function MetricsBand() {
+  return (
+    <section className="mt-0.5 rounded-b-xl border-x border-b border-slate-800 bg-slate-950/50 px-6 py-4 md:px-8 md:py-5">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4">
+        <div className="border-r border-slate-700 pr-6">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-slate-400">Events Monitored</div>
+          <div className="mt-1 text-xl font-medium text-slate-100">3,126</div>
+          <div className="mt-0.5 text-[10px] text-emerald-400">
+            <span className="relative inline-flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+            </span>{' '}
+            +14% today
+          </div>
+        </div>
+        <div className="border-r border-slate-700 pr-6">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-slate-400">Active Regions</div>
+          <div className="mt-1 text-xl font-medium text-slate-100">7</div>
+          <div className="mt-0.5 text-xs text-slate-400">
+            Americas, Europe, Asia, MidEast
+          </div>
+        </div>
+        <div className="border-r border-slate-700 pr-6">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-slate-400">High-Intensity</div>
+          <div className="mt-1 text-xl font-medium text-slate-100">41</div>
+          <div className="mt-0.5 text-xs text-slate-400">
+            <span className="text-rose-400">+9</span> in last hour
+          </div>
+        </div>
+        <div>
+          <div className="text-[11px] uppercase tracking-[0.22em] text-slate-400">Briefing Status</div>
+          <div className="mt-1 flex items-center gap-2">
+            <span className="relative inline-flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+            </span>
+            <span className="text-xl font-medium text-slate-100">Fresh</span>
+          </div>
+          <div className="mt-0.5 text-xs text-slate-400">
+            Generated 12 minutes ago
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function HeroSection() {
   return (
     <>
-      <section className="rw-card relative overflow-hidden p-6 md:p-8">
+      <section className="rw-card relative overflow-hidden px-6 py-12 md:px-12 md:py-16">
         <div className="pointer-events-none absolute inset-0 opacity-60">
           <div className="absolute inset-y-0 right-[-20%] w-1/2 rotate-6 bg-gradient-to-br from-rw-accent/30 via-sky-500/10 to-transparent blur-3xl" />
           <div className="absolute inset-y-0 left-[-30%] w-1/3 -rotate-6 bg-gradient-to-tr from-slate-900/0 via-rw-accent/40 to-transparent blur-3xl" />
         </div>
-        <div className="relative flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-rw-border/80 bg-black/40 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-100">
+        <div className="relative flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+          <div className="max-w-2xl space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-rw-border/80 bg-black/40 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-100">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.35)]" />
-              Live global intelligence feed
+              REDWOUD TERMINAL • LIVE GLOBAL INTELLIGENCE
             </div>
-            <h1 className="mt-6 text-balance text-3xl font-semibold tracking-tight text-slate-50 md:text-4xl lg:text-[2.3rem]">
+            <h1 className="text-balance text-4xl font-semibold tracking-tight text-slate-50 md:text-5xl lg:text-[2.8rem]">
               See discontinuity before{" "}
               <span className="bg-gradient-to-r from-slate-100 via-sky-100 to-indigo-200 bg-clip-text text-transparent">
                 it becomes legacy news

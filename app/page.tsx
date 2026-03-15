@@ -36,10 +36,8 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800">
+        <HeroSection />
         <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
-            REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
-          </div>
 
           <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
             Understand the world in real time.
