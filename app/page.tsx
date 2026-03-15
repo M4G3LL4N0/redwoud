@@ -226,24 +226,39 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
-        <div className="lg:col-span-7">
-          <EntityActivityPanel events={liveEvents} />
+      {/* Lower Dashboard Sections */}
+      <section className="mx-auto grid max-w-7xl gap-4 px-6 pb-4 lg:grid-cols-12">
+        {/* Entity Activity */}
+        <div className="dashboard-panel lg:col-span-7">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Entity Activity Monitoring</h2>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+              <span className="text-sm text-blue-300">Tracking {liveEvents.reduce((acc, event) => acc + (event.entity ? 1 : 0), 0)} entities</span>
+            </div>
+          </div>
+          <div className="mt-4">
+            <EntityActivityPanel events={liveEvents} />
+          </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
+        {/* Trend Signals */}
+        <div className="dashboard-panel lg:col-span-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Trend Summaries</h2>
-            <Link href="/trends" className="text-sm text-emerald-300 hover:text-emerald-200">
-              View all
+            <h2 className="text-lg font-semibold">Strategic Trend Indicators</h2>
+            <Link 
+              href="/trends" 
+              className="text-sm text-emerald-300 hover:text-emerald-200"
+            >
+              View detailed analysis →
             </Link>
           </div>
 
-          <div className="mt-5 space-y-4">
+          <div className="mt-4 space-y-3">
             {trendCards.map((card) => (
               <div
                 key={card.id}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                className="dashboard-feed-item"
               >
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-sm font-semibold">{card.title}</h3>
