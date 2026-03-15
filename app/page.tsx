@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { dailyBriefing, liveEvents as fallbackEvents, trendCards } from "@/lib/mockData";
+import { IntelligenceMap } from "@/components/dashboard/IntelligenceMap";
 
 type FeedEvent = {
   id: string;
@@ -40,6 +41,14 @@ async function getLiveEvents(): Promise<FeedEvent[]> {
 
 export default async function HomePage() {
   const liveEvents = await getLiveEvents();
+
+  const activeRegions: Record<Region, { events: number; conflict: boolean; economic: boolean }> = {
+    Americas: { events: 12, conflict: false, economic: true },
+    Europe: { events: 8, conflict: true, economic: true },
+    Asia: { events: 15, conflict: true, economic: true },
+    "Middle East": { events: 6, conflict: true, economic: false },
+    Africa: { events: 4, conflict: false, economic: false },
+  };
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
@@ -173,13 +182,7 @@ export default async function HomePage() {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Global Event Map</h2>
-            <span className="text-sm text-slate-400">Intelligence view</span>
-          </div>
-          <div className="mt-5 flex h-80 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-sm text-slate-400">
-            Interactive global intelligence map will render here.
-          </div>
+          <IntelligenceMap activeRegions={activeRegions} />
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
