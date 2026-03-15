@@ -45,21 +45,37 @@ export default async function BriefingPage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="mx-auto max-w-5xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-6 py-8">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+              Daily Briefing
+            </p>
+            <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">{briefing.title}</h1>
+            <p className="mt-1 text-sm text-slate-400">{briefing.dateLabel}</p>
+          </div>
+          <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1.5 text-sm font-medium text-emerald-400">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+            </span>
+            Live
+          </div>
+        </div>
         {isFallbackData && (
-          <div className="mb-6 rounded-lg bg-amber-900/30 p-4 text-sm text-amber-100">
+          <div className="mb-6 rounded-lg bg-amber-900/30 p-3 text-sm text-amber-100">
             <p>Showing cached briefing data • Reconnecting to live intelligence feed...</p>
           </div>
         )}
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-          Daily Briefing
-        </p>
-        <h1 className="mt-4 text-4xl font-semibold sm:text-5xl">{briefing.title}</h1>
-        <p className="mt-3 text-sm text-slate-400">{briefing.dateLabel}</p>
-        <p className="mt-6 text-lg leading-8 text-slate-200">{briefing.lead}</p>
-        <p className="mt-6 text-base leading-8 text-slate-300">{briefing.summary}</p>
-
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="md:col-span-2">
+            <div className="rounded-lg border border-slate-800 bg-slate-900 p-5">
+              <h2 className="text-lg font-semibold">Executive Summary</h2>
+              <p className="mt-4 text-sm leading-6 text-slate-300">{briefing.lead}</p>
+              <p className="mt-4 text-sm leading-6 text-slate-300">{briefing.summary}</p>
+            </div>
+          </div>
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
             <h2 className="text-lg font-semibold">Key themes</h2>
             <ul className="mt-4 space-y-3 text-sm text-slate-300">
