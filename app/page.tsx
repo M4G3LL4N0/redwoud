@@ -9,28 +9,7 @@ import {
 import DailyBriefingSection from "@/components/dashboard/DailyBriefing";
 import EntityActivityPanel from "@/components/dashboard/EntityActivityPanel";
 
-async function getLiveEvents(): Promise<IntelligenceEvent[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-      ? process.env.NEXT_PUBLIC_SITE_URL
-      : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
-
-    const response = await fetch(`${baseUrl}/api/feed`, {
-      next: { revalidate: 300 },
-    });
-
-    if (!response.ok) {
-      return fallbackEvents;
-    }
-
-    const data = await response.json();
-    return data.events?.length ? data.events : fallbackEvents;
-  } catch {
-    return fallbackEvents;
-  }
-}
+import { getLiveEvents } from "@/lib/api";
 
 export default async function HomePage() {
   const liveEvents = await getLiveEvents();
