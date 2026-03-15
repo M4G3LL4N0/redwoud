@@ -1,70 +1,39 @@
-import { liveEvents as fallbackEvents } from "@/lib/mockData";
-
-async function getLiveEvents(): Promise<any[]> {
-  try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      process.env.VERCEL_URL?.startsWith("http")
-        ? process.env.VERCEL_URL
-        : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
-
-    const response = await fetch(`${baseUrl}/api/feed`, {
-      next: { revalidate: 300 },
-    });
-
-    if (!response.ok) {
-      return fallbackEvents;
-    }
-
-    const data = await response.json();
-    return data.events?.length ? data.events : fallbackEvents;
-  } catch {
-    return fallbackEvents;
-  }
-}
-
-export default async function BriefingPage() {
-  const events = await getLiveEvents();
-
-  const generateBriefing = (events: any[]) => {
-    if (!events.length) {
-      return {
-        title: "Global intelligence briefing",
-        dateLabel: "Updated today",
-        lead: "No significant developments detected in the monitored regions.",
-import { DailyBriefing } from "@/lib/mockData";
+import type { DailyBriefing } from "@/lib/mockData";
 
 async function getLiveBriefing(): Promise<DailyBriefing> {
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      process.env.VERCEL_URL?.startsWith("http")
-        ? process.env.VERCEL_URL
-        : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
     const response = await fetch(`${baseUrl}/api/briefing`, {
       next: { revalidate: 300 },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch briefing');
+      throw new Error("Briefing fetch failed");
     }
 
     const data = await response.json();
-    return data.briefing;
+
+    if (data?.briefing) {
+      return data.briefing;
+    }
+
+    throw new Error("No briefing returned");
   } catch {
     return {
       title: "Global intelligence briefing",
       dateLabel: "Updated today",
       lead: "No significant developments detected in the monitored regions.",
-      summary: "The system is actively monitoring for emerging signals.",
-      whyThisMatters: "Continue monitoring for potential developments.",
-      keyThemes: [],
-      primaryRisks: [],
+      summary:
+        "REDWOUD is actively monitoring live global signals and will surface major developments as they are detected.",
+      whyThisMatters:
+        "Maintaining a live intelligence layer helps decision-makers detect risk, volatility, and emerging strategic change early.",
+      keyThemes: ["Global monitoring active"],
+      primaryRisks: ["No high-intensity live risks currently surfaced"],
     };
   }
 }
