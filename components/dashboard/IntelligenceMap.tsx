@@ -75,21 +75,90 @@ export function IntelligenceMap({ events, activeRegions }: IntelligenceMapProps)
     return "bg-slate-500";
   };
 
+  // Find the top region
+  const topRegion = displayRegions[0];
+
+  function generateRegionSummary(region: {
+    region: Region;
+    count: number;
+    conflictScore: number;
+    economicScore: number;
+  }): string {
+    const conflictLevel = region.conflictScore >= 6 ? 'HIGH'
+      : region.conflictScore >= 4 ? 'ELEVATED'
+      : 'MODERATE';
+    
+    const economicLevel = region.economicScore >= 6 ? 'SIGNIFICANT'
+      : region.economicScore >= 4 ? 'NOTABLE'
+      : 'STABLE';
+
+    return `${region.region} is currently the highest-activity region with ${region.count} intelligence signals. 
+    Shows ${conflictLevel.toLowerCase()} conflict risk (${region.conflictScore}/10) and ${economicLevel.toLowerCase()} 
+    economic activity (${region.economicScore}/10). Monitor for potential ${conflictLevel === 'HIGH' ? 
+    'security developments' : 'emerging trends'} in coming hours.`;
+  }
+
   return (
     <section className="rw-card flex flex-col overflow-hidden">
-      <header className="flex items-center justify-between border-b border-rw-border/80 px-4 py-3">
+      <header className="flex items-center justify-between border-b border-rw-border/80 px-4 py-3 bg-slate-900/50">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-            Regional monitoring console
+            REGIONAL MONITORING CONSOLE
           </p>
           <p className="mt-1 text-xs text-slate-400">
-            Active regions with signal counts, conflict and economic indicators.
+            Real-time geopolitical and economic indicators
           </p>
         </div>
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
+            LIVE DATA
+          </span>
+        </div>
       </header>
-      <div className="grid flex-1 grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+      {/* Top Region Section */}
+      <div className="border-b border-rw-border/80 px-6 py-4 bg-gradient-to-r from-slate-900 to-slate-800/30">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">FOCAL REGION</p>
+            <h2 className="mt-1 text-xl font-bold tracking-tight text-slate-100">{topRegion.region}</h2>
+          </div>
+          <div className="grid grid-cols-3 gap-6 min-w-[300px]">
+            <div className="flex flex-col">
+              <p className="text-xs text-slate-400">SIGNALS</p>
+              <p className="text-2xl font-bold text-white">{topRegion.count}</p>
+            </div>
+            <div className="flex flex-col">
+              <p className="text-xs text-slate-400">CONFLICT</p>
+              <p className={`text-2xl font-bold ${getConflictColor(topRegion.conflictScore).replace('bg-', 'text-')}`}>{topRegion.conflictScore}</p>
+            </div>
+            <div className="flex flex-col">
+              <p className="text-xs text-slate-400">ECONOMIC</p>
+              <p className={`text-2xl font-bold ${getEconomicColor(topRegion.economicScore).replace('bg-', 'text-')}`}>{topRegion.economicScore}</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4">
+          <p className="text-sm text-slate-300 leading-relaxed">
+            {generateRegionSummary(topRegion)}
+          </p>
+        </div>
+      </div>
+
+      <div className="grid flex-1 grid-cols-1 gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3 bg-slate-900/50">
         {displayRegions.map(({ region, count, conflictScore, economicScore }) => (
-          <div key={region} className="rounded-lg border border-slate-800 bg-slate-900 p-4">
+          <div key={region} className="group rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-900 transition-colors p-4">
+            {region.region === topRegion.region && (
+              <div className="-mt-4 -mx-4 mb-3 px-4 py-2 bg-indigo-900/30 border-b border-indigo-800/30">
+                <p className="text-xs font-semibold text-indigo-300 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/>
+                  </svg>
+                  CURRENT FOCAL REGION
+                </p>
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-100">{region}</h3>
               <span className="text-xs font-medium text-slate-400">{count} signals</span>
