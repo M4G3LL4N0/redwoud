@@ -33,11 +33,18 @@ async function getLiveEvents(): Promise<IntelligenceEvent[]> {
 export default async function HomePage() {
   const liveEvents = await getLiveEvents();
 
+  const activeRegions = Array.from(
+    new Set(liveEvents.map((event) => event.region).filter((region) => region !== "All"))
+  );
+  const highIntensitySignals = liveEvents.filter((event) => event.intensity === "high").length;
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800">
-        <HeroSection />
         <div className="mx-auto max-w-7xl px-6 py-16">
+          <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
+            REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
+          </div>
 
           <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
             Understand the world in real time.
@@ -67,6 +74,36 @@ export default async function HomePage() {
             >
               Daily Briefing
             </Link>
+          </div>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Events monitored now
+              </p>
+              <p className="mt-3 text-2xl font-semibold text-white">{liveEvents.length}</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Active regions
+              </p>
+              <p className="mt-3 text-2xl font-semibold text-white">{activeRegions.length}</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                High-intensity signals
+              </p>
+              <p className="mt-3 text-2xl font-semibold text-white">{highIntensitySignals}</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Briefing status
+              </p>
+              <p className="mt-3 text-2xl font-semibold text-emerald-300">Updated</p>
+            </div>
           </div>
         </div>
       </section>
@@ -125,7 +162,9 @@ export default async function HomePage() {
                     </span>
                   </div>
                 </div>
+
                 <h3 className="mt-2 text-base font-semibold">{event.title}</h3>
+
                 <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
                   <span>{event.topic}</span>
                   <span>•</span>
@@ -133,7 +172,9 @@ export default async function HomePage() {
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
                 </div>
+
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
+
                 <p className="mt-3 text-xs leading-6 text-slate-400">
                   <span className="font-medium text-slate-300">Why this matters:</span>{" "}
                   {event.whyItMatters}
