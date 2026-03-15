@@ -1,72 +1,59 @@
-import { HeroSection } from "@/components/dashboard/HeroSection";
-import { AlertSettingsPanel } from "@/components/dashboard/AlertSettingsPanel";
+import AlertSettingsPanel from "@/components/dashboard/AlertSettingsPanel";
 
 export default function AlertsPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="rw-card relative overflow-hidden px-6 py-12 md:px-12 md:py-16">
-        <div className="pointer-events-none absolute inset-0 opacity-60">
-          <div className="absolute inset-y-0 right-[-20%] w-1/2 rotate-6 bg-gradient-to-br from-rw-accent/30 via-sky-500/10 to-transparent blur-3xl" />
-          <div className="absolute inset-y-0 left-[-30%] w-1/3 -rotate-6 bg-gradient-to-tr from-slate-900/0 via-rw-accent/40 to-transparent blur-3xl" />
-        </div>
-        <div className="relative flex flex-col gap-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-rw-border/80 bg-black/40 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-100">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.35)]" />
-            ALERTS • PREMIUM INTELLIGENCE NOTIFICATIONS
-          </div>
-          <h1 className="text-balance text-4xl font-semibold tracking-tight text-slate-50 md:text-5xl lg:text-[2.8rem]">
-            Stay ahead of{" "}
-            <span className="bg-gradient-to-r from-slate-100 via-sky-100 to-indigo-200 bg-clip-text text-transparent">
-              critical developments
-            </span>
+      <section className="border-b border-slate-800">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+            Alerts
+          </p>
+          <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
+            Real-time intelligence alerts for the signals that matter most.
           </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base md:leading-relaxed">
-            Configure intelligent alerts for entities, regions, topics, and emerging risks that matter to your strategic decisions.
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+            REDWOUD alerts are designed to notify users when important developments emerge across
+            tracked entities, regions, topics, and risk conditions.
           </p>
         </div>
       </section>
 
-      <section className="container mx-auto px-6 py-12 md:px-8 md:py-16">
-        <h2 className="text-3xl font-semibold text-slate-50 mb-6">Alert Types</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-slate-900 p-6 rounded-lg shadow-sm">
-            <h3 className="text-xl font-medium text-slate-50 mb-4">Entity Alerts</h3>
-            <p className="text-sm text-slate-300">
-              Monitor specific entities for sudden changes in activity or risk profiles.
-            </p>
-            <p className="text-sm text-slate-300">
-              Example: "OPEC+ announces oil production cuts"
-            </p>
-          </div>
-          <div className="bg-slate-900 p-6 rounded-lg shadow-sm">
-            <h3 className="text-xl font-medium text-slate-50 mb-4">Region Alerts</h3>
-            <p className="text-sm text-slate-300">
-              Track geopolitical developments in specific regions.
-            </p>
-            <p className="text-sm text-slate-300">
-              Example: "Sudden military buildup in Eastern Europe"
-            </p>
-          </div>
-          <div className="bg-slate-900 p-6 rounded-lg shadow-sm">
-            <h3 className="text-xl font-medium text-slate-50 mb-4">Topic Alerts</h3>
-            <p className="text-sm text-slate-300">
-              Get updates on specific intelligence topics.
-            </p>
-            <p className="text-sm text-slate-300">
-              Example: "New sanctions against Russian energy exports"
-            </p>
-          </div>
-          <div className="bg-slate-900 p-6 rounded-lg shadow-sm">
-            <h3 className="text-xl font-medium text-slate-50 mb-4">Risk Alerts</h3>
-            <p className="text-sm text-slate-300">
-              Receive alerts about emerging risk factors.
-            </p>
-            <p className="text-sm text-slate-300">
-              Example: "Increased cyberattack attempts on critical infrastructure"
-            </p>
+      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:grid-cols-12">
+        <div className="lg:col-span-7 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <h2 className="text-xl font-semibold">Alert types</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {[
+              {
+                title: "Entity alerts",
+                detail: "Track specific countries, companies, industries, or strategic assets.",
+              },
+              {
+                title: "Region alerts",
+                detail: "Monitor changes across Europe, Asia, the Middle East, Africa, and the Americas.",
+              },
+              {
+                title: "Topic alerts",
+                detail: "Follow geopolitical, energy, trade, technology, market, and security developments.",
+              },
+              {
+                title: "Risk alerts",
+                detail: "Surface rising intensity, volatility, disruption, and escalation signals.",
+              },
+            ].map((item) => (
+              <article
+                key={item.title}
+                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+              >
+                <h3 className="text-sm font-semibold text-slate-100">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>
+              </article>
+            ))}
           </div>
         </div>
-        <AlertSettingsPanel />
+
+        <div className="lg:col-span-5">
+          <AlertSettingsPanel />
+        </div>
       </section>
     </main>
   );
