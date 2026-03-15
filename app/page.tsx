@@ -347,48 +347,48 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
+        <div className="rounded-2xl border border-slate-800/50 bg-slate-900/60 backdrop-blur p-5 lg:col-span-5">
           <DailyBriefingSection briefing={liveBriefing} />
         </div>
       </section>
 
         {/* Bottom Row */}
-        <div className="rounded-xl border border-slate-800 bg-slate-900 pb-5 xl:col-span-12">
+        <div className="rounded-xl border border-slate-800/50 bg-slate-900/60 backdrop-blur pb-5 xl:col-span-12">
           <div className="grid grid-cols-1 gap-5 p-5 xl:grid-cols-12">
             <div className="xl:col-span-7">
               <EntityActivityPanel events={liveEvents} />
             </div>
 
-            <div className="rounded-xl border border-slate-800 bg-slate-900 xl:col-span-5">
-              <div className="flex items-center justify-between border-b border-slate-800 p-5">
+            <div className="rounded-xl border border-slate-800/50 bg-slate-900/60 backdrop-blur xl:col-span-5">
+              <div className="flex items-center justify-between border-b border-slate-800/50 p-5">
                 <h2 className="text-lg font-semibold text-white">
                   <span className="mr-2 inline-block h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></span>
                   TREND SIGNALS
                 </h2>
                 <Link
                   href="/trends"
-                  className="text-xs font-medium tracking-wider text-slate-400 hover:text-white"
+                  className="text-xs font-medium tracking-wider text-slate-400 hover:text-white transition-colors"
                 >
                   VIEW ALL →
                 </Link>
               </div>
-              <div className="divide-y divide-slate-800/70">
+              <div className="divide-y divide-slate-800/50">
                 {liveTrends.slice(0, 8).map((card) => (
                   <div
                     key={card.id}
                     className="p-4 transition-colors hover:bg-slate-900/50"
                   >
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-sm font-semibold">{card.title}</h3>
-                  <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
-                    {card.value}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
+                    <div className="flex items-center justify-between gap-3">
+                      <h3 className="text-sm font-semibold">{card.title}</h3>
+                      <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
+                        {card.value}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
       </section>
     </main>
   );
