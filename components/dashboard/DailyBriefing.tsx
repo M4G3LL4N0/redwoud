@@ -1,4 +1,7 @@
 import type { DailyBriefing } from "@/lib/mockData";
+import type { IntelligenceEvent } from "@/lib/mockData";
+import type { TrendSummary } from "@/lib/mockData";
+import { EntityActivityPanel } from "@/components/dashboard/EntityActivityPanel";
 
 interface DailyBriefingSectionProps {
   briefing: DailyBriefing;
@@ -67,6 +70,9 @@ export default function DailyBriefingSection({
           {briefing.whyThisMatters}
         </p>
       </div>
+
+      {/* New Entity Activity Panel */}
+      <EntityActivityPanel events={briefing.events} />
     </section>
   );
 }
