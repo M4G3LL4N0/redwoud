@@ -1,6 +1,29 @@
-import { trendCards } from "@/lib/mockData";
+interface TrendCard {
+  id: string;
+  title: string;
+  value: string;
+  detail: string;
+}
 
-export default function TrendsPage() {
+export default async function TrendsPage() {
+  let trends: TrendCard[] = [];
+  
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/trends`, {
+      next: { revalidate: 60 }
+    });
+    const data = await response.json();
+    
+    trends = data.trends.map((trend: any) => ({
+      id: trend.id,
+      title: trend.title,
+      value: trend.value,
+      detail: trend.detail,
+    }));
+
+  } catch (error) {
+    console.error('Failed to fetch trends:', error);
+  }
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="mx-auto max-w-7xl px-6 py-16">
@@ -14,7 +37,8 @@ export default function TrendsPage() {
 
       <section className="mx-auto max-w-7xl px-6 pb-16">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {trendCards.map((trend) => (
+          {trends.length > 0 ? (
+            trends.map((trend) => (
             <article key={trend.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-lg font-semibold">{trend.title}</h2>
@@ -24,7 +48,12 @@ export default function TrendsPage() {
               </div>
               <p className="mt-4 text-sm leading-7 text-slate-300">{trend.detail}</p>
             </article>
-          ))}
+            ))
+          ) : (
+            <div className="col-span-full py-16 text-center text-slate-400">
+              Loading trends data...
+            </div>
+          )}
         </div>
       </section>
     </main>
