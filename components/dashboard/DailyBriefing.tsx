@@ -1,12 +1,69 @@
-import type { DailyBriefing } from "@/lib/mockData";
+import type { IntelligenceEvent } from "@/lib/mockData";
 
 interface DailyBriefingSectionProps {
-  briefing: DailyBriefing;
+  events: IntelligenceEvent[];
 }
 
-export default function DailyBriefingSection({
-  briefing,
-}: DailyBriefingSectionProps) {
+export default function DailyBriefingSection({ events }: DailyBriefingSectionProps) {
+  const generateBriefing = (events: IntelligenceEvent[]) => {
+    if (!events.length) {
+      return {
+        title: "Global intelligence briefing",
+        dateLabel: "Updated today",
+        lead: "No significant developments detected in the monitored regions.",
+        summary: "The system is actively monitoring for emerging signals.",
+        whyThisMatters: "Continue monitoring for potential developments.",
+        keyThemes: [],
+        primaryRisks: [],
+      };
+    }
+
+    const regions = [...new Set(events.map(e => e.region))];
+    const topics = [...new Set(events.map(e => e.topic))];
+    const highIntensityEvents = events.filter(e => e.intensity === "high");
+    const mediumIntensityEvents = events.filter(e => e.intensity === "medium");
+
+    const keyThemes = [
+      ...new Set(events.map(e => e.topic)),
+      ...new Set(events.map(e => e.region)),
+    ].slice(0, 3);
+
+    const primaryRisks = highIntensityEvents.map(e => {
+      const risk = e.topic === "Energy" ? "Energy supply disruption" :
+                   e.topic === "Technology" ? "Technology restrictions" :
+                   e.topic === "Trade" ? "Trade route disruption" :
+                   e.topic === "Security" ? "Security escalation" :
+                   e.topic === "Markets" ? "Market volatility" :
+                   e.topic === "Geopolitics" ? "Geopolitical tension" :
+                   "Strategic risk";
+      return `${risk} in ${e.region}`;
+    }).slice(0, 3);
+
+    const lead = highIntensityEvents.length > 0
+      ? `Global risk signals are clustering around ${topics.join(", ")} developments across ${regions.join(", ")}.`
+      : `Monitoring active developments in ${regions.join(", ")} across ${topics.join(", ")} sectors.`;
+
+    const summary = highIntensityEvents.length > 0
+      ? `REDWOUD is detecting tighter linkages between ${topics.join(", ")} developments and cross-market volatility.`
+      : `The system is actively processing events to identify emerging patterns and connections.`;
+
+    const whyThisMatters = highIntensityEvents.length > 0
+      ? `Seemingly separate developments are connecting into broader strategic pressure across pricing, trade exposure, and regional policy reactions.`
+      : `Continue monitoring for potential developments as the situation evolves.`;
+
+    return {
+      title: "Global intelligence briefing",
+      dateLabel: `Updated ${new Date().toLocaleDateString()}`,
+      lead,
+      summary,
+      whyThisMatters,
+      keyThemes,
+      primaryRisks,
+    };
+  };
+
+  const briefing = generateBriefing(events);
+
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
       <div className="flex items-start justify-between gap-4">

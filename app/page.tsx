@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { dailyBriefing, liveEvents as fallbackEvents, trendCards } from "@/lib/mockData";
+import { dailyBriefing, liveEvents as fallbackEvents } from "@/lib/mockData";
 import { IntelligenceMap } from "@/components/dashboard/IntelligenceMap";
+import DailyBriefingSection from "@/components/dashboard/DailyBriefing";
 
 type FeedEvent = {
   id: string;
@@ -42,7 +43,7 @@ async function getLiveEvents(): Promise<FeedEvent[]> {
 export default async function HomePage() {
   const liveEvents = await getLiveEvents();
 
-  const activeRegions: Record<Region, { events: number; conflict: boolean; economic: boolean }> = {
+  const activeRegions: Record<string, { events: number; conflict: boolean; economic: boolean }> = {
     Americas: { events: 12, conflict: false, economic: true },
     Europe: { events: 8, conflict: true, economic: true },
     Asia: { events: 15, conflict: true, economic: true },
@@ -161,22 +162,7 @@ export default async function HomePage() {
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-3">
-          <h2 className="text-lg font-semibold">Daily AI Briefing</h2>
-          <p className="mt-2 text-xs text-slate-400">{dailyBriefing.dateLabel}</p>
-          <p className="mt-4 text-sm leading-6 text-slate-300">{dailyBriefing.lead}</p>
-
-          <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-            <h3 className="text-sm font-semibold text-slate-200">Why this matters</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-300">
-              {dailyBriefing.whyThisMatters}
-            </p>
-          </div>
-
-          <div className="mt-6">
-            <Link href="/briefing" className="text-sm font-medium text-emerald-300 hover:text-emerald-200">
-              Read full briefing →
-            </Link>
-          </div>
+          <DailyBriefingSection events={liveEvents} />
         </div>
       </section>
 
