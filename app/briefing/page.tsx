@@ -34,57 +34,43 @@ export default async function BriefingPage() {
         title: "Global intelligence briefing",
         dateLabel: "Updated today",
         lead: "No significant developments detected in the monitored regions.",
-        summary: "The system is actively monitoring for emerging signals.",
-        whyThisMatters: "Continue monitoring for potential developments.",
-        keyThemes: [],
-        primaryRisks: [],
-      };
+import { DailyBriefing } from "@/lib/mockData";
+
+async function getLiveBriefing(): Promise<DailyBriefing> {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.VERCEL_URL?.startsWith("http")
+        ? process.env.VERCEL_URL
+        : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000";
+
+    const response = await fetch(`${baseUrl}/api/briefing`, {
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch briefing');
     }
 
-    const regions = [...new Set(events.map(e => e.region))];
-    const topics = [...new Set(events.map(e => e.topic))];
-    const highIntensityEvents = events.filter(e => e.intensity === "high");
-
-    const keyThemes = [
-      ...new Set(events.map(e => e.topic)),
-      ...new Set(events.map(e => e.region)),
-    ].slice(0, 3);
-
-    const primaryRisks = highIntensityEvents.map(e => {
-      const risk = e.topic === "Energy" ? "Energy supply disruption" :
-                   e.topic === "Technology" ? "Technology restrictions" :
-                   e.topic === "Trade" ? "Trade route disruption" :
-                   e.topic === "Security" ? "Security escalation" :
-                   e.topic === "Markets" ? "Market volatility" :
-                   e.topic === "Geopolitics" ? "Geopolitical tension" :
-                   "Strategic risk";
-      return `${risk} in ${e.region}`;
-    }).slice(0, 3);
-
-    const lead = highIntensityEvents.length > 0
-      ? `Global risk signals are clustering around ${topics.join(", ")} developments across ${regions.join(", ")}.`
-      : `Monitoring active developments in ${regions.join(", ")} across ${topics.join(", ")} sectors.`;
-
-    const summary = highIntensityEvents.length > 0
-      ? `REDWOUD is detecting tighter linkages between ${topics.join(", ")} developments and cross-market volatility.`
-      : `The system is actively processing events to identify emerging patterns and connections.`;
-
-    const whyThisMatters = highIntensityEvents.length > 0
-      ? `Seemingly separate developments are connecting into broader strategic pressure across pricing, trade exposure, and regional policy reactions.`
-      : `Continue monitoring for potential developments as the situation evolves.`;
-
+    const data = await response.json();
+    return data.briefing;
+  } catch {
     return {
       title: "Global intelligence briefing",
-      dateLabel: `Updated ${new Date().toLocaleDateString()}`,
-      lead,
-      summary,
-      whyThisMatters,
-      keyThemes,
-      primaryRisks,
+      dateLabel: "Updated today",
+      lead: "No significant developments detected in the monitored regions.",
+      summary: "The system is actively monitoring for emerging signals.",
+      whyThisMatters: "Continue monitoring for potential developments.",
+      keyThemes: [],
+      primaryRisks: [],
     };
-  };
+  }
+}
 
-  const briefing = generateBriefing(events);
+export default async function BriefingPage() {
+  const briefing = await getLiveBriefing();
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
