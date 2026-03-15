@@ -189,20 +189,32 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-12">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Live Event Feed</h2>
-            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
-              View full stream
-            </Link>
+      {/* Main Content Grid */}
+      <section className="mx-auto grid max-w-7xl grid-cols-1 gap-5 p-5 md:grid-cols-2 xl:grid-cols-12">
+        {/* Live Feed Column */}
+        <div className="rounded-xl border border-slate-800 bg-slate-900 xl:col-span-7">
+          <div className="flex items-center justify-between border-b border-slate-800 p-5">
+            <h2 className="text-lg font-semibold text-white">
+              <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></span>
+              LIVE SIGNAL FEED
+            </h2>
+            <div className="flex items-center gap-3">
+              <button className="text-xs font-medium tracking-wider text-slate-400 hover:text-white">
+                FILTERS
+              </button>
+              <Link
+                href="/stream"
+                className="rounded-md border border-slate-700 px-3 py-1 text-xs font-medium text-slate-200 hover:border-slate-600"
+              >
+                FULL CONSOLE →
+              </Link>
+            </div>
           </div>
-
-          <div className="mt-5 space-y-4">
-            {liveEvents.slice(0, 6).map((event) => (
+          <div className="divide-y divide-slate-800/70">
+            {liveEvents.slice(0, 8).map((event) => (
               <article
                 key={event.id}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                className="p-4 transition-colors hover:bg-slate-900/50"
               >
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs uppercase tracking-wide text-slate-400">
@@ -249,25 +261,32 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
-        <div className="lg:col-span-7">
-          <EntityActivityPanel events={liveEvents} />
-        </div>
+        {/* Bottom Row */}
+        <div className="rounded-xl border border-slate-800 bg-slate-900 pb-5 xl:col-span-12">
+          <div className="grid grid-cols-1 gap-5 p-5 xl:grid-cols-12">
+            <div className="xl:col-span-7">
+              <EntityActivityPanel events={liveEvents} />
+            </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Trend Signals</h2>
-            <Link href="/trends" className="text-sm text-emerald-300 hover:text-emerald-200">
-              View all
-            </Link>
-          </div>
-
-          <div className="mt-5 space-y-4">
-            {liveTrends.slice(0, 6).map((card) => (
-              <div
-                key={card.id}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
-              >
+            <div className="rounded-xl border border-slate-800 bg-slate-900 xl:col-span-5">
+              <div className="flex items-center justify-between border-b border-slate-800 p-5">
+                <h2 className="text-lg font-semibold text-white">
+                  <span className="mr-2 inline-block h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></span>
+                  TREND SIGNALS
+                </h2>
+                <Link
+                  href="/trends"
+                  className="text-xs font-medium tracking-wider text-slate-400 hover:text-white"
+                >
+                  VIEW ALL →
+                </Link>
+              </div>
+              <div className="divide-y divide-slate-800/70">
+                {liveTrends.slice(0, 8).map((card) => (
+                  <div
+                    key={card.id}
+                    className="p-4 transition-colors hover:bg-slate-900/50"
+                  >
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-sm font-semibold">{card.title}</h3>
                   <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
