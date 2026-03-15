@@ -40,10 +40,17 @@ async function getLiveBriefing(): Promise<DailyBriefing> {
 
 export default async function BriefingPage() {
   const briefing = await getLiveBriefing();
+  const isFallbackData = briefing.title === "Global intelligence briefing" && 
+                         briefing.lead.includes("⚠️");
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="mx-auto max-w-5xl px-6 py-16">
+      <section className="mx-auto max-w-5xl px-6 py-12">
+        {isFallbackData && (
+          <div className="mb-6 rounded-lg bg-amber-900/30 p-4 text-sm text-amber-100">
+            <p>Showing cached briefing data • Reconnecting to live intelligence feed...</p>
+          </div>
+        )}
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
           Daily Briefing
         </p>

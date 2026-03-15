@@ -37,7 +37,18 @@ export default async function TrendsPage() {
 
       <section className="mx-auto max-w-7xl px-6 pb-16">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {trends.length > 0 ? (
+          {error ? (
+            <div className="col-span-full rounded-2xl border border-rose-800/50 bg-slate-900/50 p-8 text-center">
+              <p className="text-rose-400">Failed to load live trends</p>
+              <p className="mt-2 text-sm text-slate-500">Retrying automatically...</p>
+            </div>
+          ) : trends.length === 0 ? (
+            <div className="col-span-full grid animate-pulse gap-3 py-16">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-32 rounded-2xl bg-slate-900/50"></div>
+              ))}
+            </div>
+          ) : (
             trends.map((trend) => (
             <article key={trend.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
               <div className="flex items-center justify-between gap-3">
