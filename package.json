@@ -10,7 +10,8 @@
     "verify": "bash ./scripts/verify-repo.sh"
   },
   "dependencies": {
-    "next": "14.2.0",
+    "@supabase/supabase-js": "^2.39.8",
+    "next": "14.2.0", 
     "react": "^18",
     "react-dom": "^18",
     "rss-parser": "^3.13.0"
