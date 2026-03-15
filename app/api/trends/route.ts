@@ -7,11 +7,14 @@ export async function GET() {
       .from("events")
       .select("id, topic, region, score, timestamp")
       .order("timestamp", { ascending: false })
-      .limit(200);
+      .limit(250);
 
     if (error) throw error;
 
-    const buckets = new Map<string, { id: string; title: string; value: string; detail: string; count: number }>();
+    const buckets = new Map<
+      string,
+      { id: string; title: string; value: string; detail: string; count: number }
+    >();
 
     for (const event of data || []) {
       const key = `${event.topic}::${event.region}`;
@@ -19,7 +22,8 @@ export async function GET() {
 
       if (existing) {
         existing.count += 1;
-        existing.value = existing.count >= 5 ? "Rising" : existing.count >= 3 ? "Active" : "Watch";
+        existing.value =
+          existing.count >= 5 ? "Rising" : existing.count >= 3 ? "Active" : "Watch";
         existing.detail = `${existing.count} related signals detected across ${event.region}.`;
       } else {
         buckets.set(key, {
@@ -39,6 +43,9 @@ export async function GET() {
 
     return NextResponse.json({ trends });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || "Trend fetch failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Trend fetch failed" },
+      { status: 500 }
+    );
   }
 }
