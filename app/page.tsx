@@ -6,6 +6,7 @@ import {
   type IntelligenceEvent,
 } from "@/lib/mockData";
 import DailyBriefingSection from "@/components/dashboard/DailyBriefing";
+import EntityActivityPanel from "@/components/dashboard/EntityActivityPanel";
 
 async function getLiveEvents(): Promise<IntelligenceEvent[]> {
   try {
@@ -190,14 +191,8 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Global Event Map</h2>
-            <span className="text-sm text-slate-400">Intelligence view</span>
-          </div>
-          <div className="mt-5 flex h-80 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-center text-sm text-slate-400">
-            Interactive global intelligence map will render here.
-          </div>
+        <div className="lg:col-span-7">
+          <EntityActivityPanel events={liveEvents} />
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
