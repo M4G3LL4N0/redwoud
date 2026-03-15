@@ -1,3 +1,4 @@
+import Link from "next/link";
 import StreamRefresh from "./StreamRefresh";
 import { slugify } from "@/lib/utils";
 import type { IntelligenceEvent } from "@/lib/mockData";
