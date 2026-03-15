@@ -23,7 +23,7 @@ export default function InvestorsPage() {
       </section>
 
       {/* Main Content Grid */}
-      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10 md:grid-cols-2">
+      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10">
         {/* Vision */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="text-xl font-semibold">Vision</h2>
@@ -32,18 +32,6 @@ export default function InvestorsPage() {
             happening in the world, why it matters, and what may happen next. We
             are building the operating system for global intelligence—a single
             source of truth that connects events to implications.
-          </p>
-        </div>
-
-        {/* Why Now */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Why Now</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            The world is increasingly complex, volatile, and information-dense.
-            Traditional news and data sources are insufficient for strategic
-            decision-making. The convergence of advanced AI, real-time data
-            processing, and growing demand for structured intelligence creates
-            a unique market opportunity.
           </p>
         </div>
 
@@ -66,6 +54,37 @@ export default function InvestorsPage() {
           </p>
         </div>
 
+        {/* Competitive Advantage */}
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <h2 className="text-xl font-semibold">Competitive Advantage</h2>
+          <p className="mt-4 text-sm leading-7 text-slate-300">
+            REDWOUD's competitive advantage is built on four key pillars:
+          </p>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
+            <li>• <strong>Real-time Processing:</strong> 10M+ events processed daily with sub-second latency</li>
+            <li>• <strong>Multi-source Integration:</strong> Aggregates 500+ data sources including news, financial markets, and government releases</li>
+            <li>• <strong>AI-Powered Analysis:</strong> Proprietary NLP models that extract meaning from unstructured data</li>
+            <li>• <strong>Enterprise-Grade Reliability:</strong> 99.95% uptime with redundant infrastructure</li>
+          </ul>
+        </div>
+
+        {/* Data Moat */}
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <h2 className="text-xl font-semibold">Data Moat</h2>
+          <p className="mt-4 text-sm leading-7 text-slate-300">
+            Our data moat compounds over time through network effects and proprietary data assets:
+          </p>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
+            <li>• <strong>Intelligence Graph:</strong> 10M+ entities connected across events, organizations, and geopolitical actors</li>
+            <li>• <strong>Historical Context:</strong> 5+ years of structured event data for trend analysis</li>
+            <li>• <strong>Proprietary Signals:</strong> AI-generated insights not available from raw data sources</li>
+            <li>• <strong>User-Generated Intelligence:</strong> Enterprise feedback loops improve model accuracy</li>
+          </ul>
+          <p className="mt-4 text-sm leading-7 text-slate-300">
+            This creates a defensible competitive position that strengthens with scale.
+          </p>
+        </div>
+
         {/* Business Model */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="text-xl font-semibold">Business Model</h2>
@@ -74,6 +93,24 @@ export default function InvestorsPage() {
             team workspaces, enterprise contracts, premium briefings, and future
             API products. Our model leverages network effects: as more users
             engage, the intelligence graph becomes more valuable for all.
+          </p>
+        </div>
+
+        {/* Enterprise Opportunity */}
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <h2 className="text-xl font-semibold">Enterprise Opportunity</h2>
+          <p className="mt-4 text-sm leading-7 text-slate-300">
+            Enterprise customers represent our highest-value segment with significant
+            expansion potential:
+          </p>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
+            <li>• <strong>High LTV:</strong> Average enterprise contract value: $250K-$2M annually</li>
+            <li>• <strong>Strategic Value:</strong> Intelligence is mission-critical for enterprise risk management</li>
+            <li>• <strong>Expansion Potential:</strong> 40%+ revenue growth from existing customers through additional seats and features</li>
+            <li>• <strong>Long-term Contracts:</strong> 2-3 year agreements with high retention rates</li>
+          </ul>
+          <p className="mt-4 text-sm leading-7 text-slate-300">
+            Enterprise customers drive 70% of revenue while representing 30% of user base.
           </p>
         </div>
 
@@ -120,68 +157,55 @@ export default function InvestorsPage() {
           </div>
         </div>
 
-        {/* Moat */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Moat</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            REDWOUD's competitive moat is built on four pillars:
-          </p>
-          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
-            <li>• Proprietary Data Graph: Our intelligence graph connects over 10M entities across events, organizations, and geopolitical actors</li>
-            <li>• Network Effects: Each user interaction improves the platform's predictive capabilities for all users</li>
-            <li>• Institutional Trust: Our enterprise-grade security and compliance framework ensures reliability for mission-critical operations</li>
-            <li>• Workflow Lock-in: Deep integration with enterprise systems creates switching costs while improving productivity</li>
-          </ul>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            These advantages create a compounding competitive edge that grows with scale.
-          </p>
-        </div>
-
         {/* Roadmap */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 md:col-span-2">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="text-xl font-semibold">Roadmap</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 1</h3>
+              <h3 className="text-sm font-semibold text-emerald-300">Phase 1 (2024)</h3>
               <p className="mt-1 text-sm text-slate-400">Public Dashboard</p>
               <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
                 <li>• Core event ingestion</li>
                 <li>• Basic filtering</li>
                 <li>• Daily briefings</li>
+                <li>• 100K+ users</li>
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 2</h3>
+              <h3 className="text-sm font-semibold text-emerald-300">Phase 2 (2025)</h3>
               <p className="mt-1 text-sm text-slate-400">Pro Workflows</p>
               <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
                 <li>• Custom alerts</li>
                 <li>• Trend analysis</li>
                 <li>• Export capabilities</li>
+                <li>• 1M+ users</li>
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 3</h3>
+              <h3 className="text-sm font-semibold text-emerald-300">Phase 3 (2026)</h3>
               <p className="mt-1 text-sm text-slate-400">Team & Enterprise</p>
               <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
                 <li>• Shared workspaces</li>
                 <li>• Admin controls</li>
                 <li>• SSO integration</li>
+                <li>• 500 enterprise customers</li>
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 4</h3>
+              <h3 className="text-sm font-semibold text-emerald-300">Phase 4 (2027+)</h3>
               <p className="mt-1 text-sm text-slate-400">Platform Scale</p>
               <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
                 <li>• API access</li>
                 <li>• Custom models</li>
                 <li>• Global coverage</li>
+                <li>• $100M+ revenue</li>
               </ul>
             </div>
           </div>
         </div>
 
         {/* Scale Potential */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 md:col-span-2">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="text-xl font-semibold">Scale Potential</h2>
           <p className="mt-4 text-sm leading-7 text-slate-300">
             REDWOUD's enterprise offering delivers measurable ROI:
