@@ -76,28 +76,36 @@ export default async function BriefingPage() {
               <p className="mt-4 text-sm leading-6 text-slate-300">{briefing.summary}</p>
             </div>
           </div>
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">Key themes</h2>
-            <ul className="mt-4 space-y-3 text-sm text-slate-300">
+          <div className="rounded-lg border border-slate-800 bg-slate-900 p-5">
+            <h2 className="text-lg font-semibold">Key Themes</h2>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
               {briefing.keyThemes.map((theme) => (
-                <li key={theme}>• {theme}</li>
+                <li key={theme} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-slate-500"></span>
+                  {theme}
+                </li>
               ))}
             </ul>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">Primary risks</h2>
-            <ul className="mt-4 space-y-3 text-sm text-slate-300">
+          <div className="rounded-lg border border-slate-800 bg-slate-900 p-5">
+            <h2 className="text-lg font-semibold">Primary Risks</h2>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
               {briefing.primaryRisks.map((risk) => (
-                <li key={risk}>• {risk}</li>
+                <li key={risk} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-rose-500"></span>
+                  {risk}
+                </li>
               ))}
             </ul>
           </div>
-        </div>
 
-        <div className="mt-10 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-lg font-semibold">Why this matters</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">{briefing.whyThisMatters}</p>
+          <div className="md:col-span-3">
+            <div className="rounded-lg border border-slate-800 bg-slate-900 p-5">
+              <h2 className="text-lg font-semibold">Strategic Implications</h2>
+              <p className="mt-4 text-sm leading-6 text-slate-300">{briefing.whyThisMatters}</p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
