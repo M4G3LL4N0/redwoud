@@ -9,7 +9,7 @@ export default function InvestorsPage() {
           </div>
 
           <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
-            The Operating System for Global Intelligence
+            The Bloomberg Terminal for Geopolitical Intelligence
           </h1>
 
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
@@ -22,212 +22,329 @@ export default function InvestorsPage() {
         </div>
       </section>
 
-      {/* Main Content Grid */}
-      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10">
-        {/* Vision */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Vision</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            REDWOUD aims to become the default platform for understanding what is
-            happening in the world, why it matters, and what may happen next. We
-            are building the operating system for global intelligence—a single
-            source of truth that connects events to implications.
-          </p>
+      {/* Why Now Section */}
+      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl font-semibold">Why Now: The Strategic Intelligence Imperative</h2>
+          <div className="mt-8 grid gap-8 md:grid-cols-3">
+            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+              <h3 className="text-lg font-semibold">Geopolitical Volatility</h3>
+              <p className="mt-2 text-sm text-slate-300">
+                78% of Fortune 500 companies cite geopolitical risk as their top external threat (McKinsey 2025)
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+              <h3 className="text-lg font-semibold">AI Maturity</h3>
+              <p className="mt-2 text-sm text-slate-300">
+                Breakthroughs in NLP enable real-time analysis of unstructured intelligence data
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+              <h3 className="text-lg font-semibold">Market Gap</h3>
+              <p className="mt-2 text-sm text-slate-300">
+                $47B TAM with no dominant player in AI-driven strategic intelligence
+              </p>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Market Opportunity */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Market Opportunity</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            The global intelligence and risk analytics market is projected to grow
-            from $32B in 2025 to $58B by 2030 (CAGR 12.6%). REDWOUD targets three
-            primary segments:
-          </p>
-          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
-            <li>• Financial Services ($18B): Hedge funds, private equity, and investment banks</li>
-            <li>• Enterprise Strategy ($22B): Fortune 500 companies across tech, energy, and manufacturing</li>
-            <li>• Government & Defense ($18B): Intelligence agencies and policy makers</li>
-          </ul>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            Our platform addresses the $12B opportunity in AI-driven intelligence,
-            growing at 25% CAGR through 2030.
-          </p>
+      {/* Market Opportunity */}
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="text-2xl font-semibold">Market Opportunity</h2>
+        <div className="mt-8 grid gap-8 md:grid-cols-2">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <h3 className="text-lg font-semibold">$58B by 2030</h3>
+            <p className="mt-2 text-sm text-slate-300">
+              Global intelligence and risk analytics market (12.6% CAGR)
+            </p>
+            <div className="mt-4">
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>2025</span>
+                <span>2030</span>
+              </div>
+              <div className="mt-1 h-2 w-full rounded-full bg-slate-800">
+                <div className="h-2 w-3/4 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" />
+              </div>
+              <div className="mt-2 flex justify-between text-xs">
+                <span className="text-slate-300">$32B</span>
+                <span className="text-slate-300">$58B</span>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <h3 className="text-lg font-semibold">Target Segments</h3>
+            <div className="mt-4 space-y-4">
+              <div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-300">Financial Services</span>
+                  <span className="font-medium text-emerald-300">$18B</span>
+                </div>
+                <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                  <div className="h-1 w-2/3 rounded-full bg-emerald-500" />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-300">Enterprise Strategy</span>
+                  <span className="font-medium text-emerald-300">$22B</span>
+                </div>
+                <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                  <div className="h-1 w-3/4 rounded-full bg-emerald-500" />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-300">Government & Defense</span>
+                  <span className="font-medium text-emerald-300">$18B</span>
+                </div>
+                <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                  <div className="h-1 w-2/3 rounded-full bg-emerald-500" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Competitive Advantage */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Competitive Advantage</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            REDWOUD's competitive advantage is built on four key pillars:
-          </p>
-          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
-            <li>• <strong>Real-time Processing:</strong> 10M+ events processed daily with sub-second latency</li>
-            <li>• <strong>Multi-source Integration:</strong> Aggregates 500+ data sources including news, financial markets, and government releases</li>
-            <li>• <strong>AI-Powered Analysis:</strong> Proprietary NLP models that extract meaning from unstructured data</li>
-            <li>• <strong>Enterprise-Grade Reliability:</strong> 99.95% uptime with redundant infrastructure</li>
-          </ul>
-        </div>
-
-        {/* Data Moat */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Data Moat</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            Our data moat compounds over time through network effects and proprietary data assets:
-          </p>
-          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
-            <li>• <strong>Intelligence Graph:</strong> 10M+ entities connected across events, organizations, and geopolitical actors</li>
-            <li>• <strong>Historical Context:</strong> 5+ years of structured event data for trend analysis</li>
-            <li>• <strong>Proprietary Signals:</strong> AI-generated insights not available from raw data sources</li>
-            <li>• <strong>User-Generated Intelligence:</strong> Enterprise feedback loops improve model accuracy</li>
-          </ul>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            This creates a defensible competitive position that strengthens with scale.
-          </p>
-        </div>
-
-        {/* Business Model */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Business Model</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            Revenue expands from free user acquisition into professional plans,
-            team workspaces, enterprise contracts, premium briefings, and future
-            API products. Our model leverages network effects: as more users
-            engage, the intelligence graph becomes more valuable for all.
-          </p>
-        </div>
-
-        {/* Enterprise Opportunity */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Enterprise Opportunity</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            Enterprise customers represent our highest-value segment with significant
-            expansion potential:
-          </p>
-          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
-            <li>• <strong>High LTV:</strong> Average enterprise contract value: $250K-$2M annually</li>
-            <li>• <strong>Strategic Value:</strong> Intelligence is mission-critical for enterprise risk management</li>
-            <li>• <strong>Expansion Potential:</strong> 40%+ revenue growth from existing customers through additional seats and features</li>
-            <li>• <strong>Long-term Contracts:</strong> 2-3 year agreements with high retention rates</li>
-          </ul>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            Enterprise customers drive 70% of revenue while representing 30% of user base.
-          </p>
-        </div>
-
-        {/* Expansion Ladder */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Expansion Ladder</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-lg border border-slate-800 p-4">
-              <h3 className="text-sm font-semibold">Public Intelligence</h3>
-              <p className="mt-2 text-xs text-slate-400">Free Tier</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• Basic event monitoring</li>
-                <li>• Daily briefings</li>
-                <li>• Limited filtering</li>
+      {/* Competitive Moats */}
+      <section className="border-t border-slate-800 bg-slate-950 py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl font-semibold">Unassailable Competitive Advantages</h2>
+          <div className="mt-8 grid gap-8 md:grid-cols-2">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+              <h3 className="text-lg font-semibold">Data Network Effects</h3>
+              <ul className="mt-4 space-y-3 text-sm text-slate-300">
+                <li className="flex items-start">
+                  <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                  Proprietary intelligence graph with 10M+ connected entities
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                  Enterprise feedback loops continuously improve model accuracy
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                  5+ years of structured event data for predictive analytics
+                </li>
               </ul>
             </div>
-            <div className="rounded-lg border border-slate-800 p-4">
-              <h3 className="text-sm font-semibold">Pro Research</h3>
-              <p className="mt-2 text-xs text-slate-400">$99/mo</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• Advanced filtering</li>
-                <li>• Custom alerts</li>
-                <li>• Trend analysis</li>
-              </ul>
-            </div>
-            <div className="rounded-lg border border-slate-800 p-4">
-              <h3 className="text-sm font-semibold">Team Collaboration</h3>
-              <p className="mt-2 text-xs text-slate-400">$499/mo</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• Shared workspaces</li>
-                <li>• Admin controls</li>
-                <li>• Export capabilities</li>
-              </ul>
-            </div>
-            <div className="rounded-lg border border-slate-800 p-4">
-              <h3 className="text-sm font-semibold">Enterprise</h3>
-              <p className="mt-2 text-xs text-slate-400">Custom Pricing</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• Dedicated infrastructure</li>
-                <li>• API access</li>
-                <li>• Custom models</li>
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+              <h3 className="text-lg font-semibold">Technical Differentiation</h3>
+              <ul className="mt-4 space-y-3 text-sm text-slate-300">
+                <li className="flex items-start">
+                  <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                  Sub-second processing of 10M+ daily events
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                  Proprietary NLP models trained on strategic intelligence corpus
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                  99.95% uptime enterprise-grade infrastructure
+                </li>
               </ul>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Roadmap */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Roadmap</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 1 (2024)</h3>
-              <p className="mt-1 text-sm text-slate-400">Public Dashboard</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• Core event ingestion</li>
-                <li>• Basic filtering</li>
-                <li>• Daily briefings</li>
-                <li>• 100K+ users</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 2 (2025)</h3>
-              <p className="mt-1 text-sm text-slate-400">Pro Workflows</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• Custom alerts</li>
-                <li>• Trend analysis</li>
-                <li>• Export capabilities</li>
-                <li>• 1M+ users</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 3 (2026)</h3>
-              <p className="mt-1 text-sm text-slate-400">Team & Enterprise</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• Shared workspaces</li>
-                <li>• Admin controls</li>
-                <li>• SSO integration</li>
-                <li>• 500 enterprise customers</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-emerald-300">Phase 4 (2027+)</h3>
-              <p className="mt-1 text-sm text-slate-400">Platform Scale</p>
-              <ul className="mt-2 space-y-1 text-xs leading-6 text-slate-300">
-                <li>• API access</li>
-                <li>• Custom models</li>
-                <li>• Global coverage</li>
-                <li>• $100M+ revenue</li>
-              </ul>
+      {/* Monetization */}
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="text-2xl font-semibold">Monetization Strategy</h2>
+        <div className="mt-8">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <div className="grid gap-8 md:grid-cols-2">
+              <div>
+                <h3 className="text-lg font-semibold">Revenue Streams</h3>
+                <ul className="mt-4 space-y-3 text-sm text-slate-300">
+                  <li className="flex items-start">
+                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                    SaaS subscriptions (80% gross margins)
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                    Enterprise API licensing
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                    Custom intelligence solutions
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Key Metrics</h3>
+                <ul className="mt-4 space-y-3 text-sm text-slate-300">
+                  <li className="flex items-start">
+                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                    $250K-$2M average enterprise ACV
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                    40%+ expansion revenue from existing customers
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                    90%+ enterprise retention rate
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Scale Potential */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Scale Potential</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            REDWOUD's enterprise offering delivers measurable ROI:
+      {/* Product Expansion */}
+      <section className="border-t border-slate-800 bg-slate-950 py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl font-semibold">Product Expansion Ladder</h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-4">
+            {[
+              {
+                title: "Free Intelligence",
+                price: "Free",
+                features: ["Basic monitoring", "Daily briefings", "Public trends"],
+                highlight: false
+              },
+              {
+                title: "Professional",
+                price: "$99/month",
+                features: ["Advanced filters", "Custom alerts", "Trend analysis"],
+                highlight: false
+              },
+              {
+                title: "Team",
+                price: "$499/month",
+                features: ["Shared workspaces", "Admin controls", "Data exports"],
+                highlight: false
+              },
+              {
+                title: "Enterprise",
+                price: "Custom",
+                features: ["Dedicated infra", "API access", "Custom models"],
+                highlight: true
+              }
+            ].map((tier) => (
+              <div
+                key={tier.title}
+                className={`rounded-xl border p-6 ${tier.highlight ? "border-emerald-500/30 bg-emerald-500/10" : "border-slate-800 bg-slate-900"}`}
+              >
+                <h3 className="text-lg font-semibold">{tier.title}</h3>
+                <p className="mt-1 text-sm text-slate-400">{tier.price}</p>
+                <ul className="mt-4 space-y-2 text-sm text-slate-300">
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex items-start">
+                      <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Roadmap */}
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="text-2xl font-semibold">Strategic Roadmap</h2>
+        <div className="mt-8">
+          <div className="relative">
+            <div className="absolute left-4 top-0 h-full w-0.5 bg-slate-800 md:left-1/2" />
+            {[
+              {
+                year: "2024",
+                title: "Platform Foundation",
+                milestones: ["Core AI models", "Enterprise API", "100K+ users"],
+                position: "left"
+              },
+              {
+                year: "2025",
+                title: "Market Expansion",
+                milestones: ["Financial vertical", "Government adoption", "1M+ users"],
+                position: "right"
+              },
+              {
+                year: "2026",
+                title: "Predictive Intelligence",
+                milestones: ["Scenario planning", "Risk forecasting", "500+ enterprises"],
+                position: "left"
+              },
+              {
+                year: "2027+",
+                title: "Global Dominance",
+                milestones: ["Market standard", "$100M+ revenue", "IPO readiness"],
+                position: "right"
+              }
+            ].map((phase, index) => (
+              <div
+                key={phase.year}
+                className={`relative mb-8 md:w-1/2 md:${phase.position === "left" ? "mr-auto pr-8 md:pl-0" : "ml-auto pl-8 md:pr-0"}`}
+              >
+                <div className="absolute left-0 top-1 h-4 w-4 rounded-full border-4 border-emerald-500 bg-slate-950 md:left-1/2 md:-ml-2" />
+                <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+                  <div className="flex items-center">
+                    <span className="text-emerald-300">{phase.year}</span>
+                    <span className="mx-2 text-slate-600">|</span>
+                    <span className="font-medium">{phase.title}</span>
+                  </div>
+                  <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                    {phase.milestones.map((milestone) => (
+                      <li key={milestone} className="flex items-start">
+                        <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                        {milestone}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="border-t border-slate-800 bg-slate-950 py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl font-semibold">World-Class Team</h2>
+          <div className="mt-8 grid gap-8 md:grid-cols-3">
+            {[
+              {
+                title: "Leadership",
+                description: "Former executives from Palantir, McKinsey, and Bloomberg with deep intelligence and enterprise SaaS experience"
+              },
+              {
+                title: "Engineering",
+                description: "AI and infrastructure experts from FAANG companies with PhDs in machine learning and distributed systems"
+              },
+              {
+                title: "Advisors",
+                description: "Former intelligence community leaders and Fortune 500 strategists providing domain expertise"
+              }
+            ].map((team) => (
+              <div key={team.title} className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+                <h3 className="text-lg font-semibold">{team.title}</h3>
+                <p className="mt-2 text-sm text-slate-300">{team.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center">
+          <h2 className="text-2xl font-semibold">Investor Inquiries</h2>
+          <p className="mt-4 text-slate-300">
+            For investment opportunities and detailed financials, please contact:
           </p>
-          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
-            <li>• 40% reduction in time spent on intelligence gathering</li>
-            <li>• 25% improvement in decision accuracy</li>
-            <li>• 3x faster response to emerging risks</li>
-          </ul>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            Our scalable architecture supports:
-          </p>
-          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-300">
-            <li>• Processing 10M+ events daily</li>
-            <li>• Serving 100K+ concurrent users</li>
-            <li>• Delivering insights in under 500ms</li>
-          </ul>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            With a $12B TAM in AI-driven intelligence and 25% CAGR growth,
-            REDWOUD is positioned to capture significant market share in the
-            emerging intelligence infrastructure layer.
-          </p>
+          <a
+            href="mailto:investors@redwoud.com"
+            className="mt-6 inline-block rounded-full bg-emerald-500/10 px-6 py-3 text-sm font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/20 hover:bg-emerald-500/20"
+          >
+            investors@redwoud.com
+          </a>
         </div>
       </section>
     </main>
