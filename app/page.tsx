@@ -109,6 +109,42 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Risk Alerts Strip */}
+      <section className="border-y border-slate-800 bg-gradient-to-r from-red-900/50 via-red-900/30 to-red-900/10">
+        <div className="mx-auto max-w-7xl px-6 py-4">
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {liveEvents
+              .filter(
+                (event) =>
+                  event.intensity === "high" && event.confidence === "high"
+              )
+              .slice(0, 5)
+              .map((event) => (
+                <div
+                  key={event.id}
+                  className="rounded-lg border border-red-800/30 bg-red-900/10 p-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium uppercase text-red-300">
+                      {event.region}
+                    </span>
+                    <span className="rounded-full bg-red-500/15 px-2 py-1 text-xs font-medium text-red-300">
+                      {event.intensity}
+                    </span>
+                  </div>
+                  <h3 className="mt-2 text-sm font-semibold text-white">
+                    {event.title}
+                  </h3>
+                  <div className="mt-2 flex items-center gap-2 text-xs text-red-300">
+                    <span>Risk score:</span>
+                    <span className="font-medium">9.2</span>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-12">
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-3">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
