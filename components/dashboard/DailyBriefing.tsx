@@ -71,8 +71,6 @@ export default function DailyBriefingSection({
         </p>
       </div>
 
-      {/* New Entity Activity Panel */}
-      <EntityActivityPanel events={briefing.events} />
     </section>
   );
 }
