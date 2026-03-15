@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { slugify } from "@/lib/utils";
 import {
   dailyBriefing,
   liveEvents as fallbackEvents,
@@ -205,7 +206,12 @@ export default async function HomePage() {
                 <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
                   <span>{event.topic}</span>
                   <span>•</span>
-                  <span>{event.entity}</span>
+                  <Link 
+                    href={`/entity/${slugify(event.entity)}`}
+                    className="hover:text-slate-200 hover:underline"
+                  >
+                    {event.entity}
+                  </Link>
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
                 </div>

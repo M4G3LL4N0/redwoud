@@ -1,4 +1,5 @@
 import StreamRefresh from "./StreamRefresh";
+import { slugify } from "@/lib/utils";
 import type { IntelligenceEvent } from "@/lib/mockData";
 
 async function getLiveEvents(): Promise<IntelligenceEvent[]> {
@@ -71,7 +72,14 @@ export default async function StreamPage() {
                       </div>
                       <h3 className="mt-2 text-sm font-semibold text-slate-100">{event.title}</h3>
                       <p className="mt-2 text-xs text-slate-400">
-                        {event.topic} • {event.entity} • Confidence {event.confidence}
+                        {event.topic} •{" "}
+                        <Link 
+                          href={`/entity/${slugify(event.entity)}`}
+                          className="hover:text-slate-200 hover:underline"
+                        >
+                          {event.entity}
+                        </Link>{" "}
+                        • Confidence {event.confidence}
                       </p>
                     </article>
                   ))
@@ -115,7 +123,12 @@ export default async function StreamPage() {
                       <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
                         <span>{event.topic}</span>
                         <span>•</span>
-                        <span>{event.entity}</span>
+                        <Link 
+                          href={`/entity/${slugify(event.entity)}`}
+                          className="hover:text-slate-200 hover:underline"
+                        >
+                          {event.entity}
+                        </Link>
                         <span>•</span>
                         <span>Confidence {event.confidence}</span>
                       </div>
