@@ -136,10 +136,12 @@ export default async function EntityPage({ params }: PageProps) {
         </div>
 
         <div className="lg:col-span-8">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <div className="rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-950 to-slate-900/40 p-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Recent Related Events</h2>
-              <span className="text-sm text-slate-400">{events.length} events</span>
+              <h2 className="text-lg font-semibold tracking-tight">Signal Activity</h2>
+              <span className="rounded-full bg-slate-800/50 px-3 py-1 text-xs font-medium text-slate-400">
+                {events.length} Intelligence Signals
+              </span>
             </div>
 
             <div className="mt-6 space-y-4">
@@ -147,7 +149,7 @@ export default async function EntityPage({ params }: PageProps) {
                 events.map((event) => (
                   <article
                     key={event.id}
-                    className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                    className="group rounded-xl border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950/90 p-5 transition-all hover:border-slate-700"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-xs uppercase tracking-wide text-slate-400">
