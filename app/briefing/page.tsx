@@ -45,16 +45,16 @@ export default async function BriefingPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900/50 text-slate-100">
-      <section className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between border-b border-slate-800 pb-6">
+      <section className="mx-auto max-w-7xl px-4 py-6">
+        <div className="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400/80">
-              Strategic Intelligence Briefing
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+              Executive Intelligence Briefing
             </p>
             <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">{briefing.title}</h1>
             <p className="mt-1 text-sm text-slate-400/80">{briefing.dateLabel}</p>
           </div>
-          <div className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 px-4 py-1.5 text-sm font-medium text-emerald-400 backdrop-blur-sm">
+          <div className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 px-3 py-1 text-sm font-medium text-emerald-400 backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
@@ -68,36 +68,40 @@ export default async function BriefingPage() {
           </div>
         )}
         
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
           <div className="md:col-span-2">
-            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-6 backdrop-blur-sm">
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
               <h2 className="text-lg font-semibold text-slate-100">Executive Summary</h2>
-              <div className="mt-4 space-y-4 text-sm leading-6 text-slate-300/90">
-                <p>{briefing.lead}</p>
+              <div className="mt-3 space-y-3 text-sm leading-6 text-slate-300/90">
+                <p className="font-medium text-slate-100">{briefing.lead}</p>
                 <p>{briefing.summary}</p>
               </div>
             </div>
           </div>
           
-          <div className="space-y-6">
-            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-6 backdrop-blur-sm">
+          <div className="space-y-4">
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
               <h2 className="text-lg font-semibold text-slate-100">Key Themes</h2>
-              <ul className="mt-4 space-y-3 text-sm text-slate-300/90">
+              <ul className="mt-3 space-y-2 text-sm text-slate-300/90">
                 {briefing.keyThemes.map((theme) => (
                   <li key={theme} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-slate-500/80"></span>
+                    <svg className="mt-1.5 h-2 w-2 flex-shrink-0 text-slate-500/80" viewBox="0 0 8 8" fill="currentColor">
+                      <circle cx="4" cy="4" r="4" />
+                    </svg>
                     <span>{theme}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-6 backdrop-blur-sm">
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
               <h2 className="text-lg font-semibold text-slate-100">Primary Risks</h2>
-              <ul className="mt-4 space-y-3 text-sm text-slate-300/90">
+              <ul className="mt-3 space-y-2 text-sm text-slate-300/90">
                 {briefing.primaryRisks.map((risk) => (
                   <li key={risk} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-rose-500/80"></span>
+                    <svg className="mt-1.5 h-2 w-2 flex-shrink-0 text-rose-500/80" viewBox="0 0 8 8" fill="currentColor">
+                      <circle cx="4" cy="4" r="4" />
+                    </svg>
                     <span>{risk}</span>
                   </li>
                 ))}
@@ -106,9 +110,9 @@ export default async function BriefingPage() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-6 backdrop-blur-sm">
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
               <h2 className="text-lg font-semibold text-slate-100">Strategic Implications</h2>
-              <p className="mt-4 text-sm leading-6 text-slate-300/90">{briefing.whyThisMatters}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-300/90">{briefing.whyThisMatters}</p>
             </div>
           </div>
         </div>
