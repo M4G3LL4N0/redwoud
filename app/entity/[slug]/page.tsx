@@ -44,34 +44,65 @@ export default async function EntityPage({ params }: PageProps) {
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-6 py-16">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-            Entity Intelligence
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold sm:text-6xl">
-            {entityName
-              .split(" ")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ")}
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            REDWOUD tracks live signals, event activity, and strategic relevance for this entity.
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+                Strategic Entity Profile
+              </p>
+              <h1 className="mt-4 text-4xl font-semibold sm:text-6xl">
+                {entityName
+                  .split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ")}
+              </h1>
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+                Comprehensive intelligence profile tracking {entityName}'s strategic positioning, 
+                regional exposure, and thematic engagement patterns.
+              </p>
+            </div>
+            <div className="hidden md:block">
+              <div className="rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-950/70 to-slate-900/50 p-6">
+                <p className="text-sm font-medium text-slate-400">Profile Status</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                  <p className="text-sm font-medium text-emerald-400">Live Intelligence</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:grid-cols-12">
         <div className="lg:col-span-4 space-y-6">
           <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900/70 via-slate-950 to-slate-900 p-6">
-            <h2 className="text-lg font-semibold tracking-tight">Strategic Entity Profile</h2>
+            <h2 className="text-lg font-semibold tracking-tight">Entity Overview</h2>
             <div className="mt-4 space-y-3">
               <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-emerald-400"></div>
+                <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
                 <p className="text-sm font-medium text-slate-300">Live Intelligence Summary</p>
               </div>
               <p className="text-sm leading-6 text-slate-400 indent-0">
-                High-signal analytical profile tracking situational awareness,
-                regional presence, and thematic engagement patterns for <span className="font-medium text-slate-200">{entityName}</span>.
+                Strategic profile tracking {entityName}'s:
               </p>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                  <p className="text-sm text-slate-400">Regional Exposure</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                  <p className="text-sm text-slate-400">Thematic Engagement</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                  <p className="text-sm text-slate-400">Risk Profile</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                  <p className="text-sm text-slate-400">Strategic Positioning</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -84,6 +115,12 @@ export default async function EntityPage({ params }: PageProps) {
                 </span>
                 <span className="text-sm font-normal text-slate-400">/100</span>
               </p>
+              <div className="ml-auto">
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                  <p className="text-xs font-medium text-slate-400">Live Assessment</p>
+                </div>
+              </div>
             </div>
             <div className="mt-2 h-2 w-full rounded-full bg-slate-800">
               <div 
@@ -91,7 +128,21 @@ export default async function EntityPage({ params }: PageProps) {
                 style={{ width: `${Math.min(100, avgScore)}%` }}
               ></div>
             </div>
-            <p className="mt-2 text-xs uppercase tracking-wider text-slate-500">
+            <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-slate-400">
+              <div className="flex items-center gap-1">
+                <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                <span>Regional Risk</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                <span>Thematic Risk</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                <span>Strategic Risk</span>
+              </div>
+            </div>
+            <p className="mt-3 text-xs uppercase tracking-wider text-slate-500">
               Composite Risk Score · {events.length} Signals
             </p>
           </div>
@@ -100,16 +151,25 @@ export default async function EntityPage({ params }: PageProps) {
             <h2 className="text-lg font-semibold tracking-tight">Regional Exposure</h2>
             <div className="mt-4 space-y-3">
               {topRegions.length ? (
-                topRegions.map((region) => (
-                  <div key={region} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-slate-300">{region}</span>
-                    <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs text-slate-400">
-                      {Math.round(
-                        (events.filter(e => e.region === region).length / events.length) * 100
-                      )}%
-                    </span>
-                  </div>
-                ))
+                topRegions.map((region) => {
+                  const percentage = Math.round(
+                    (events.filter(e => e.region === region).length / events.length) * 100
+                  );
+                  return (
+                    <div key={region} className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-slate-300">{region}</span>
+                        <span className="text-xs text-slate-400">{percentage}%</span>
+                      </div>
+                      <div className="h-1 w-full rounded-full bg-slate-800">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-sky-500"
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  );
+                })
               ) : (
                 <p className="text-sm text-slate-400">No regional activity signals yet</p>
               )}
@@ -118,16 +178,27 @@ export default async function EntityPage({ params }: PageProps) {
 
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
             <h2 className="text-lg font-semibold">Top Topics</h2>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 grid grid-cols-2 gap-2">
               {topTopics.length ? (
-                topTopics.map((topic) => (
-                  <span
-                    key={topic}
-                    className="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-200"
-                  >
-                    {topic}
-                  </span>
-                ))
+                topTopics.map((topic) => {
+                  const percentage = Math.round(
+                    (events.filter(e => e.topic === topic).length / events.length) * 100
+                  );
+                  return (
+                    <div key={topic} className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-slate-300">{topic}</span>
+                        <span className="text-xs text-slate-400">{percentage}%</span>
+                      </div>
+                      <div className="h-1 w-full rounded-full bg-slate-800">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-sky-500"
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  );
+                })
               ) : (
                 <p className="text-sm text-slate-400">No topic signals yet.</p>
               )}
@@ -149,7 +220,7 @@ export default async function EntityPage({ params }: PageProps) {
                 events.map((event) => (
                   <article
                     key={event.id}
-                    className="group rounded-xl border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950/90 p-5 transition-all hover:border-slate-700"
+                    className="group rounded-xl border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950/90 p-5 transition-all hover:border-slate-700 hover:shadow-lg hover:shadow-sky-500/10"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-xs uppercase tracking-wide text-slate-400">
