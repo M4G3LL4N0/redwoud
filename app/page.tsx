@@ -227,17 +227,51 @@ export default async function HomePage() {
             {liveEvents.slice(0, 6).map((event) => (
               <article
                 key={event.id}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                className={`
+                  rounded-xl border p-4 relative overflow-hidden
+                  ${
+                    event.intensity === "high"
+                      ? "border-rose-500/30 bg-rose-950/20"
+                      : "border-slate-800 bg-slate-950/60"
+                  }
+                `}
               >
+                {event.intensity === "high" && (
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]"></div>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.03)_0%,transparent_70%)]"></div>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.03)_0%,transparent_70%)]"></div>
+                  </div>
+                )}
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs uppercase tracking-wide text-slate-400">
                     {event.region}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
+                    <span 
+                      className={`
+                        rounded-full px-2 py-1 text-xs font-medium
+                        ${
+                          event.intensity === "high"
+                            ? "bg-rose-500/15 text-rose-300"
+                            : "bg-indigo-500/15 text-indigo-300"
+                        }
+                      `}
+                    >
                       Score {event.score ?? 0}
                     </span>
-                    <span className="text-xs text-slate-500">{event.timeAgo}</span>
+                    <span 
+                      className={`
+                        text-xs 
+                        ${
+                          event.intensity === "high"
+                            ? "text-rose-400/80"
+                            : "text-slate-500"
+                        }
+                      `}
+                    >
+                      {event.timeAgo}
+                    </span>
                   </div>
                 </div>
 
