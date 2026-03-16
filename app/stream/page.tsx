@@ -50,14 +50,17 @@ export default async function StreamPage() {
         </section>
 
         <section className="mx-auto grid max-w-7xl gap-6 px-6 py-10 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">Top Signals</h2>
-                <span className="text-xs text-emerald-300">Updated live</span>
+          <div className="lg:col-span-4 relative">
+            <div className="sticky top-4 rounded-xl border border-slate-800 bg-slate-900/90 p-4 backdrop-blur-sm">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800/50">
+                <h2 className="text-base font-medium tracking-tight">Top Signals</h2>
+                <div className="flex items-center gap-1.5">
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[11px] font-mono tracking-wide text-emerald-300">STREAM LIVE</span>
+                </div>
               </div>
 
-              <div className="mt-5 space-y-4">
+              <div className="mt-4 space-y-3">
                 {topSignals.length ? (
                   topSignals.map((event) => (
                     <article

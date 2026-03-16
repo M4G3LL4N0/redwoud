@@ -48,32 +48,38 @@ export default async function BriefingPage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="border-b border-slate-800 bg-slate-950/90">
+      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-950/80">
         <div className="mx-auto max-w-7xl px-6 py-14">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-                Executive Briefing
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex-1 min-w-[300px]">
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-emerald-400">
+                Executive Intelligence Brief
               </p>
-              <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-5xl">
+              <h1 className="mt-2 max-w-4xl text-3xl font-medium leading-tight sm:text-4xl">
                 {briefing.title}
               </h1>
-              <p className="mt-4 text-sm text-slate-400">{briefing.dateLabel}</p>
+              <time className="mt-2 text-xs tracking-wider text-slate-400 font-mono">
+                {briefing.dateLabel}
+              </time>
             </div>
 
-            <div className="flex gap-2">
-              <span className="rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-xs text-slate-300">
-                Live intelligence
-              </span>
-              <span
-                className={`rounded-full px-3 py-1 text-xs ${
+            <div className="flex flex-col gap-2 items-end">
+              <div className="flex gap-2 items-center">
+                <div className="relative">
+                  <div className="absolute -left-1.5 top-1.5 h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-mono text-[11px] tracking-widest text-emerald-400 px-2 py-1 border border-emerald-400/20 rounded-md">
+                    LIVE MONITORING
+                  </span>
+                </div>
+                <span className={`font-mono text-xs px-3 py-1 rounded-md ${
                   isHighPriority
-                    ? "border border-rose-500/30 bg-rose-500/10 text-rose-200"
-                    : "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                }`}
-              >
-                {isHighPriority ? "Priority watch" : "Stable watch"}
-              </span>
+                    ? "bg-rose-500/10 text-rose-300 border border-rose-500/20"
+                    : "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"
+                }`}>
+                  {isHighPriority ? "PRIORITY WATCH" : "SITREP NOMINAL"}
+                </span>
+              </div>
+              <StatusIndicator risks={briefing.primaryRisks.length} />
             </div>
           </div>
         </div>
@@ -81,7 +87,7 @@ export default async function BriefingPage() {
 
       <section className="mx-auto max-w-7xl px-6 py-8">
         <div className="grid gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-8 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <div className="lg:col-span-8 rounded-xl border border-slate-800 bg-slate-900/80 p-6 backdrop-blur-sm">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
               Lead assessment
             </p>
