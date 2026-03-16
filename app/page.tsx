@@ -277,7 +277,7 @@ export default async function HomePage() {
 
                 <h3 className="mt-2 text-base font-semibold">{event.title}</h3>
 
-                <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-400">
                   <span>{event.topic}</span>
                   <span>•</span>
                   <Link
@@ -289,7 +289,18 @@ export default async function HomePage() {
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
                   <span>•</span>
-                  <span>{event.sources?.[0] || "Source unavailable"}</span>
+                  <span className="inline-flex items-center gap-1">
+                    <span className="rounded bg-slate-800/50 px-1.5 py-0.5 text-[0.7rem]">
+                      {event.sources?.[0] || "Source unavailable"}
+                    </span>
+                    <span className="text-slate-500">|</span>
+                    <span className="font-mono text-[0.7rem] text-slate-500">
+                      {event.timeAgo}
+                    </span>
+                  </span>
+                </div>
+                <div className="mt-1 text-[0.7rem] text-slate-500">
+                  Structured intelligence derived from public signals.
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
