@@ -38,3 +38,6 @@ venv/
 .aider*
 .vercel
 .env*.local
+
+# Local Supabase
+supabase/
