@@ -61,34 +61,57 @@ export default async function EntityPage({ params }: PageProps) {
 
       <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:grid-cols-12">
         <div className="lg:col-span-4 space-y-6">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">Entity Overview</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-300">
-              This page aggregates live REDWOUD intelligence signals associated with this entity,
-              including related events, regions, topics, and approximate risk intensity.
+          <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900/70 via-slate-950 to-slate-900 p-6">
+            <h2 className="text-lg font-semibold tracking-tight">Strategic Entity Profile</h2>
+            <div className="mt-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-emerald-400"></div>
+                <p className="text-sm font-medium text-slate-300">Live Intelligence Summary</p>
+              </div>
+              <p className="text-sm leading-6 text-slate-400 indent-0">
+                High-signal analytical profile tracking situational awareness,
+                regional presence, and thematic engagement patterns for <span className="font-medium text-slate-200">{entityName}</span>.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 backdrop-blur-sm bg-gradient-to-b from-slate-950/70 to-slate-900/50 p-6">
+            <h2 className="text-lg font-semibold tracking-tight">Strategic Risk Indicator</h2>
+            <div className="mt-4 flex items-baseline gap-2">
+              <p className="text-4xl font-medium">
+                <span className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
+                  {avgScore}
+                </span>
+                <span className="text-sm font-normal text-slate-400">/100</span>
+              </p>
+            </div>
+            <div className="mt-2 h-2 w-full rounded-full bg-slate-800">
+              <div 
+                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-sky-500"
+                style={{ width: `${Math.min(100, avgScore)}%` }}
+              ></div>
+            </div>
+            <p className="mt-2 text-xs uppercase tracking-wider text-slate-500">
+              Composite Risk Score · {events.length} Signals
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">Risk Score</h2>
-            <p className="mt-4 text-3xl font-semibold text-white">{avgScore}</p>
-            <p className="mt-2 text-sm text-slate-400">Average derived event score</p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">Top Regions</h2>
-            <div className="mt-4 flex flex-wrap gap-2">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
+            <h2 className="text-lg font-semibold tracking-tight">Regional Exposure</h2>
+            <div className="mt-4 space-y-3">
               {topRegions.length ? (
                 topRegions.map((region) => (
-                  <span
-                    key={region}
-                    className="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-200"
-                  >
-                    {region}
-                  </span>
+                  <div key={region} className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-slate-300">{region}</span>
+                    <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs text-slate-400">
+                      {Math.round(
+                        (events.filter(e => e.region === region).length / events.length) * 100
+                      )}%
+                    </span>
+                  </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-400">No region signals yet.</p>
+                <p className="text-sm text-slate-400">No regional activity signals yet</p>
               )}
             </div>
           </div>
