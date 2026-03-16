@@ -72,7 +72,34 @@ export default async function BriefingPage() {
           </div>
         </div>
       </header>
-      <section className="mx-auto max-w-7xl px-6 py-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-12 gap-6 px-6 py-8">
+        {/* Status sidebar */}
+        <div className="col-span-2 space-y-6">
+          <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Status
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-slate-400">Last Update</p>
+                <p className="text-sm font-medium text-slate-200">
+                  {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-400">Coverage</p>
+                <p className="text-sm font-medium text-slate-200">Global</p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-400">Classification</p>
+                <p className="text-sm font-medium text-amber-400">EYES ONLY</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="col-span-7 space-y-6">
         {isFallbackData && (
           <div className="mb-6 rounded-lg border border-amber-500/30 bg-gradient-to-r from-amber-900/40 to-amber-900/20 p-4 text-sm text-amber-100">
             <div className="flex items-center gap-2">
