@@ -44,75 +44,110 @@ export default async function BriefingPage() {
                          briefing.lead.includes("⚠️");
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900/50 text-slate-100">
-      <section className="mx-auto max-w-7xl px-4 py-6">
-        <div className="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
+    <main className="min-h-screen bg-slate-950 text-slate-100">
+      <header className="mx-auto max-w-7xl border-b border-slate-800/70 bg-gradient-to-r from-slate-950 to-slate-900/80 px-6 py-6 backdrop-blur-md">
+        <div className="flex items-start justify-between">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
-              Executive Intelligence Briefing
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">{briefing.title}</h1>
-            <p className="mt-1 text-sm text-slate-400/80">{briefing.dateLabel}</p>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-medium tracking-tight text-slate-100 sm:text-4xl">
+                {briefing.title}
+              </h1>
+              <span className="animate-pulse rounded-full bg-emerald-500/20 px-2 py-1 text-xs font-medium uppercase tracking-wider text-emerald-400">
+                Live
+              </span>
+            </div>
+            <div className="mt-2 flex items-baseline gap-4">
+              <p className="text-sm text-slate-400">
+                <span className="font-medium text-emerald-400">REDWOUD</span> • {briefing.dateLabel}
+              </p>
+              <span className="text-xs text-slate-500">EYES ONLY</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 px-3 py-1 text-sm font-medium text-emerald-400 backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+          <div className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500/30 to-emerald-500/15 px-3.5 py-1.5 text-xs font-medium text-emerald-300 backdrop-blur-sm">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-80"></span>
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
             </span>
-            Live Intelligence Feed • Updated just now
+            SIGNALS LIVE • {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
           </div>
         </div>
+      </header>
+      <section className="mx-auto max-w-7xl px-6 py-6">
         {isFallbackData && (
-          <div className="mb-6 rounded-lg bg-amber-900/30 p-3 text-sm text-amber-100">
-            <p>Showing cached briefing data • Reconnecting to live intelligence feed...</p>
+          <div className="mb-6 rounded-lg border border-amber-500/30 bg-gradient-to-r from-amber-900/40 to-amber-900/20 p-4 text-sm text-amber-100">
+            <div className="flex items-center gap-2">
+              <span className="animate-pulse">⚠️</span>
+              <span className="font-medium">CACHED BRIEFING</span>
+            </div>
+            <p className="mt-1">Reconnecting to live intelligence feed...</p>
           </div>
         )}
-        
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <div className="md:col-span-2">
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
-              <h2 className="text-lg font-semibold text-slate-100">Executive Summary</h2>
-              <div className="mt-3 space-y-3 text-sm leading-6 text-slate-300/90">
-                <p className="font-medium text-slate-100">{briefing.lead}</p>
-                <p>{briefing.summary}</p>
+
+        <div className="grid grid-cols-8 gap-6">
+          <div className="col-span-5 space-y-6">
+            <div className="rounded-xl border border-slate-800/70 bg-gradient-to-b from-slate-900/60 to-slate-900/40 p-6 backdrop-blur-sm">
+              <div className="mb-4 flex items-start justify-between border-b border-slate-800/50 pb-4">
+                <h2 className="text-xl font-medium text-slate-100">Situation Report</h2>
+                <span className="rounded-full bg-indigo-500/20 px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-indigo-400">
+                  Priority Intel
+                </span>
+              </div>
+              <div className="prose prose-sm prose-invert max-w-none">
+                <h3 className="text-base/[1.4] font-medium text-slate-100">
+                  {briefing.lead}
+                </h3>
+                <p className="text-sm/[1.6] text-slate-300">{briefing.summary}</p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-slate-800/70 bg-gradient-to-b from-slate-900/60 to-slate-900/40 p-6 backdrop-blur-sm">
+              <h2 className="mb-4 text-xl font-medium text-slate-100">
+                Strategic Implications
+                <span className="ml-2 text-sm font-normal text-slate-500">REDWOUD Analysis</span>
+              </h2>
+              <div className="prose prose-sm prose-invert max-w-none">
+                <p className="text-sm/[1.6] text-slate-300">{briefing.whyThisMatters}</p>
               </div>
             </div>
           </div>
-          
-          <div className="space-y-4">
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
-              <h2 className="text-lg font-semibold text-slate-100">Key Themes</h2>
-              <ul className="mt-3 space-y-2 text-sm text-slate-300/90">
+
+          <div className="col-span-3 space-y-6">
+            <div className="divide-y divide-slate-800/50 rounded-xl border border-slate-800/70 bg-gradient-to-b from-slate-900/60 to-slate-900/40 backdrop-blur-sm">
+              <div className="p-4">
+                <h2 className="flex items-center gap-2 text-xl font-medium text-slate-100">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                  Key Themes
+                </h2>
+              </div>
+              <ul className="divide-y divide-slate-800/50">
                 {briefing.keyThemes.map((theme) => (
-                  <li key={theme} className="flex items-start gap-3">
-                    <svg className="mt-1 h-3 w-3 flex-shrink-0 text-emerald-500" viewBox="0 0 12 12" fill="currentColor">
-                      <path d="M10.28 2.28a.75.75 0 0 1 1.06 1.06l-7 7a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06L3.75 8.94l6.53-6.66Z" />
-                    </svg>
-                    <span>{theme}</span>
+                  <li key={theme} className="p-4">
+                    <div className="flex items-start gap-3">
+                      <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-emerald-500/80"></span>
+                      <span className="text-sm/[1.6] text-slate-300">{theme}</span>
+                    </div>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
-              <h2 className="text-lg font-semibold text-slate-100">Primary Risks</h2>
-              <ul className="mt-3 space-y-2 text-sm text-slate-300/90">
+            <div className="divide-y divide-slate-800/50 rounded-xl border border-slate-800/70 bg-gradient-to-b from-slate-900/60 to-slate-900/40 backdrop-blur-sm">
+              <div className="p-4">
+                <h2 className="flex items-center gap-2 text-xl font-medium text-slate-100">
+                  <span className="h-2 w-2 rounded-full bg-rose-500"></span>
+                  Primary Risks
+                </h2>
+              </div>
+              <ul className="divide-y divide-slate-800/50">
                 {briefing.primaryRisks.map((risk) => (
-                  <li key={risk} className="flex items-start gap-3">
-                    <svg className="mt-1 h-3 w-3 flex-shrink-0 text-rose-500" viewBox="0 0 12 12" fill="currentColor">
-                      <path d="M10.28 2.28a.75.75 0 0 1 1.06 1.06l-7 7a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06L3.75 8.94l6.53-6.66Z" />
-                    </svg>
-                    <span>{risk}</span>
+                  <li key={risk} className="p-4">
+                    <div className="flex items-start gap-3">
+                      <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-rose-500/80"></span>
+                      <span className="text-sm/[1.6] text-slate-300">{risk}</span>
+                    </div>
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
-
-          <div className="md:col-span-3">
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
-              <h2 className="text-lg font-semibold text-slate-100">Strategic Implications</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300/90">{briefing.whyThisMatters}</p>
             </div>
           </div>
         </div>
