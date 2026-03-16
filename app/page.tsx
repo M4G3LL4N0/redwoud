@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { DailyBriefing, IntelligenceEvent, TrendSummary } from "@/lib/mockData";
 import DailyBriefingSection from "@/components/dashboard/DailyBriefing";
 import EntityActivityPanel from "@/components/dashboard/EntityActivityPanel";
+import IntelligenceMap from "@/components/dashboard/IntelligenceMap";
 
 async function getLiveEvents(): Promise<IntelligenceEvent[]> {
   try {
@@ -57,9 +58,7 @@ async function getLiveBriefing(): Promise<DailyBriefing> {
       next: { revalidate: 120 },
     });
 
-    if (!response.ok) {
-      throw new Error("Briefing fetch failed");
-    }
+    if (!response.ok) throw new Error("Briefing fetch failed");
 
     const data = await response.json();
     if (data?.briefing) return data.briefing;
@@ -92,7 +91,9 @@ export default async function HomePage() {
   const activeRegions = Array.from(
     new Set(liveEvents.map((event) => event.region).filter((region) => region !== "All"))
   );
+
   const highIntensitySignals = liveEvents.filter((event) => event.intensity === "high").length;
+
   const topAlerts = liveEvents
     .filter((event) => event.intensity === "high")
     .sort((a, b) => (b.score || 0) - (a.score || 0))
@@ -100,134 +101,67 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Command Bar */}
-      <section className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/70 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <h1 className="text-xl font-bold tracking-tight text-white">
-                <span className="mr-2 inline-block h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></span>
-                REDWOUD COMMAND
-              </h1>
-              <div className="flex gap-4">
-                <button className="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-white">
-                  Operations
-                </button>
-                <button className="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-white">
-                  Analysis
-                </button>
-                <button className="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-white">
-                  Monitoring
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-medium text-emerald-400">
-                LIVE · {new Date().toLocaleTimeString()}
-              </span>
-              <Link
-                href="/stream"
-                className="btn-primary"
-              >
-                Launch Console
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Metrics Strip */}
-      <section className="border-b border-slate-800">
+      <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="grid grid-cols-8 gap-2">
-            <div className="glass-card col-span-2 flex items-center justify-between rounded-lg p-3">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                  Events
-                </p>
-                <p className="mt-1 text-2xl font-semibold text-white">{liveEvents.length}</p>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-emerald-500/10 p-1.5">
-                <div className="h-5 w-5 rounded-full bg-emerald-500/80 shadow-[0_0_10px_rgba(52,211,153,0.3)]"></div>
-              </div>
-            </div>
-
-            <div className="glass-card col-span-2 flex items-center justify-between rounded-lg p-3">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                  Active Regions
-                </p>
-                <p className="mt-1 text-2xl font-semibold text-white">{activeRegions.length}</p>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-indigo-500/10 p-1.5">
-                <svg className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 18L20 6"></path>
-                </svg>
-              </div>
-            </div>
-
-            <div className="glass-card col-span-2 flex items-center justify-between rounded-lg p-3">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                  Priority Signals
-                </p>
-                <p className="mt-1 text-2xl font-semibold text-white">{highIntensitySignals}</p>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-rose-500/10 p-1.5">
-                <svg className="h-5 w-5 text-rose-400" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6V18M18 12H6"></path>
-                </svg>
-              </div>
-            </div>
-
-            <div className="glass-card col-span-2 flex items-center justify-between rounded-lg p-3">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                  Systems
-                </p>
-                <p className="mt-1 text-2xl font-semibold text-emerald-300">ONLINE</p>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-sky-500/10 p-1.5">
-                <svg className="h-5 w-5 text-sky-400" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 13L9.5 17L19 7"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Alerts Strip */}
-      <section className="relative z-30 border-b border-slate-800 bg-gradient-to-r from-slate-950/90 via-rose-900/10 to-slate-950/90">
-        <div className="mx-auto max-w-7xl px-6 py-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-medium uppercase tracking-wider text-rose-400">
-                Priority Alerts
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap gap-3 text-xs text-slate-400">
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                Live monitoring active
               </span>
-              {topAlerts.length ? (
-                topAlerts.map((event) => (
-                  <div
-                    key={event.id}
-                    className="flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-200"
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.7)]"></div>
-                    {event.region} · {event.topic} · 
-                    <span className="font-bold"> Score {event.score ?? 0}</span>
-                  </div>
-                ))
-              ) : (
-                <div className="rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-300">
-                  NO ACTIVE PRIORITY ALERTS
-                </div>
-              )}
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                {liveEvents.length} events
+              </span>
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                {activeRegions.length} regions
+              </span>
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                {highIntensitySignals} high-intensity
+              </span>
             </div>
-            <button className="text-xs font-medium text-slate-400 hover:text-white">
-              View All Alerts →
-            </button>
+            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
+              Open full stream →
+            </Link>
           </div>
         </div>
       </section>
+
+      <section className="border-b border-slate-800">
+        <div className="mx-auto max-w-7xl px-6 py-14">
+          <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
+            REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
+          </div>
+
+          <h1 className="max-w-5xl text-4xl font-semibold leading-tight sm:text-6xl">
+            Strategic intelligence for a world that moves too fast to read manually.
+          </h1>
+
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+            REDWOUD transforms live public signals into structured intelligence for operators,
+            analysts, founders, investors, and strategic teams.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/stream"
+              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950"
+            >
+              Open Live Stream
+            </Link>
+            <Link
+              href="/briefing"
+              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+            >
+              Read Briefing
+            </Link>
+            <Link
+              href="/investors"
+              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+            >
+              Investor Overview
+            </Link>
+          </div>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
                 Events monitored now
@@ -280,32 +214,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Main Content Grid */}
-      <section className="mx-auto grid max-w-7xl grid-cols-1 gap-5 p-5 md:grid-cols-2 xl:grid-cols-12">
-        {/* Live Feed Column */}
-        <div className="rounded-xl border border-slate-800 bg-slate-900 xl:col-span-7">
-          <div className="flex items-center justify-between border-b border-slate-800 p-5">
-            <h2 className="text-lg font-semibold text-white">
-              <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></span>
-              LIVE SIGNAL FEED
-            </h2>
-            <div className="flex items-center gap-3">
-              <button className="text-xs font-medium tracking-wider text-slate-400 hover:text-white">
-                FILTERS
-              </button>
-              <Link
-                href="/stream"
-                className="rounded-md border border-slate-700 px-3 py-1 text-xs font-medium text-slate-200 hover:border-slate-600"
-              >
-                FULL CONSOLE →
-              </Link>
-            </div>
+      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-12">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Live Event Feed</h2>
+            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
+              View full stream
+            </Link>
           </div>
-          <div className="divide-y divide-slate-800/70">
-            {liveEvents.slice(0, 8).map((event) => (
+
+          <div className="mt-5 space-y-4">
+            {liveEvents.slice(0, 6).map((event) => (
               <article
                 key={event.id}
-                className="p-4 transition-colors hover:bg-slate-900/50"
+                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
               >
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs uppercase tracking-wide text-slate-400">
@@ -347,48 +269,45 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-800/50 bg-slate-900/60 backdrop-blur p-5 lg:col-span-5">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
           <DailyBriefingSection briefing={liveBriefing} />
         </div>
       </section>
 
-        {/* Bottom Row */}
-        <div className="rounded-xl border border-slate-800/50 bg-slate-900/60 backdrop-blur pb-5 xl:col-span-12">
-          <div className="grid grid-cols-1 gap-5 p-5 xl:grid-cols-12">
-            <div className="xl:col-span-7">
-              <EntityActivityPanel events={liveEvents} />
-            </div>
+      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
+        <div className="lg:col-span-7">
+          <IntelligenceMap activeRegions={activeRegions.length ? (activeRegions as any) : undefined} />
+        </div>
 
-            <div className="rounded-xl border border-slate-800/50 bg-slate-900/60 backdrop-blur xl:col-span-5">
-              <div className="flex items-center justify-between border-b border-slate-800/50 p-5">
-                <h2 className="text-lg font-semibold text-white">
-                  <span className="mr-2 inline-block h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></span>
-                  TREND SIGNALS
-                </h2>
-                <Link
-                  href="/trends"
-                  className="text-xs font-medium tracking-wider text-slate-400 hover:text-white transition-colors"
-                >
-                  VIEW ALL →
-                </Link>
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Trend Signals</h2>
+            <Link href="/trends" className="text-sm text-emerald-300 hover:text-emerald-200">
+              View all
+            </Link>
+          </div>
+
+          <div className="mt-5 space-y-4">
+            {liveTrends.slice(0, 6).map((card) => (
+              <div
+                key={card.id}
+                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-semibold">{card.title}</h3>
+                  <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
+                    {card.value}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
               </div>
-              <div className="divide-y divide-slate-800/50">
-                {liveTrends.slice(0, 8).map((card) => (
-                  <div
-                    key={card.id}
-                    className="p-4 transition-colors hover:bg-slate-900/50"
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <h3 className="text-sm font-semibold">{card.title}</h3>
-                      <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
-                        {card.value}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-16">
+        <EntityActivityPanel events={liveEvents} />
       </section>
     </main>
   );
