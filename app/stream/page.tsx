@@ -95,58 +95,77 @@ export default async function StreamPage() {
           </div>
 
           <div className="lg:col-span-8">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">Global Event Stream</h2>
-                <span className="text-xs text-slate-400">{events.length} events</span>
+                <h2 className="text-lg font-semibold tracking-tight text-slate-100">
+                  Global Event Stream
+                </h2>
+                <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400/90">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+                  </span>
+                  {events.length} live events
+                </div>
               </div>
 
-              <div className="mt-5 space-y-4">
+              <div className="mt-5 space-y-3">
                 {events.length ? (
                   events.map((event) => (
                     <article
                       key={event.id}
-                      className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                      className="rounded-lg border border-slate-800/50 bg-slate-950/60 p-4"
                     >
                       <div className="flex items-center justify-between gap-4">
-                        <span className="text-xs uppercase tracking-wide text-slate-400">
+                        <span className="text-xs font-medium uppercase tracking-wide text-slate-400/90">
                           {event.region}
                         </span>
                         <div className="flex items-center gap-2">
-                          <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
+                          <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-400">
                             Score {event.score ?? 0}
                           </span>
-                          <span className="text-xs text-slate-500">{event.timeAgo}</span>
+                          <span className="text-xs font-medium text-slate-500/90">
+                            {event.timeAgo}
+                          </span>
                         </div>
                       </div>
 
-                      <h3 className="mt-2 text-base font-semibold">{event.title}</h3>
+                      <h3 className="mt-3 text-base font-semibold tracking-tight text-slate-100">
+                        {event.title}
+                      </h3>
 
-                      <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
-                        <span>{event.topic}</span>
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-400/90">
+                        <span className="font-medium text-slate-300">{event.topic}</span>
                         <span>•</span>
                         <Link
                           href={`/entity/${slugify(event.entity)}`}
-                          className="hover:text-slate-200 hover:underline"
+                          className="font-medium text-slate-300 hover:text-slate-100 hover:underline"
                         >
                           {event.entity}
                         </Link>
                         <span>•</span>
                         <span>Confidence {event.confidence}</span>
                         <span>•</span>
-                        <span>{event.sources?.[0] || "Source unavailable"}</span>
+                        <span className="font-medium text-slate-300">
+                          {event.sources?.[0] || "Source unavailable"}
+                        </span>
                       </div>
 
-                      <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
-
-                      <p className="mt-3 text-xs leading-6 text-slate-400">
-                        <span className="font-medium text-slate-300">Why this matters:</span>{" "}
-                        {event.whyItMatters}
-                      </p>
+                      <div className="mt-3 space-y-2">
+                        <p className="text-sm leading-6 text-slate-300/90">
+                          {event.summary}
+                        </p>
+                        <p className="text-xs leading-6 text-slate-400/90">
+                          <span className="font-medium text-slate-300">
+                            Strategic Context:
+                          </span>{" "}
+                          {event.whyItMatters}
+                        </p>
+                      </div>
                     </article>
                   ))
                 ) : (
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400">
+                  <div className="rounded-lg border border-slate-800/50 bg-slate-950/60 p-4 text-sm text-slate-400/90">
                     Live stream unavailable. Check the feed route or try again shortly.
                   </div>
                 )}
