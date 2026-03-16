@@ -1,9 +1,31 @@
 import Link from "next/link";
-import StreamRefresh from "./StreamRefresh";
-import { slugify } from "@/lib/utils";
 import type { IntelligenceEvent } from "@/lib/mockData";
+import StreamRefresh from "./StreamRefresh";
 
-import { getLiveEvents } from "@/lib/api";
+function slugify(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+async function getLiveEvents(): Promise<IntelligenceEvent[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
+
+    const response = await fetch(`${baseUrl}/api/feed`, {
+      next: { revalidate: 60 },
+    });
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    return Array.isArray(data.events) ? data.events : [];
+  } catch {
+    return [];
+  }
+}
 
 export default async function StreamPage() {
   const events = await getLiveEvents();
@@ -47,13 +69,13 @@ export default async function StreamPage() {
                           {event.region}
                         </span>
                         <span className="rounded-full bg-rose-500/15 px-2 py-1 text-xs font-medium text-rose-300">
-                          {event.intensity}
+                          Score {event.score ?? 0}
                         </span>
                       </div>
                       <h3 className="mt-2 text-sm font-semibold text-slate-100">{event.title}</h3>
                       <p className="mt-2 text-xs text-slate-400">
                         {event.topic} •{" "}
-                        <Link 
+                        <Link
                           href={`/entity/${slugify(event.entity)}`}
                           className="hover:text-slate-200 hover:underline"
                         >
@@ -91,10 +113,10 @@ export default async function StreamPage() {
                           {event.region}
                         </span>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-slate-500">{event.timeAgo}</span>
-                          <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
-                            {event.intensity}
+                          <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
+                            Score {event.score ?? 0}
                           </span>
+                          <span className="text-xs text-slate-500">{event.timeAgo}</span>
                         </div>
                       </div>
 
@@ -103,7 +125,7 @@ export default async function StreamPage() {
                       <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
                         <span>{event.topic}</span>
                         <span>•</span>
-                        <Link 
+                        <Link
                           href={`/entity/${slugify(event.entity)}`}
                           className="hover:text-slate-200 hover:underline"
                         >
@@ -111,6 +133,8 @@ export default async function StreamPage() {
                         </Link>
                         <span>•</span>
                         <span>Confidence {event.confidence}</span>
+                        <span>•</span>
+                        <span>{event.sources?.[0] || "Source unavailable"}</span>
                       </div>
 
                       <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>

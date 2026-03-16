@@ -26,6 +26,9 @@ export interface EventItem {
   timeAgo: string;
   summary: string;
   whyItMatters: string;
+  score?: number;
+  sources?: string[];
+  timestamp?: string;
 }
 
 export type IntelligenceEvent = EventItem;
@@ -82,6 +85,9 @@ export const liveEvents: EventItem[] = [
       "Rising transport and policy uncertainty is increasing volatility across regional energy markets.",
     whyItMatters:
       "Energy transport instability can spill into pricing pressure, industrial costs, and wider regional market volatility.",
+    score: 84,
+    sources: ["BBC World"],
+    timestamp: new Date().toISOString(),
   },
   {
     id: "evt-asia-chips",
@@ -97,6 +103,9 @@ export const liveEvents: EventItem[] = [
       "Technology restrictions could affect semiconductor supply chains, pricing, and cross-border investment.",
     whyItMatters:
       "Chip restrictions can reshape capital allocation, supply chains, and competitive positioning across multiple industries.",
+    score: 67,
+    sources: ["NYT World"],
+    timestamp: new Date().toISOString(),
   },
   {
     id: "evt-me-shipping",
@@ -112,6 +121,9 @@ export const liveEvents: EventItem[] = [
       "New signals suggest elevated trade-route monitoring and possible insurance cost increases.",
     whyItMatters:
       "Trade-route disruption can affect delivery times, insurance costs, commodities pricing, and global supply reliability.",
+    score: 79,
+    sources: ["Al Jazeera"],
+    timestamp: new Date().toISOString(),
   },
 ];
 
