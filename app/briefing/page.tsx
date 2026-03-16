@@ -59,7 +59,7 @@ export default async function BriefingPage() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
             </span>
-            Live Intelligence Feed
+            Live Intelligence Feed • Updated just now
           </div>
         </div>
         {isFallbackData && (
@@ -84,9 +84,9 @@ export default async function BriefingPage() {
               <h2 className="text-lg font-semibold text-slate-100">Key Themes</h2>
               <ul className="mt-3 space-y-2 text-sm text-slate-300/90">
                 {briefing.keyThemes.map((theme) => (
-                  <li key={theme} className="flex items-start gap-2">
-                    <svg className="mt-1.5 h-2 w-2 flex-shrink-0 text-slate-500/80" viewBox="0 0 8 8" fill="currentColor">
-                      <circle cx="4" cy="4" r="4" />
+                  <li key={theme} className="flex items-start gap-3">
+                    <svg className="mt-1 h-3 w-3 flex-shrink-0 text-emerald-500" viewBox="0 0 12 12" fill="currentColor">
+                      <path d="M10.28 2.28a.75.75 0 0 1 1.06 1.06l-7 7a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06L3.75 8.94l6.53-6.66Z" />
                     </svg>
                     <span>{theme}</span>
                   </li>
@@ -98,9 +98,9 @@ export default async function BriefingPage() {
               <h2 className="text-lg font-semibold text-slate-100">Primary Risks</h2>
               <ul className="mt-3 space-y-2 text-sm text-slate-300/90">
                 {briefing.primaryRisks.map((risk) => (
-                  <li key={risk} className="flex items-start gap-2">
-                    <svg className="mt-1.5 h-2 w-2 flex-shrink-0 text-rose-500/80" viewBox="0 0 8 8" fill="currentColor">
-                      <circle cx="4" cy="4" r="4" />
+                  <li key={risk} className="flex items-start gap-3">
+                    <svg className="mt-1 h-3 w-3 flex-shrink-0 text-rose-500" viewBox="0 0 12 12" fill="currentColor">
+                      <path d="M10.28 2.28a.75.75 0 0 1 1.06 1.06l-7 7a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06L3.75 8.94l6.53-6.66Z" />
                     </svg>
                     <span>{risk}</span>
                   </li>
