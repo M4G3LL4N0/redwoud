@@ -128,19 +128,21 @@ export default async function HomePage() {
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-14">
           {/* Mission metrics band */}
-          <div className="mb-8 grid grid-cols-6 gap-4 border-b border-slate-800 pb-6">
+          <div className="mb-8 grid grid-cols-6 gap-4 border-b border-slate-800/40 pb-6">
             <div className="col-span-4 flex flex-col">
-              <div className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-slate-500">
-                <span className="font-bold text-emerald-400">></span>
-                <span>ACTIVE MISSION</span>
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-slate-500">
+                <span className="text-emerald-300">></span>
+                <span>ACTIVE_MISSION</span>
               </div>
-              <h1 className="mt Seen text-3xl font-medium tracking-tight text-slate-200 sm:text-5xl">
-                Global Strategic Intelligence
+              <h1 className="mt-2 font-mono text-2xl font-medium tracking-tight text-slate-200 sm:text-3xl">
+                >_ GLOBAL_STRATEGIC_MONITORING
               </h1>
-              <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-400">
-                Mission: Aggregate and normalize signals across geopolitics, markets,
-                and technology to surface strategic inflection points and emerging risks.
-              </p>
+              <div className="mt-3 grid grid-cols-2 gap-x-8 gap-y-2 text-xs leading-5 text-slate-400">
+                <div className="cli-prompt">OBJECTIVE: SIGNAL_NORMALIZATION</div>
+                <div className="cli-prompt">SCOPE: GEOPOLITICS,MARKETS,TECH</div>
+                <div className="cli-prompt">OUTPUT: RISK_INDICATORS</div>
+                <div className="cli-prompt">CONFIDENCE: 0.92</div>
+              </div>
             </div>
             <div className="col-span-2 flex items-center justify-end gap-3">
               <Link

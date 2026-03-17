@@ -15,13 +15,20 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 bg-slate-900/95 border-b border-slate-800/50 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4">
         {/* Status bar */}
-        <div className="flex h-8 items-center justify-between border-b border-slate-800/30 px-2">
-          <div className="flex items-center gap-1 text-xs tracking-tighter text-slate-400">
-            <span className="font-mono font-medium">[SYSTEM]</span>
-            <span>Live monitoring active</span>
+        <div className="flex h-8 items-center justify-between border-b border-slate-800/30 px-3">
+          <div className="flex items-center gap-3">
+            <div className="cli-prompt">
+              <span className="status-light bg-emerald-400 shadow-[0_0_8px_theme(colors.emerald.400/0.3)]"></span>
+              OPERATIONAL
+            </div>
+            <div className="cli-prompt">
+              <span className="status-light bg-amber-400 shadow-[0_0_8px_theme(colors.amber.400/0.2)]"></span>
+              MONITORING_ACTIVE
+            </div>
           </div>
-          <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
-            <span>{new Date().toISOString().split('T')[0]}</span>
+          <div className="flex items-center gap-3 font-mono text-xs">
+            <span className="text-slate-300">UTC:{new Date().toISOString().split('T')[1].slice(0,8)}</span>
+            <span className="text-slate-400">{new Date().toISOString().split('T')[0]}</span>
           </div>
         </div>
 
