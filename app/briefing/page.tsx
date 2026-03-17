@@ -88,7 +88,7 @@ export default async function BriefingPage() {
               {briefing.whyThisMatters}
             </p>
             <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-500">
-              This briefing synthesizes structured intelligence from normalized public signals.
+              This briefing synthesizes structured intelligence from normalized public signals across multiple trusted sources.
             </div>
           </div>
         </div>

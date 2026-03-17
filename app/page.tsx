@@ -288,19 +288,19 @@ export default async function HomePage() {
                   </Link>
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
-                  <span>•</span>
-                  <span className="inline-flex items-center gap-1">
-                    <span className="rounded bg-slate-800/50 px-1.5 py-0.5 text-[0.7rem]">
-                      {event.sources?.[0] || "Source unavailable"}
-                    </span>
-                    <span className="text-slate-500">|</span>
-                    <span className="font-mono text-[0.7rem] text-slate-500">
-                      {event.timeAgo}
-                    </span>
+                </div>
+                <div className="mt-2 flex items-center gap-2 text-[0.7rem] text-slate-500">
+                  <span className="font-medium text-slate-400">Source:</span>
+                  <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono">
+                    {event.sources?.[0] || "Multiple public signals"}
+                  </span>
+                  <span className="text-slate-600">|</span>
+                  <span className="font-mono">
+                    Updated {event.timeAgo}
                   </span>
                 </div>
                 <div className="mt-1 text-[0.7rem] text-slate-500">
-                  Structured intelligence derived from public signals.
+                  Structured intelligence derived from normalized public signals.
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
