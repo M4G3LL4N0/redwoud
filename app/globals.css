@@ -34,9 +34,15 @@ body {
 }
 
 /* Alert Status Colors */
-.status-critical { @apply bg-rose-900/60 border-rose-800/50 text-rose-100 }
-.status-warning { @apply bg-amber-900/40 border-amber-800/30 text-amber-100 }
-.status-normal { @apply bg-emerald-900/20 border-emerald-800/20 text-emerald-100 }
+.status-critical { 
+  @apply bg-rose-900/60 border-rose-800/50 text-rose-100;
+}
+.status-warning { 
+  @apply bg-amber-900/40 border-amber-800/30 text-amber-100;
+}
+.status-normal { 
+  @apply bg-emerald-900/20 border-emerald-800/20 text-emerald-100;
+}
 
 /* Gradient text utilities */
 .gradient-text {
