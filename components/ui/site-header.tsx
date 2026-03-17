@@ -12,38 +12,51 @@ const links = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="h-3 w-3 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.45)]" />
-          <div>
-            <div className="text-sm font-semibold tracking-[0.22em] text-slate-100">
-              REDWOUD
-            </div>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
-              Global Intelligence Platform
-            </div>
+    <header className="sticky top-0 z-50 bg-slate-900/95 border-b border-slate-800/50 backdrop-blur-sm">
+      <div className="mx-auto max-w-7xl px-4">
+        {/* Status bar */}
+        <div className="flex h-8 items-center justify-between border-b border-slate-800/30 px-2">
+          <div className="flex items-center gap-1 text-xs tracking-tighter text-slate-400">
+            <span className="font-mono font-medium">[SYSTEM]</span>
+            <span>Live monitoring active</span>
           </div>
-        </Link>
+          <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
+            <span>{new Date().toISOString().split('T')[0]}</span>
+          </div>
+        </div>
 
-        <nav className="hidden gap-5 md:flex">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-slate-300 transition-colors hover:text-white"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        {/* Main navigation */}
+        <div className="flex h-14 items-center justify-between px-2">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.5)] group-hover:bg-emerald-300 transition-colors" />
+            <div className="-space-y-0.5">
+              <div className="font-mono text-sm font-semibold tracking-tight text-slate-200">{">"} REDWOUD</div>
+              <div className="text-[10px] uppercase tracking-[0.15em] text-slate-500">STRATEGIC INTELLIGENCE PLATFORM</div>
+            </div>
+          </Link>
 
-        <div className="hidden md:block">
+          <nav className="hidden items-center gap-1 md:flex">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded px-2.5 py-1 text-xs font-medium text-slate-300 transition-all hover:bg-slate-800/50 hover:text-white group relative"
+              >
+                {link.label}
+                <span className="absolute inset-x-2.5 bottom-1 h-px bg-emerald-400/0 transition-all duration-300 group-hover:bg-emerald-400/80" />
+              </Link>
+            ))}
+          </nav>
+
           <Link
-            href="/investors"
-            className="rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 hover:border-slate-500 hover:text-white"
+            href="/stream"
+            className="hidden md:flex items-center gap-1.5 rounded border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-white hover:shadow-[0_0_15px_rgba(52,211,153,0.1)]"
           >
-            Investor Overview
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+            </span>
+            LIVE STREAM
           </Link>
         </div>
       </div>

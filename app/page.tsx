@@ -127,37 +127,60 @@ export default async function HomePage() {
 
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-14">
-          <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
-            REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
+          {/* Mission metrics band */}
+          <div className="mb-8 grid grid-cols-6 gap-4 border-b border-slate-800 pb-6">
+            <div className="col-span-4 flex flex-col">
+              <div className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-slate-500">
+                <span className="font-bold text-emerald-400">></span>
+                <span>ACTIVE MISSION</span>
+              </div>
+              <h1 className="mt Seen text-3xl font-medium tracking-tight text-slate-200 sm:text-5xl">
+                Global Strategic Intelligence
+              </h1>
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-400">
+                Mission: Aggregate and normalize signals across geopolitics, markets,
+                and technology to surface strategic inflection points and emerging risks.
+              </p>
+            </div>
+            <div className="col-span-2 flex items-center justify-end gap-3">
+              <Link
+                href="/stream"
+                className="flex items-center gap-1.5 rounded border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-300 transition-colors hover:border-emerald-400/50 hover:bg-emerald-400/20"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                </span>
+                LIVE STREAM
+              </Link>
+              <Link
+                href="/briefing"
+                className="flex items-center gap-1.5 rounded border border-slate-700 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-800/60 hover:text-white"
+              >
+                CURRENT BRIEFING
+              </Link>
+            </div>
           </div>
 
-          <h1 className="max-w-5xl text-4xl font-semibold leading-tight sm:text-6xl">
-            Strategic intelligence for a world that moves too fast to read manually.
-          </h1>
-
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            REDWOUD transforms live public signals into structured intelligence for operators,
-            analysts, founders, investors, and strategic teams.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
+          {/* Quick actions */}
+          <div className="mb-8 flex gap-2">
             <Link
-              href="/stream"
-              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950"
+              href="/trends"
+              className="rounded border border-slate-700 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white"
             >
-              Open Live Stream
+              TRENDS →
             </Link>
             <Link
-              href="/briefing"
-              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+              href="/alerts"
+              className="rounded border border-slate-700 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white"
             >
-              Read Briefing
+              ALERTS →
             </Link>
             <Link
               href="/investors"
-              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+              className="rounded border border-slate-700 bg-slate-800/40 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white"
             >
-              Investor Overview
+              INVESTOR ACCESS →
             </Link>
           </div>
 
