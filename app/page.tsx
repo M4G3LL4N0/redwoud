@@ -289,18 +289,23 @@ export default async function HomePage() {
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
                 </div>
-                <div className="mt-2 flex items-center gap-2 text-[0.7rem] text-slate-500">
-                  <span className="font-medium text-slate-400">Source:</span>
-                  <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono">
-                    {event.sources?.[0] || "Multiple public signals"}
-                  </span>
+                <div className="mt-2 flex items-center gap-2 text-[0.7rem]">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-medium text-slate-400/90">Source:</span>
+                    <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono text-slate-300/90">
+                      {event.sources?.[0] || "Multiple public signals"}
+                    </span>
+                  </div>
                   <span className="text-slate-600">|</span>
-                  <span className="font-mono">
-                    Updated {event.timeAgo}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-medium text-slate-400/90">Updated:</span>
+                    <span className="font-mono text-slate-300/90">
+                      {event.timeAgo}
+                    </span>
+                  </div>
                 </div>
-                <div className="mt-1 text-[0.7rem] text-slate-500">
-                  Structured intelligence derived from normalized public signals.
+                <div className="mt-1 text-[0.7rem] text-slate-400/90">
+                  REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing.
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>

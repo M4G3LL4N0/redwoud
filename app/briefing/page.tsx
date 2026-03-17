@@ -87,8 +87,8 @@ export default async function BriefingPage() {
             <p className="mt-3 text-sm leading-7 text-slate-300">
               {briefing.whyThisMatters}
             </p>
-            <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-500">
-              This briefing synthesizes structured intelligence from normalized public signals across multiple trusted sources.
+            <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400/90">
+              REDWOUD normalizes public signals into structured intelligence briefings with strategic context and risk analysis.
             </div>
           </div>
         </div>
