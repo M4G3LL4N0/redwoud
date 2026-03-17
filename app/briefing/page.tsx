@@ -95,7 +95,13 @@ export default async function BriefingPage() {
 
         <div className="lg:col-span-5 space-y-8">
           <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold mb-4">Primary Risks</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Primary Risks</h2>
+              <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400">
+                <span>Updated:</span>
+                <span className="font-mono">{new Date().toISOString().split('T')[1].slice(0,5)}</span>
+              </div>
+            </div>
             {briefing.primaryRisks.length ? (
               <ul className="space-y-3">
                 {briefing.primaryRisks.map((risk, i) => (
@@ -110,7 +116,13 @@ export default async function BriefingPage() {
           </div>
 
           <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold mb-4">Key Themes</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Key Themes</h2>
+              <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400">
+                <span>Updated:</span>
+                <span className="font-mono">{new Date().toISOString().split('T')[1].slice(0,5)}</span>
+              </div>
+            </div>
             {briefing.keyThemes.length ? (
               <ul className="space-y-3">
                 {briefing.keyThemes.map((theme, i) => (

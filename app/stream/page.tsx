@@ -167,6 +167,24 @@ export default async function StreamPage() {
                       <div className="mt-2 text-[0.7rem] text-slate-400/90">
                         REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing.
                       </div>
+                      <div className="mt-2 flex items-center gap-2 text-[0.7rem]">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-medium text-slate-400/90">Source:</span>
+                          <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono text-slate-300/90">
+                            {event.sources?.[0] || "Multiple public signals"}
+                          </span>
+                        </div>
+                        <span className="text-slate-600">|</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-medium text-slate-400/90">Updated:</span>
+                          <span className="font-mono text-slate-300/90">
+                            {event.timeAgo}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="mt-2 text-[0.7rem] text-slate-400/90">
+                        REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing.
+                      </div>
 
                       <div className="mt-3 space-y-2">
                         <p className="text-sm leading-6 text-slate-300/90">
