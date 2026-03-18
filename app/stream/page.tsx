@@ -112,47 +112,72 @@ export default async function StreamPage() {
                 </div>
               </div>
 
-              <div className="mt-5 space-y-3">
+              <div className="mt-4 space-y-2">
                 {events.length ? (
                   events.map((event) => (
                     <article
                       key={event.id}
-                      className="rounded-lg border border-slate-800/50 bg-slate-950/60 p-4"
+                      className={clsx(
+                        "rounded-lg border p-4 transition-all",
+                        event.score >= 90
+                          ? "border-rose-800/50 bg-gradient-to-b from-rose-950/20 to-slate-950/90"
+                          : event.score >= 75
+                          ? "border-amber-800/50 bg-gradient-to-b from-amber-950/20 to-slate-950/90"
+                          : "border-slate-800/50 bg-slate-950/60"
+                      )}
                     >
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-xs font-medium uppercase tracking-wide text-slate-400/90">
-                          {event.region}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-400">
-                            Score {event.score ?? 0}
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline gap-2">
+                            <span className={clsx(
+                              "text-xs font-medium uppercase tracking-widest",
+                              event.score >= 90 ? "text-rose-300" : 
+                              event.score >= 75 ? "text-amber-300" : "text-slate-400"
+                            )}>
+                              {event.region}
+                            </span>
+                            <span className="text-xs text-slate-500">|</span>
+                            <span className="font-mono text-xs text-slate-400 truncate">
+                              {event.topic}
+                            </span>
+                          </div>
+                          <h3 className="mt-1 text-base font-semibold leading-snug text-slate-100">
+                            {event.title}
+                          </h3>
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={clsx(
+                            "rounded px-2 py-1 text-xs font-bold",
+                            event.score >= 90
+                              ? "bg-rose-500/20 text-rose-300"
+                              : event.score >= 75
+                              ? "bg-amber-500/20 text-amber-300"
+                              : "bg-indigo-500/20 text-indigo-300"
+                          )}>
+                            {event.score ?? 0}
                           </span>
-                          <span className="text-xs font-medium text-slate-500/90">
+                          <span className="text-xs font-mono text-slate-500/90">
                             {event.timeAgo}
                           </span>
                         </div>
                       </div>
 
-                      <h3 className="mt-3 text-base font-semibold tracking-tight text-slate-100">
-                        {event.title}
-                      </h3>
-
-                      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-400/90">
-                        <span className="font-medium text-slate-300">{event.topic}</span>
-                        <span>•</span>
+                      <div className="mt-2 flex items-center gap-2 text-[11px] leading-none">
+                        <span className="font-mono text-slate-400/90">
+                          {event.confidence}% conf
+                        </span>
+                        <span className="text-slate-600">|</span>
                         <Link
                           href={`/entity/${slugify(event.entity)}`}
-                          className="font-medium text-slate-300 hover:text-slate-100 hover:underline"
+                          className="truncate font-medium text-slate-300 hover:text-slate-100 hover:underline"
                         >
                           {event.entity}
                         </Link>
-                        <span>•</span>
-                        <span>Confidence {event.confidence}</span>
                       </div>
-                      <div className="mt-2 flex items-center gap-2 text-[0.7rem]">
+                      <div className="mt-3 flex items-center gap-2 text-[11px]">
                         <div className="flex items-center gap-1.5">
                           <span className="font-medium text-slate-400/90">Source:</span>
-                          <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono text-slate-300/90">
+                          <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono text-slate-300/90 truncate">
                             {event.sources?.[0] || "Multiple public signals"}
                           </span>
                         </div>
@@ -163,27 +188,6 @@ export default async function StreamPage() {
                             {event.timeAgo}
                           </span>
                         </div>
-                      </div>
-                      <div className="mt-2 text-[0.7rem] text-slate-400/90">
-                        REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing.
-                      </div>
-                      <div className="mt-2 flex items-center gap-2 text-[0.7rem]">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-medium text-slate-400/90">Source:</span>
-                          <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono text-slate-300/90">
-                            {event.sources?.[0] || "Multiple public signals"}
-                          </span>
-                        </div>
-                        <span className="text-slate-600">|</span>
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-medium text-slate-400/90">Updated:</span>
-                          <span className="font-mono text-slate-300/90">
-                            {event.timeAgo}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-2 text-[0.7rem] text-slate-400/90">
-                        REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing.
                       </div>
 
                       <div className="mt-3 space-y-2">
