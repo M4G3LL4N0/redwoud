@@ -76,11 +76,11 @@ export default async function BriefingPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-12 grid gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-7 rounded-xl border border-slate-800 bg-slate-900 p-6">
+        <div className="lg:col-span-7 rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
           <h2 className="text-lg font-semibold mb-4">Summary</h2>
           <p className="text-sm leading-7 text-slate-300">{briefing.summary}</p>
 
-          <div className="mt-8 rounded-xl border border-slate-800 bg-slate-950/60 p-5">
+          <div className="mt-8 rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-5">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
               Why This Matters
             </h3>

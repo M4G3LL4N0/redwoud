@@ -51,7 +51,7 @@ export default async function StreamPage() {
 
         <section className="mx-auto grid max-w-7xl gap-6 px-6 py-10 lg:grid-cols-12">
           <div className="lg:col-span-4 relative">
-            <div className="sticky top-4 rounded-xl border border-slate-800 bg-slate-900/90 p-4 backdrop-blur-sm">
+            <div className="sticky top-4 rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-4 backdrop-blur-sm">
               <div className="flex items-center justify-between pb-3 border-b border-slate-800/50">
                 <h2 className="text-base font-medium tracking-tight">Top Signals</h2>
                 <div className="flex items-center gap-1.5">
@@ -98,7 +98,7 @@ export default async function StreamPage() {
           </div>
 
           <div className="lg:col-span-8">
-            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-900/30 p-5 backdrop-blur-sm">
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-5 backdrop-blur-sm">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold tracking-tight text-slate-100">
                   Global Event Stream

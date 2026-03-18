@@ -55,7 +55,7 @@ export default async function TrendsPage() {
               return (
                 <article
                   key={trend.id}
-                  className="rounded-2xl border border-slate-800 bg-slate-900 p-6"
+                  className="rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <h2 className="text-lg font-semibold">{trend.title}</h2>
