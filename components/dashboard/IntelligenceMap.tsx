@@ -94,19 +94,49 @@ export default function IntelligenceMap({
     [...filtered].sort((a, b) => b.count - a.count)[0] || displayRegions[0];
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-            Regional intelligence console
+            Regional Intelligence Console
           </p>
-          <p className="mt-1 text-xs text-slate-400">
-            Event density, conflict posture, and economic signal intensity by region.
-          </p>
+          <h2 className="mt-1 text-lg font-semibold text-slate-100">
+            Global Signal Heatmap
+          </h2>
         </div>
-        <span className="rounded-full border border-slate-700 px-2 py-1 text-[10px] text-slate-300">
-          Top active region: {topRegion.region}
-        </span>
+        <div className="flex items-center gap-2">
+          <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span className="text-xs font-medium text-slate-300">
+            Live Intelligence Feed
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-slate-100">{topRegion.region}</h3>
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-indigo-400"></div>
+            <span className="text-xs font-medium text-slate-300">
+              Primary Active Region
+            </span>
+          </div>
+        </div>
+        <div className="mt-3 grid grid-cols-3 gap-4">
+          <div className="space-y-1">
+            <p className="text-xs text-slate-400">Signals</p>
+            <p className="text-lg font-semibold text-slate-100">{topRegion.count}</p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs text-slate-400">Conflict</p>
+            <p className="text-lg font-semibold text-slate-100">{topRegion.conflictScore}</p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs text-slate-400">Economic</p>
+            <p className="text-lg font-semibold text-slate-100">{topRegion.economicScore}</p>
+          </div>
+        </div>
+        <p className="mt-4 text-sm leading-6 text-slate-300">{topRegion.summary}</p>
       </div>
 
       <div className="mt-5 rounded-xl border border-slate-800 bg-slate-950/60 p-4">

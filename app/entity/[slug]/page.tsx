@@ -73,33 +73,56 @@ export default async function EntityPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl gap-4 px-6 py-8 lg:grid-cols-12">
-        <div className="lg:col-span-4 space-y-4">
-          <div className="rounded-xl border border-slate-800 bg-gradient-to-b from-slate-950/80 to-slate-900/30 p-5">
+      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-8 lg:grid-cols-12">
+        <div className="lg:col-span-4 space-y-6">
+          {/* Entity Overview */}
+          <div className="rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-950/80 to-slate-900/30 p-6">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-sm font-medium tracking-wider text-emerald-300 uppercase">Entity Analysis</h2>
-                <h3 className="mt-1 text-base font-medium text-slate-200">{entityName}</h3>
+                <h2 className="text-sm font-medium tracking-wider text-emerald-300 uppercase">Strategic Entity Profile</h2>
+                <h3 className="mt-1 text-xl font-semibold text-slate-100">{entityName}</h3>
               </div>
               <div className="rounded-lg bg-gradient-to-r from-slate-800 to-slate-900/50 px-2 py-1 border border-slate-800">
                 <p className="text-xs font-medium text-slate-300">{events.length} Signals</p>
               </div>
             </div>
-            <div className="mt-4 space-y-2 text-sm text-slate-300">
-              <p>{entityName} maintains strategic presence across:</p>
-              <ul className="ml-4 space-y-2 mt-2">
+            
+            <div className="mt-6 grid grid-cols-3 gap-4">
+              <div className="space-y-1">
+                <p className="text-xs text-slate-400">Risk Score</p>
+                <div className="flex items-baseline gap-1">
+                  <span className={`text-2xl font-semibold ${
+                    avgScore > 70 ? 'text-red-400' : 
+                    avgScore > 40 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                    {avgScore}
+                  </span>
+                  <span className="text-xs text-slate-400">/100</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <p className="text-xs text-slate-400">Regions</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-semibold text-slate-100">{topRegions.length}</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <p className="text-xs text-slate-400">Themes</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-semibold text-slate-100">{topTopics.length}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-3">
+              <h4 className="text-sm font-medium text-slate-300">Strategic Presence</h4>
+              <ul className="space-y-2">
                 {topRegions.slice(0,3).map(region => (
-                  <li key={region} className="flex items-start gap-2">
-                    <svg className="h-3 w-3 mt-[3px] text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 8 8">
-                      <circle cx="4" cy="4" r="3" />
-                    </svg>
-                    <span>{region}</span>
+                  <li key={region} className="flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-emerald-400"></div>
+                    <span className="text-sm text-slate-300">{region}</span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-2 text-sm leading-5 text-slate-400">
-                Recent themes: {topTopics.slice(0,2).join(', ')}
-              </p>
             </div>
           </div>
 
