@@ -279,7 +279,12 @@ export default async function HomePage() {
             {liveEvents.slice(0, 6).map((event) => (
               <article
                 key={event.id}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                className={clsx(
+                  "rounded-lg border p-4 transition-all",
+                  event.intensity === "high" 
+                    ? "border-rose-800/30 bg-gradient-to-b from-rose-950/20 to-slate-950/80"
+                    : "border-slate-800/50 bg-slate-950/60"
+                )}
               >
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs uppercase tracking-wide text-slate-400">
@@ -289,7 +294,9 @@ export default async function HomePage() {
                     <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
                       Score {event.score ?? 0}
                     </span>
-                    <span className="text-xs text-slate-500">{event.timeAgo}</span>
+                    <span className="font-mono text-xs tracking-tighter text-slate-400">
+                      {event.timeAgo.replace(' ago', '')}
+                    </span>
                   </div>
                 </div>
 
