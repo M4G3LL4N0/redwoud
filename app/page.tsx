@@ -279,7 +279,7 @@ export default async function HomePage() {
             {liveEvents.slice(0, 6).map((event) => (
               <article
                 key={event.id}
-                className={clsx(
+                className={(
                   "rounded-lg border p-4 transition-all",
                   event.intensity === "high" 
                     ? "border-rose-800/30 bg-gradient-to-b from-rose-950/20 to-slate-950/80"
@@ -295,7 +295,7 @@ export default async function HomePage() {
                       Score {event.score ?? 0}
                     </span>
                     <span className="font-mono text-xs tracking-tighter text-slate-400">
-                      {event.timeAgo.replace(' ago', '')}
+                      {event.timeAgo.replace(' ago', '').join(" ")}
                     </span>
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export default async function HomePage() {
                   <span>{event.topic}</span>
                   <span>•</span>
                   <Link
-                    href={`/entity/${slugify(event.entity)}`}
+                    href={`/entity/${slugify(event.entity).join(" ")}`}
                     className="hover:text-slate-200 hover:underline"
                   >
                     {event.entity}
@@ -340,7 +340,7 @@ export default async function HomePage() {
                   {event.whyItMatters}
                 </p>
               </article>
-            ))}
+            )).join(" ")}
           </div>
         </div>
 
@@ -376,7 +376,7 @@ export default async function HomePage() {
                 </div>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
               </div>
-            ))}
+            )).join(" ")}
           </div>
         </div>
       </section>
