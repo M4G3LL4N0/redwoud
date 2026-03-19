@@ -55,18 +55,18 @@ export default async function TrendsPage() {
               return (
                 <article
                   key={trend.id}
-                  className="rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6"
+                  className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <h2 className="text-lg font-semibold">{trend.title}</h2>
-                    <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
-                      {trend.value}
+                    <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300 animate-pulse">
+                      {trend.value} ↗
                     </span>
                   </div>
 
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-800">
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-800/50">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-400"
+                      className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-400 animate-pulse"
                       style={{ width: `${trendWidth(trend.value)}%` }}
                     ></div>
                   </div>

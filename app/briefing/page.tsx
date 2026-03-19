@@ -75,12 +75,12 @@ export default async function BriefingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12 grid gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-7 rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
+      <section className="mx-auto max-w-7xl px-6 py-12 grid gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-7 rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
           <h2 className="text-lg font-semibold mb-4">Summary</h2>
           <p className="text-sm leading-7 text-slate-300">{briefing.summary}</p>
 
-          <div className="mt-8 rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-5">
+          <div className="mt-8 rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-5 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
               Why This Matters
             </h3>
@@ -94,13 +94,13 @@ export default async function BriefingPage() {
         </div>
 
         <div className="lg:col-span-5 space-y-8">
-          <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+          <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Primary Risks</h2>
               <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400">
                 <span>Updated:</span>
-                <span className="font-mono border border-slate-800/50 bg-slate-900/50 px-2 py-1 rounded">
-                  {new Date().toISOString().split('T')[1].slice(0,5)}
+                <span className="font-mono border border-slate-800/50 bg-slate-900/50 px-2 py-1 rounded animate-pulse">
+                  {new Date().toISOString().split('T')[1].slice(0,5)} UTC
                 </span>
               </div>
             </div>
