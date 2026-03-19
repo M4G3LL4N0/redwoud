@@ -25,10 +25,13 @@ export default function StreamPage() {
 
   // Helper to decide visual tier based on score & impact
   const getTierClass = (event: IntelligenceEvent) => {
-    if (event.impact === 'High' && event.score >= 90) return 'tier-breaking';
-    if (event.impact === 'High' && event.score >= 75) return 'tier-high';
-    if (event.impact === 'Medium') return 'tier-medium';
-    return 'tier-low';
+    if (event.impact === 'High' && event.score >= 90) 
+      return 'border-rose-500/30 bg-gradient-to-b from-rose-900/25 to-rose-950 animate-pulse shadow-rose-900/20';
+    if (event.impact === 'High' && event.score >= 75) 
+      return 'border-rose-500/20 bg-gradient-to-b from-rose-900/15 to-slate-950 shadow-rose-900/10';
+    if (event.impact === 'Medium') 
+      return 'border-amber-500/20 bg-gradient-to-b from-amber-900/15 to-slate-950 shadow-amber-900/10';
+    return 'border-slate-700/30 bg-gradient-to-b from-slate-900/15 to-slate-950';
   };
 
   // Helper to create a group class for correlation display
@@ -58,10 +61,13 @@ export default function StreamPage() {
                 <div
                   key={event.id}
                   className={`
-                    p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm transition-all 
+                    p-4 rounded-xl border shadow-[0_0_0_1px_theme(colors.slate.800/30)] backdrop-blur-sm 
+                    transition-all duration-200 ease-out
                     ${getTierClass(event)} 
-                    hover:shadow-lg hover:border-white/20 
+                    hover:shadow-[0_0_15px_theme(colors.slate.800/30)] hover:border-slate-700/50
                     ${getGroupClass(event)}
+                    relative overflow-hidden
+                    after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:to-slate-950/20 after:pointer-events-none
                   `}
                 >
                   {/* Header row: topic & region tags */}
@@ -103,7 +109,8 @@ export default function StreamPage() {
           {/* Right column: top signals & operations panels */}
           <div className="space-y-6">
             {/* Top Signals panel */}
-            <div className="p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm">
+            <div className="p-4 rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/40 to-slate-950/90 backdrop-blur-sm shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+              <div className="absolute -top-[1px] -left-[1px] -right-[1px] h-[2px] bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
               <h2 className="text-sm font-semibold mb-4 text-slate-300">TOP SIGNALS</h2>
               <div className="grid grid-cols-2 gap-2">
                 {events.slice(0, 5).map((event) => (
@@ -131,7 +138,8 @@ export default function StreamPage() {
             </div>
 
             {/* Operations panel – compact status tiles */}
-            <div className="p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm">
+            <div className="p-4 rounded-xl border border-slate-800/50 bg-gradient-to-b from-emerald-900/15 to-slate-950/90 backdrop-blur-sm shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+              <div className="absolute -top-[1px] -left-[1px] -right-[1px] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"></div>
               <h2 className="text-sm font-semibold mb-4 text-slate-300">OPERATIONS</h2>
               <div className="grid grid-cols-2 gap-2">
                 {[['OPERATIONAL', 'STATUS', 'bg-amber-500', 'text-amber-300'], ['MONITORING', 'ACTIVE', 'bg-red-500', 'text-red-300']].map(
