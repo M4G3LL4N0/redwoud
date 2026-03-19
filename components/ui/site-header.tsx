@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const links = [
   { href: "/", label: "Home" },
@@ -11,6 +12,8 @@ const links = [
 ];
 
 export function SiteHeader() {
+  const session = useSession();
+
   return (
     <header className="sticky top-0 z-50 bg-slate-900/95 border-b border-slate-800/50 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4">
@@ -19,8 +22,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-3">
             <div className="cli-prompt">
               <span className="status-light bg-emerald-400 shadow-[0_0_8px_theme(colors.emerald.400/0.3)]"></span>
-              OPERATIONAL
-            </div>
+              OPERATIONAL            </div>
             <div className="cli-prompt">
               <span className="status-light bg-amber-400 shadow-[0_0_8px_theme(colors.amber.400/0.2)]"></span>
               MONITORING_ACTIVE
@@ -54,6 +56,19 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
+
+          {/* Authenticated Insights Link */}
+          {session && (
+            <Link
+              href="/app/insights"
+              className="hidden md:flex items-center gap-1.5 rounded border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-white hover:shadow-[0_0_15px_rgba(52,211,153,0.1)]"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+              </span>
+              INSIGHTS            </Link>
+          )}
 
           <Link
             href="/stream"
