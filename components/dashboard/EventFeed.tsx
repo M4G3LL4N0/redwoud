@@ -23,8 +23,15 @@ export function EventFeed({ events }: EventFeedProps) {
       </header>
       <div className="divide-y divide-rw-border/70">
         {events.map((event) => (
-          <article            key={event.id}
-            className="flex gap-3 px-4 py-3.5 hover:bg-slate-800/50 transition-colors"
+          <article
+            key={event.id}
+            className={`
+              flex gap-3 px-4 py-3.5 hover:bg-slate-800/50 transition-colors 
+              ${event.impact === 'High'
+                ? 'border-red-500/20'
+                : event.impact === 'Medium'
+                ? 'border-amber-500/20'
+                : 'border-slate-500/10'}`}
           >
             <div className="mt-1 flex flex-col items-center gap-2">
               <span
@@ -44,8 +51,8 @@ export function EventFeed({ events }: EventFeedProps) {
                 <h3 className="text-[0.86rem] font-medium text-slate-50">
                   {event.title}
                 </h3>
-                <span className="text-[10px] text-slate-400">
-                  {event.timeAgo}
+                <span className="rw-pill-muted text-[10px]">
+                  {event.region} · {event.topic}
                 </span>
               </div>
               <div className="flex flex-wrap gap-1.5 text-[10px]">

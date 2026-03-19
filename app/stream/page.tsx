@@ -1,9 +1,12 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { StreamRefresh } from '@/components/stream/StreamRefresh';
 import type { IntelligenceEvent } from '@/lib/mockData';
 
 export default function StreamPage() {
   const [events, setEvents] = useState<IntelligenceEvent[]>([]);
+  const [liveUpdated, setLiveUpdated] = useState<string>('');
 
   // Simulate live feed – replace with real SSE or WebSocket in production
   useEffect(() => {
@@ -12,6 +15,7 @@ export default function StreamPage() {
       if (response.ok) {
         const data = await response.json();
         setEvents((prev) => [data, ...prev]);
+        setLiveUpdated(new Date().toISOString().split('T')[1].slice(0, 8));
       }
     };
     fetchEvents();
@@ -27,13 +31,22 @@ export default function StreamPage() {
     return 'tier-low';
   };
 
+  // Helper to create a group class for correlation display
+  const getGroupClass = (event: IntelligenceEvent) => {
+    const group = [event.region, event.topic, event.entity].join('|');
+    return `group-${group.replace(/[^a-z0-9]/gi, '-')}`;
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-8">
-        {/* Header with console title */}
+        {/* Header with console title and live status */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-extrabold tracking-tight">REDWOUD Intelligence Console</h1>
-          <StreamRefresh />
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-white">LIVE</span>
+            <span className="ml-3 text-sm text-slate-300">{liveUpdated}</span>
+          </div>
         </div>
 
         {/* Main grid: left = detailed stream, right = top signals & operations */}
@@ -42,11 +55,13 @@ export default function StreamPage() {
           <div className="lg:col-span-2">
             <div className="space-y-4">
               {events.slice(0, 15).map((event) => (
-                <div                  key={event.id}
+                <div
+                  key={event.id}
                   className={`
-                    p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm 
-                    transition-all ${getTierClass(event)}
-                    hover:shadow-lg hover:border-white/20
+                    p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm transition-all 
+                    ${getTierClass(event)} 
+                    hover:shadow-lg hover:border-white/20 
+                    ${getGroupClass(event)}
                   `}
                 >
                   {/* Header row: topic & region tags */}
@@ -90,18 +105,18 @@ export default function StreamPage() {
             {/* Top Signals panel */}
             <div className="p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm">
               <h2 className="text-sm font-semibold mb-4 text-slate-300">TOP SIGNALS</h2>
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-2">
                 {events.slice(0, 5).map((event) => (
                   <div
                     key={event.id}
                     className={`
-                      p-3 rounded-lg transition-all ${
-                        event.impact === 'High'
-                          ? 'bg-red-900/20 border-red-500/30'
+                      p-3 rounded-lg transition-all 
+                      ${event.impact === 'High'
+                        ? 'bg-red-900/20 border-red-500/30'
                         : event.impact === 'Medium'
-                          ? 'bg-amber-900/20 border-amber-500/30'
-                        : 'bg-emerald-900/20 border-emerald-500/30'
-                      } hover:shadow-lg hover:border-white/20`}
+                        ? 'bg-amber-900/20 border-amber-500/30'
+                        : 'bg-emerald-900/20 border-emerald-500/30'}
+                      hover:shadow-lg hover:border-white/20`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-mono {event.confidence === 'high' ? 'text-amber-400' : event.confidence === 'medium' ? 'text-slate-400' : 'text-slate-500'}">

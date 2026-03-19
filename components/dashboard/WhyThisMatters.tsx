@@ -36,8 +36,7 @@ export function WhyThisMatters({ focalEvents }: WhyThisMattersProps) {
           </article>
         ))}
         <p className="mt-1 text-[0.75rem] text-slate-400">
-          In the full product, this section learns from your portfolio, geography, and
-          operating profile to prioritize the{" "}
+          In the full product, this section learns from your portfolio, geography, and          operating profile to prioritize the{" "}
           <span className="font-medium text-slate-100">
             few signals that truly move your world
           </span>
