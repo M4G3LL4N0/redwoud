@@ -1,218 +1,140 @@
-import Link from "next/link";
-import type { IntelligenceEvent } from "@/lib/mockData";
-import StreamRefresh from "./StreamRefresh";
+import { useState, useEffect } from 'react';
+import { StreamRefresh } from '@/components/stream/StreamRefresh';
+import type { IntelligenceEvent } from '@/lib/mockData';
 
-function slugify(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
+export default function StreamPage() {
+  const [events, setEvents] = useState<IntelligenceEvent[]>([]);
 
-async function getLiveEvents(): Promise<IntelligenceEvent[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-      ? process.env.NEXT_PUBLIC_SITE_URL
-      : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
+  // Simulate live feed – replace with real SSE or WebSocket in production
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const response = await fetch('/api/stream');
+      if (response.ok) {
+        const data = await response.json();
+        setEvents((prev) => [data, ...prev]);
+      }
+    };
+    fetchEvents();
+    const interval = setInterval(fetchEvents, 30_000); // poll every 30 s
+    return () => clearInterval(interval);
+  }, []);
 
-    const response = await fetch(`${baseUrl}/api/feed`, {
-      next: { revalidate: 60 },
-    });
-
-    if (!response.ok) return [];
-
-    const data = await response.json();
-    return Array.isArray(data.events) ? data.events : [];
-  } catch {
-    return [];
-  }
-}
-
-export default async function StreamPage() {
-  const events = await getLiveEvents();
-  const topSignals = events.slice(0, 3);
+  // Helper to decide visual tier based on score & impact
+  const getTierClass = (event: IntelligenceEvent) => {
+    if (event.impact === 'High' && event.score >= 90) return 'tier-breaking';
+    if (event.impact === 'High' && event.score >= 75) return 'tier-high';
+    if (event.impact === 'Medium') return 'tier-medium';
+    return 'tier-low';
+  };
 
   return (
-    <StreamRefresh refreshInterval={60000}>
-      <main className="min-h-screen bg-slate-950 text-slate-100">
-        <section className="border-b border-slate-800">
-          <div className="mx-auto max-w-7xl px-6 py-16">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-              Live Stream
-            </p>
-            <h1 className="mt-4 max-w-5xl text-4xl font-semibold leading-tight sm:text-6xl">
-              Real-time global intelligence stream.
-            </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              REDWOUD monitors live public signals and normalizes them into structured intelligence
-              events with score, confidence, entity context, and strategic framing.
-            </p>
-          </div>
-        </section>
+    <div className="min-h-screen bg-slate-900 text-slate-300">
+      <div className="mx-auto max-w-7xl px-4 py-8">
+        {/* Header with console title */}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-extrabold tracking-tight">REDWOUD Intelligence Console</h1>
+          <StreamRefresh />
+        </div>
 
-        <section className="mx-auto grid max-w-7xl gap-6 px-6 py-10 lg:grid-cols-12">
-          <div className="lg:col-span-4 relative">
-            <div className="sticky top-4 rounded-lg border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950 p-4 backdrop-blur-sm">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-800/50">
-                <h2 className="text-base font-medium tracking-tight">Top Signals</h2>
-                <div className="flex items-center gap-1.5">
-                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[11px] font-mono tracking-wide text-emerald-300">STREAM LIVE</span>
-                </div>
-              </div>
-
-              <div className="mt-4 space-y-3">
-                {topSignals.length ? (
-                  topSignals.map((event) => (
-                    <article
-                      key={event.id}
-                      className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-xs uppercase tracking-wide text-slate-400">
-                          {event.region}
-                        </span>
-                        <span className="rounded-full bg-rose-500/15 px-2 py-1 text-xs font-medium text-rose-300">
-                          Score {event.score ?? 0}
-                        </span>
+        {/* Main grid: left = detailed stream, right = top signals & operations */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left column: detailed event list */}
+          <div className="lg:col-span-2">
+            <div className="space-y-4">
+              {events.slice(0, 15).map((event) => (
+                <div                  key={event.id}
+                  className={`
+                    p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm 
+                    transition-all ${getTierClass(event)}
+                    hover:shadow-lg hover:border-white/20
+                  `}
+                >
+                  {/* Header row: topic & region tags */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-1 text-xs rounded font-semibold {event.impact === 'High' ? 'bg-red-500' : event.impact === 'Medium' ? 'bg-amber-500' : 'bg-emerald-500'} text-white">
+                        {event.topic}
+                      </span>
+                      <span className="px-2 py-1 text-xs rounded font-semibold {event.region === 'Americas' ? 'bg-blue-500' : event.region === 'Europe' ? 'bg-indigo-500' : 'bg-green-500'} text-white">
+                        {event.region}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-slate-400">{event.timeAgo}</div>
+                      <div className="text-xs font-mono {event.confidence === 'high' ? 'text-amber-400' : event.confidence === 'medium' ? 'text-slate-400' : 'text-slate-500'}">
+                        {event.confidence.toUpperCase()}
                       </div>
-                      <h3 className="mt-2 text-sm font-semibold text-slate-100">{event.title}</h3>
-                      <p className="mt-2 text-xs text-slate-400">
-                        {event.topic} •{" "}
-                        <Link
-                          href={`/entity/${slugify(event.entity)}`}
-                          className="hover:text-slate-200 hover:underline"
-                        >
-                          {event.entity}
-                        </Link>{" "}
-                        • Confidence {event.confidence}
-                      </p>
-                    </article>
-                  ))
-                ) : (
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400">
-                    No live events available yet.
+                    </div>
                   </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold mb-1">{event.title}</h3>
+
+                  {/* Entity & intensity line */}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-400 truncate">{event.entity}</span>
+                    <span className="px-2 py-1 text-xs rounded {event.intensity.toUpperCase() === 'HIGH' ? 'bg-red-500' : event.intensity.toUpperCase() === 'MEDIUM' ? 'bg-amber-500' : 'bg-green-500'} text-white font-medium">
+                      {event.intensity.toUpperCase()}
+                    </span>
+                  </div>
+
+                  {/* Why it matters – concise strategic note */}
+                  <p className="mt-2 text-xs leading-6 text-slate-400/80">{event.whyItMatters}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right column: top signals & operations panels */}
+          <div className="space-y-6">
+            {/* Top Signals panel */}
+            <div className="p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm">
+              <h2 className="text-sm font-semibold mb-4 text-slate-300">TOP SIGNALS</h2>
+              <div className="space-y-3">
+                {events.slice(0, 5).map((event) => (
+                  <div
+                    key={event.id}
+                    className={`
+                      p-3 rounded-lg transition-all ${
+                        event.impact === 'High'
+                          ? 'bg-red-900/20 border-red-500/30'
+                        : event.impact === 'Medium'
+                          ? 'bg-amber-900/20 border-amber-500/30'
+                        : 'bg-emerald-900/20 border-emerald-500/30'
+                      } hover:shadow-lg hover:border-white/20`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-mono {event.confidence === 'high' ? 'text-amber-400' : event.confidence === 'medium' ? 'text-slate-400' : 'text-slate-500'}">
+                        {event.confidence.toUpperCase()}
+                      </span>
+                      <span className="text-xs text-slate-400">{event.timeAgo}</span>
+                    </div>
+                    <h4 className="text-sm font-medium">{event.title}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Operations panel – compact status tiles */}
+            <div className="p-4 rounded-lg border border-slate-800/50 backdrop-blur-sm">
+              <h2 className="text-sm font-semibold mb-4 text-slate-300">OPERATIONS</h2>
+              <div className="grid grid-cols-2 gap-2">
+                {[['OPERATIONAL', 'STATUS', 'bg-amber-500', 'text-amber-300'], ['MONITORING', 'ACTIVE', 'bg-red-500', 'text-red-300']].map(
+                  ([label, value, bg, color]) => (
+                    <div
+                      key={label}
+                      className={`px-3 py-1.5 rounded text-xs font-medium bg-[#{bg}]/${'0.1'} text-[#{color}]`}
+                    >
+                      {label}
+                      <div className="mt-0.5">{value}</div>
+                    </div>
+                  )
                 )}
               </div>
             </div>
           </div>
-
-          <div className="lg:col-span-8">
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-5 backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold tracking-tight text-slate-100">
-                  Global Event Stream
-                </h2>
-                <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400/90">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-                  </span>
-                  {events.length} live events
-                </div>
-              </div>
-
-              <div className="mt-4 space-y-2">
-                {events.length ? (
-                  events.map((event) => (
-                    <article
-                      key={event.id}
-                      className={clsx(
-                        "rounded-lg border p-4 transition-all",
-                        event.score >= 90
-                          ? "border-rose-800/50 bg-gradient-to-b from-rose-950/20 to-slate-950/90"
-                          : event.score >= 75
-                          ? "border-amber-800/50 bg-gradient-to-b from-amber-950/20 to-slate-950/90"
-                          : "border-slate-800/50 bg-slate-950/60"
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-baseline gap-2">
-                            <span className={clsx(
-                              "text-xs font-medium uppercase tracking-widest",
-                              event.score >= 90 ? "text-rose-300" : 
-                              event.score >= 75 ? "text-amber-300" : "text-slate-400"
-                            )}>
-                              {event.region}
-                            </span>
-                            <span className="text-xs text-slate-500">|</span>
-                            <span className="font-mono text-xs text-slate-400 truncate">
-                              {event.topic}
-                            </span>
-                          </div>
-                          <h3 className="mt-1 text-base font-semibold leading-snug text-slate-100">
-                            {event.title}
-                          </h3>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={clsx(
-                            "rounded px-2 py-1 text-xs font-bold",
-                            event.score >= 90
-                              ? "bg-rose-500/20 text-rose-300"
-                              : event.score >= 75
-                              ? "bg-amber-500/20 text-amber-300"
-                              : "bg-indigo-500/20 text-indigo-300"
-                          )}>
-                            {event.score ?? 0}
-                          </span>
-                          <span className="text-xs font-mono text-slate-500/90">
-                            {event.timeAgo}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="mt-2 flex items-center gap-2 text-[11px] leading-none">
-                        <span className="font-mono text-slate-400/90">
-                          {event.confidence}% conf
-                        </span>
-                        <span className="text-slate-600">|</span>
-                        <Link
-                          href={`/entity/${slugify(event.entity)}`}
-                          className="truncate font-medium text-slate-300 hover:text-slate-100 hover:underline"
-                        >
-                          {event.entity}
-                        </Link>
-                      </div>
-                      <div className="mt-3 flex items-center gap-2 text-[11px]">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-medium text-slate-400/90">Source:</span>
-                          <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono text-slate-300/90 truncate">
-                            {event.sources?.[0] || "Multiple public signals"}
-                          </span>
-                        </div>
-                        <span className="text-slate-600">|</span>
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-medium text-slate-400/90">Updated:</span>
-                          <span className="font-mono text-slate-300/90">
-                            {event.timeAgo}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 space-y-2">
-                        <p className="text-sm leading-6 text-slate-300/90">
-                          {event.summary}
-                        </p>
-                        <p className="text-xs leading-6 text-slate-400/90">
-                          <span className="font-medium text-slate-300">
-                            Strategic Context:
-                          </span>{" "}
-                          {event.whyItMatters}
-                        </p>
-                      </div>
-                    </article>
-                  ))
-                ) : (
-                  <div className="rounded-lg border border-slate-800/50 bg-slate-950/60 p-4 text-sm text-slate-400/90">
-                    Live stream unavailable. Check the feed route or try again shortly.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    </StreamRefresh>
+        </div>
+      </div>
+    </div>
   );
 }
