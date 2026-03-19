@@ -75,8 +75,8 @@ export default function StreamPage() {
                       </span>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm text-slate-400">{event.timeAgo}</div>
-                      <div className="text-xs font-mono {event.confidence === 'high' ? 'text-amber-400' : event.confidence === 'medium' ? 'text-slate-400' : 'text-slate-500'}">
+                      <div className="text-sm text-slate-400 font-mono">{event.timeAgo.replace(' ago', '')}</div>
+                      <div className="text-xs font-mono border border-slate-800/50 px-1.5 py-0.5 rounded {event.confidence === 'high' ? 'text-amber-400' : event.confidence === 'medium' ? 'text-slate-400' : 'text-slate-500'}">
                         {event.confidence.toUpperCase()}
                       </div>
                     </div>

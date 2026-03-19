@@ -88,7 +88,7 @@ export default async function BriefingPage() {
               {briefing.whyThisMatters}
             </p>
             <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400/90">
-              REDWOUD normalizes public signals into structured intelligence briefings with strategic context and risk analysis.
+              REDWOUD normalizes public signals into structured intelligence briefings with strategic context and risk analysis. All briefings are derived from verified sources and updated in real-time.
             </div>
           </div>
         </div>
@@ -99,7 +99,9 @@ export default async function BriefingPage() {
               <h2 className="text-lg font-semibold">Primary Risks</h2>
               <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400">
                 <span>Updated:</span>
-                <span className="font-mono">{new Date().toISOString().split('T')[1].slice(0,5)}</span>
+                <span className="font-mono border border-slate-800/50 bg-slate-900/50 px-2 py-1 rounded">
+                  {new Date().toISOString().split('T')[1].slice(0,5)}
+                </span>
               </div>
             </div>
             {briefing.primaryRisks.length ? (

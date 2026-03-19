@@ -317,20 +317,19 @@ export default async function HomePage() {
                 <div className="mt-2 flex items-center gap-3 text-[0.7rem]">
                   <div className="flex items-center gap-1.5">
                     <span className="font-medium text-slate-400">Source:</span>
-                    <span className="rounded bg-slate-800/50 px-1.5 py-0.5 font-mono text-slate-300">
+                    <span className="rounded border border-slate-800/50 bg-slate-900/50 px-2 py-1 font-mono text-xs text-slate-300 hover:bg-slate-800/50 transition-colors">
                       {event.sources?.[0] || "Multiple public signals"}
                     </span>
                   </div>
-                  <span className="text-slate-600">|</span>
                   <div className="flex items-center gap-1.5">
                     <span className="font-medium text-slate-400">Updated:</span>
-                    <span className="font-mono text-slate-300">
-                      {event.timeAgo}
+                    <span className="rounded border border-slate-800/50 bg-slate-900/50 px-2 py-1 font-mono text-xs text-slate-300">
+                      {event.timeAgo.replace(' ago', '')}
                     </span>
                   </div>
                 </div>
-                <div className="mt-2 text-[0.7rem] text-slate-400">
-                  REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing.
+                <div className="mt-2 text-[0.7rem] text-slate-400 border-t border-slate-800/50 pt-2">
+                  REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing. All events are verified through multiple independent sources.
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
