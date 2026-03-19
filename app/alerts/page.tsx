@@ -1,12 +1,182 @@
+"use client";
+
+import { useState, useEffect, useMemo } from "react";
+import type { IntelligenceEvent, Region, Topic } from "@/lib/mockData";
 import AlertSettingsPanel from "@/components/dashboard/AlertSettingsPanel";
+import EntityActivityPanel from "@/components/dashboard/EntityActivityPanel";
+import EventFeed from "@/components/dashboard/EventFeed";
+import FiltersBar from "@/components/dashboard/FiltersBar";
+
+function isHighPriority(event: IntelligenceEvent): boolean {
+  return event.impact === "High" || (event.intensity === "high" && event.confidence === "high");
+}
+
+function isRiskEvent(event: IntelligenceEvent): boolean {
+  return event.intensity === "high" || event.impact === "High";
+}
+
+interface SummaryCardProps {
+  title: string;
+  description: string;
+  count: number;
+}
+
+function SummaryCard({ title, description, count }: SummaryCardProps) {
+  return (
+    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+      <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
+      <p className="mt-2 text-sm text-slate-300">{description}</p>
+      <div className="mt-4 flex items-center justify-between">
+        <span className="text-3xl font-bold text-emerald-400">{count}</span>
+        <span className="text-xs uppercase tracking-wider text-slate-400">Active</span>
+      </div>
+    </div>
+  );
+}
 
 export default function AlertsPage() {
+  const [events, setEvents] = useState<IntelligenceEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<Region | "All">("All");
+  const [selectedTopic, setSelectedTopic] = useState<Topic | "All">("All");
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch("/api/feed", { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch events: ${response.status}`);
+      }
+      const data: IntelligenceEvent[] = await response.json();
+      setEvents(data);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+    const interval = setInterval(fetchEvents, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const highPriorityEvents = useMemo(() => events.filter(isHighPriority), [events]);
+  const riskEvents = useMemo(() => events.filter(isRiskEvent), [events]);
+
+  const filteredHighPriority = useMemo(() => {
+    return highPriorityEvents.filter((event) => {
+      const regionMatch = selectedRegion === "All" || event.region === selectedRegion;
+      const topicMatch = selectedTopic === "All" || event.topic === selectedTopic;
+      return regionMatch && topicMatch;
+    });
+  }, [highPriorityEvents, selectedRegion, selectedTopic]);
+
+  const filteredRisk = useMemo(() => {
+    return riskEvents.filter((event) => {
+      const regionMatch = selectedRegion === "All" || event.region === selectedRegion;
+      const topicMatch = selectedTopic === "All" || event.topic === selectedTopic;
+      return regionMatch && topicMatch;
+    });
+  }, [riskEvents, selectedRegion, selectedTopic]);
+
+  // Compute distinct counts for categories from high-priority events
+  const entityCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    filteredHighPriority.forEach((event) => {
+      counts.set(event.entity, (counts.get(event.entity) || 0) + 1);
+    });
+    return counts;
+  }, [filteredHighPriority]);
+
+  const regionCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    filteredHighPriority.forEach((event) => {
+      counts.set(event.region, (counts.get(event.region) || 0) + 1);
+    });
+    return counts;
+  }, [filteredHighPriority]);
+
+  const topicCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    filteredHighPriority.forEach((event) => {
+      counts.set(event.topic, (counts.get(event.topic) || 0) + 1);
+    });
+    return counts;
+  }, [filteredHighPriority]);
+
+  const categories = [
+    {
+      title: "Entity Alerts",
+      description: "Track specific countries, companies, industries, or strategic assets.",
+      count: entityCounts.size,
+    },
+    {
+      title: "Region Alerts",
+      description: "Monitor changes across Europe, Asia, the Middle East, Africa, and the Americas.",
+      count: regionCounts.size,
+    },
+    {
+      title: "Topic Alerts",
+      description: "Follow geopolitical, energy, trade, technology, market, and security developments.",
+      count: topicCounts.size,
+    },
+    {
+      title: "Risk Alerts",
+      description: "Surface rising intensity, volatility, disruption, and escalation signals.",
+      count: filteredRisk.length,
+    },
+  ];
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-slate-950 text-slate-100">
+        <section className="border-b border-slate-800">
+          <div className="mx-auto max-w-7xl px-6 py-16">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+              Alerting Control Center
+            </p>
+            <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
+              Real-time intelligence alerts for the signals that matter most.
+            </h1>
+          </div>
+        </section>
+        <div className="flex items-center justify-center py-20">
+          <p className="text-slate-400">Loading alert data...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen bg-slate-950 text-slate-100">
+        <section className="border-b border-slate-800">
+          <div className="mx-auto max-w-7xl px-6 py-16">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+              Alerting Control Center
+            </p>
+            <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
+              Real-time intelligence alerts for the signals that matter most.
+            </h1>
+          </div>
+        </section>
+        <div className="flex items-center justify-center py-20">
+          <p className="text-red-400">Error loading alerts: {error}</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto max-w-7xl px-6 py-16">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-            Alerts
+            Alerting Control Center
           </p>
           <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
             Real-time intelligence alerts for the signals that matter most.
@@ -18,41 +188,104 @@ export default function AlertsPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:grid-cols-12">
-        <div className="lg:col-span-7 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Alert types</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {[
-              {
-                title: "Entity alerts",
-                detail: "Track specific countries, companies, industries, or strategic assets.",
-              },
-              {
-                title: "Region alerts",
-                detail: "Monitor changes across Europe, Asia, the Middle East, Africa, and the Americas.",
-              },
-              {
-                title: "Topic alerts",
-                detail: "Follow geopolitical, energy, trade, technology, market, and security developments.",
-              },
-              {
-                title: "Risk alerts",
-                detail: "Surface rising intensity, volatility, disruption, and escalation signals.",
-              },
-            ].map((item) => (
-              <article
-                key={item.title}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
-              >
-                <h3 className="text-sm font-semibold text-slate-100">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>
-              </article>
-            ))}
+      <section className="mx-auto max-w-7xl px-6 py-10">
+        {/* Live high-priority alerts bridge */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">Active High-Priority Alerts</h2>
+            <span className="rw-chip">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              {filteredHighPriority.length} active
+            </span>
           </div>
+          {filteredHighPriority.length > 0 ? (
+            <EventFeed events={filteredHighPriority} />
+          ) : (
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-center text-slate-400">
+              <p>No active high-priority alerts matching current filters.</p>
+            </div>
+          )}
         </div>
 
-        <div className="lg:col-span-5">
-          <AlertSettingsPanel />
+        {/* Alert category summary cards */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-10">
+          {categories.map((cat) => (
+            <SummaryCard key={cat.title} {...cat} />
+          ))}
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-12">
+          <div className="lg:col-span-8 space-y-6">
+            <FiltersBar
+              selectedRegion={selectedRegion}
+              selectedTopic={selectedTopic}
+              onRegionChange={setSelectedRegion}
+              onTopicChange={setSelectedTopic}
+            />
+            <div className="grid gap-6 md:grid-cols-2">
+              <EntityActivityPanel
+                events={filteredHighPriority}
+                groupBy="entity"
+                title="Entity Alerts"
+                description="Strategic entities with active high-priority signals."
+              />
+              <EntityActivityPanel
+                events={filteredHighPriority}
+                groupBy="region"
+                title="Region Alerts"
+                description="Regions with active high-priority signals."
+              />
+              <EntityActivityPanel
+                events={filteredHighPriority}
+                groupBy="topic"
+                title="Topic Alerts"
+                description="Topics with active high-priority signals."
+              />
+              {/* Risk panel */}
+              <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                      Risk Alerts
+                    </p>
+                    <p className="mt-1 text-xs text-slate-400">
+                      Rising intensity or high impact events.
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-5 space-y-3">
+                  {filteredRisk.slice(0, 6).map((event) => (
+                    <div
+                      key={event.id}
+                      className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3"
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-sm text-slate-200 truncate">{event.title}</span>
+                        <span className="text-xs text-slate-400">
+                          {event.region} · {event.topic}
+                        </span>
+                      </div>
+                      <span
+                        className={`rounded-full px-2 py-1 text-xs font-medium ${
+                          event.intensity === "high"
+                            ? "bg-rose-500/10 text-rose-300"
+                            : "bg-amber-500/10 text-amber-300"
+                        }`}
+                      >
+                        {event.intensity === "high" ? "High intensity" : "High impact"}
+                      </span>
+                    </div>
+                  ))}
+                  {filteredRisk.length === 0 && (
+                    <p className="text-sm text-slate-400">No risk alerts matching current filters.</p>
+                  )}
+                </div>
+              </section>
+            </div>
+          </div>
+          <div className="lg:col-span-4">
+            <AlertSettingsPanel />
+          </div>
         </div>
       </section>
     </main>
