@@ -61,7 +61,7 @@ export default function StreamPage() {
                 <div
                   key={event.id}
                   className={`
-                    p-4 rounded-xl border shadow-[0_0_0_1px_theme(colors.slate.800/30)] backdrop-blur-sm 
+                    p-3 rounded-xl border shadow-[0_0_0_1px_theme(colors.slate.800/30)] backdrop-blur-sm 
                     transition-all duration-200 ease-out
                     ${getTierClass(event)} 
                     hover:shadow-[0_0_15px_theme(colors.slate.800/30)] hover:border-slate-700/50
@@ -70,37 +70,69 @@ export default function StreamPage() {
                     after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:to-slate-950/20 after:pointer-events-none
                   `}
                 >
+                  {/* Score Indicator */}
+                  <div className="absolute top-2 right-2">
+                    <div className={`
+                      px-2 py-1 rounded-full text-xs font-semibold
+                      ${event.score && event.score >= 90 ? 'bg-red-500/20 text-red-300' :
+                        event.score && event.score >= 75 ? 'bg-amber-500/20 text-amber-300' :
+                        'bg-emerald-500/20 text-emerald-300'}
+                    `}>
+                      {event.score ?? 'N/A'}
+                    </div>
+                  </div>
+
                   {/* Header row: topic & region tags */}
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-1 text-xs rounded font-semibold {event.impact === 'High' ? 'bg-red-500' : event.impact === 'Medium' ? 'bg-amber-500' : 'bg-emerald-500'} text-white">
+                      <span className={`px-2 py-1 text-xs rounded font-semibold ${
+                        event.impact === 'High' ? 'bg-red-500/20 text-red-300' :
+                        event.impact === 'Medium' ? 'bg-amber-500/20 text-amber-300' :
+                        'bg-emerald-500/20 text-emerald-300'
+                      }`}>
                         {event.topic}
                       </span>
-                      <span className="px-2 py-1 text-xs rounded font-semibold {event.region === 'Americas' ? 'bg-blue-500' : event.region === 'Europe' ? 'bg-indigo-500' : 'bg-green-500'} text-white">
+                      <span className={`px-2 py-1 text-xs rounded font-semibold ${
+                        event.region === 'Americas' ? 'bg-blue-500/20 text-blue-300' :
+                        event.region === 'Europe' ? 'bg-indigo-500/20 text-indigo-300' :
+                        'bg-green-500/20 text-green-300'
+                      }`}>
                         {event.region}
                       </span>
                     </div>
                     <div className="text-right">
                       <div className="text-sm text-slate-400 font-mono">{event.timeAgo.replace(' ago', '')}</div>
-                      <div className="text-xs font-mono border border-slate-800/50 px-1.5 py-0.5 rounded {event.confidence === 'high' ? 'text-amber-400' : event.confidence === 'medium' ? 'text-slate-400' : 'text-slate-500'}">
+                      <div className={`text-xs font-mono border border-slate-800/50 px-1.5 py-0.5 rounded ${
+                        event.confidence === 'high' ? 'text-amber-400' :
+                        event.confidence === 'medium' ? 'text-slate-400' :
+                        'text-slate-500'
+                      }`}>
                         {event.confidence.toUpperCase()}
                       </div>
                     </div>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-semibold mb-1">{event.title}</h3>
+                  <h3 className="text-base font-semibold mb-1">{event.title}</h3>
 
-                  {/* Entity & intensity line */}
+                  {/* Entity & Source */}
+                  <div className="flex items-center gap-2 text-sm mb-2">
+                    <span className="text-slate-300 font-medium">{event.entity}</span>
+                    <span className="text-slate-400">•</span>
+                    <span className="text-slate-400 text-xs">{event.source}</span>
+                  </div>
+
+                  {/* Intensity & Why it matters */}
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-400 truncate">{event.entity}</span>
-                    <span className="px-2 py-1 text-xs rounded {event.intensity.toUpperCase() === 'HIGH' ? 'bg-red-500' : event.intensity.toUpperCase() === 'MEDIUM' ? 'bg-amber-500' : 'bg-green-500'} text-white font-medium">
+                    <p className="text-xs leading-5 text-slate-400/80">{event.whyItMatters}</p>
+                    <span className={`px-2 py-1 text-xs rounded ${
+                      event.intensity.toUpperCase() === 'HIGH' ? 'bg-red-500/20 text-red-300' :
+                      event.intensity.toUpperCase() === 'MEDIUM' ? 'bg-amber-500/20 text-amber-300' :
+                      'bg-emerald-500/20 text-emerald-300'
+                    }`}>
                       {event.intensity.toUpperCase()}
                     </span>
                   </div>
-
-                  {/* Why it matters – concise strategic note */}
-                  <p className="mt-2 text-xs leading-6 text-slate-400/80">{event.whyItMatters}</p>
                 </div>
               ))}
             </div>
