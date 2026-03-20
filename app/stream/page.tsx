@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { StreamRefresh } from '@/components/stream/StreamRefresh';
+import StreamRefresh from '@/components/stream/StreamRefresh';
 import type { IntelligenceEvent } from '@/lib/mockData';
 
 export default function StreamPage() {
@@ -25,9 +25,9 @@ export default function StreamPage() {
 
   // Helper to decide visual tier based on score & impact
   const getTierClass = (event: IntelligenceEvent) => {
-    if (event.impact === 'High' && event.score >= 90) 
+    if (event.impact === 'High' && (event.score ?? 0) >= 90) 
       return 'border-rose-500/30 bg-gradient-to-b from-rose-900/25 to-rose-950 animate-pulse shadow-rose-900/20';
-    if (event.impact === 'High' && event.score >= 75) 
+    if (event.impact === 'High' && (event.score ?? 0) >= 75) 
       return 'border-rose-500/20 bg-gradient-to-b from-rose-900/15 to-slate-950 shadow-rose-900/10';
     if (event.impact === 'Medium') 
       return 'border-amber-500/20 bg-gradient-to-b from-amber-900/15 to-slate-950 shadow-amber-900/10';
