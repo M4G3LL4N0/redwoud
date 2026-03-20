@@ -27,7 +27,12 @@ export interface EventItem {
   summary: string;
   whyItMatters: string;
   score?: number;
-  sources?: string[];
+  sources?: {
+    name: string;
+    tier: 'premium' | 'verified' | 'standard';
+  }[];
+  isCritical?: boolean;
+  priorityScore?: number; // 1-100
   timestamp?: string;
 }
 
