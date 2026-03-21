@@ -23,12 +23,25 @@ interface SummaryCardProps {
 
 function SummaryCard({ title, description, count }: SummaryCardProps) {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-      <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
-      <p className="mt-2 text-sm text-slate-300">{description}</p>
-      <div className="mt-4 flex items-center justify-between">
+    <div className="rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-900/50 to-slate-950/50 p-5 hover:border-slate-700 transition-all group cursor-pointer">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
+        <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
+          {count} active
+        </span>
+      </div>
+      <p className="mt-2 text-sm text-slate-300 line-clamp-2">{description}</p>
+      <div className="mt-4 flex items-end justify-between">
         <span className="text-3xl font-bold text-emerald-400">{count}</span>
-        <span className="text-xs uppercase tracking-wider text-slate-400">Active</span>
+        <button 
+          className="text-xs font-medium text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={(e) => {
+            e.stopPropagation();
+            // TODO: Implement drill-down
+          }}
+        >
+          View Details →
+        </button>
       </div>
     </div>
   );
@@ -201,8 +214,16 @@ export default function AlertsPage() {
           {filteredHighPriority.length > 0 ? (
             <EventFeed events={filteredHighPriority} />
           ) : (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-center text-slate-400">
-              <p>No active high-priority alerts matching current filters.</p>
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-8 text-center">
+              <div className="mx-auto max-w-xs">
+                <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-medium text-slate-200 mb-1">No Active Signals</h4>
+                <p className="text-sm text-slate-400">Adjust filters or check back later for updates</p>
+              </div>
             </div>
           )}
         </div>

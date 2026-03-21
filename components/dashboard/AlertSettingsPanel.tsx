@@ -62,13 +62,21 @@ export default function AlertSettingsPanel() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300">
-          <p>
-            Selected alert: <span className="font-medium text-slate-100">{selectedAlert}</span>
-          </p>
-          <p className="mt-2">
-            Frequency: <span className="font-medium text-slate-100">{frequency}</span>
-          </p>
+        <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-4 transition-all hover:bg-slate-950/70">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-medium text-slate-300">Active Configuration</p>
+              <p className="mt-1 text-sm font-semibold text-slate-100">
+                {selectedAlert} Monitoring
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs font-medium text-slate-300">Cadence</p>
+              <p className="mt-1 text-sm font-semibold text-slate-100">
+                {frequency} Updates
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
