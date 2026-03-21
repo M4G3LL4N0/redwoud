@@ -75,7 +75,7 @@ export default async function EntityPage({ params }: PageProps) {
 
       <section className="mx-auto grid max-w-6xl gap-6 px-6 py-8 lg:grid-cols-12">
         <div className="lg:col-span-4 space-y-6">
-          {/* Entity Overview */}
+          {/* Enhanced Entity Overview */}
           <div className="rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-950/80 to-slate-900/30 p-6">
             <div className="flex items-start justify-between">
               <div>
@@ -86,7 +86,7 @@ export default async function EntityPage({ params }: PageProps) {
                 <p className="text-xs font-medium text-slate-300">{events.length} Signals</p>
               </div>
             </div>
-            
+              
             <div className="mt-6 grid grid-cols-3 gap-4">
               <div className="space-y-1">
                 <p className="text-xs text-slate-400">Risk Score</p>
@@ -126,6 +126,7 @@ export default async function EntityPage({ params }: PageProps) {
             </div>
           </div>
 
+          {/* Enhanced Risk Profile */}
           <div className="rounded-xl border border-slate-800 bg-gradient-to-b from-slate-900/60 to-slate-900/20 p-5">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-medium tracking-wider text-slate-300 uppercase">Risk Profile</h2>
@@ -134,6 +135,7 @@ export default async function EntityPage({ params }: PageProps) {
                 <span className="text-[10px] uppercase tracking-wider text-slate-400">Live</span>
               </div>
             </div>
+            
             <div className="mt-3 flex items-end justify-between">
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-400">
@@ -150,12 +152,12 @@ export default async function EntityPage({ params }: PageProps) {
                     {avgScore > 70 ? 'Elevated' : avgScore > 40 ? 'Moderate' : 'Stable'}
                   </span>
                 </div>
-                {/* Color indicator */}
                 <div className={`h-2 w-2 rounded-full ${
                   avgScore > 70 ? 'bg-red-400' : 
                   avgScore > 40 ? 'bg-amber-400' : 'bg-emerald-400'}`}/>
               </div>
             </div>
+
             <div className="mt-2">
               <div className="h-1 w-full rounded-full bg-slate-800 overflow-hidden">
                 <div 
@@ -167,6 +169,7 @@ export default async function EntityPage({ params }: PageProps) {
                 />
               </div>
             </div>
+
             <div className="mt-4 grid grid-cols-3 gap-3 text-xs">
               <div className="space-y-1">
                 <span className="text-slate-400">Strategic</span>
@@ -187,25 +190,68 @@ export default async function EntityPage({ params }: PageProps) {
                 </div>
               </div>
             </div>
+
+            <div className="mt-4">
+              <h3 className="text-sm font-medium text-slate-300 mb-2">Risk Drivers</h3>
+              <div className="space-y-2">
+                {topTopics.slice(0,3).map(topic => {
+                  const topicScore = Math.round(
+                    events.filter(e => e.topic === topic).reduce((sum, e) => sum + (e.score || 0), 0) /
+                    events.filter(e => e.topic === topic).length
+                  );
+                  return (
+                    <div key={topic} className="flex items-center justify-between">
+                      <span className="text-xs text-slate-400">{topic}</span>
+                      <div className="w-20 h-1.5 bg-slate-800 rounded-full">
+                        <div 
+                          className={`h-full rounded-full ${
+                            topicScore > 70 ? 'bg-red-500' : 
+                            topicScore > 40 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                          style={{ width: `${topicScore}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
+          {/* Enhanced Regional Exposure */}
           <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
-            <h2 className="text-lg font-semibold tracking-tight">Regional Exposure</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold tracking-tight">Regional Exposure</h2>
+              <span className="text-xs text-slate-400">{topRegions.length} Active Regions</span>
+            </div>
+            
             <div className="mt-4 space-y-3">
               {topRegions.length ? (
                 topRegions.map((region) => {
                   const percentage = Math.round(
                     (events.filter(e => e.region === region).length / events.length) * 100
                   );
+                  const regionScore = Math.round(
+                    events.filter(e => e.region === region).reduce((sum, e) => sum + (e.score || 0), 0) /
+                    events.filter(e => e.region === region).length
+                  );
+                  
                   return (
                     <div key={region} className="space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-slate-300">{region}</span>
-                        <span className="text-xs text-slate-400">{percentage}%</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-400">{percentage}%</span>
+                          <div className={`h-2 w-2 rounded-full ${
+                            regionScore > 70 ? 'bg-red-400' : 
+                            regionScore > 40 ? 'bg-amber-400' : 'bg-emerald-400'}`}/>
+                        </div>
                       </div>
                       <div className="h-1 w-full rounded-full bg-slate-800">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-sky-500"
+                          className={`h-full rounded-full ${
+                            regionScore > 70 ? 'bg-gradient-to-r from-red-500 to-pink-500' : 
+                            regionScore > 40 ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 
+                            'bg-gradient-to-r from-emerald-500 to-teal-500'}`}
                           style={{ width: `${percentage}%` }}
                         ></div>
                       </div>
@@ -218,23 +264,41 @@ export default async function EntityPage({ params }: PageProps) {
             </div>
           </div>
 
+          {/* Enhanced Top Topics */}
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-lg font-semibold">Top Topics</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Top Topics</h2>
+              <span className="text-xs text-slate-400">{topTopics.length} Active Themes</span>
+            </div>
+            
             <div className="mt-4 grid grid-cols-2 gap-2">
               {topTopics.length ? (
                 topTopics.map((topic) => {
                   const percentage = Math.round(
                     (events.filter(e => e.topic === topic).length / events.length) * 100
                   );
+                  const topicScore = Math.round(
+                    events.filter(e => e.topic === topic).reduce((sum, e) => sum + (e.score || 0), 0) /
+                    events.filter(e => e.topic === topic).length
+                  );
+                  
                   return (
                     <div key={topic} className="space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-slate-300">{topic}</span>
-                        <span className="text-xs text-slate-400">{percentage}%</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-400">{percentage}%</span>
+                          <div className={`h-2 w-2 rounded-full ${
+                            topicScore > 70 ? 'bg-red-400' : 
+                            topicScore > 40 ? 'bg-amber-400' : 'bg-emerald-400'}`}/>
+                        </div>
                       </div>
                       <div className="h-1 w-full rounded-full bg-slate-800">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-sky-500"
+                          className={`h-full rounded-full ${
+                            topicScore > 70 ? 'bg-gradient-to-r from-red-500 to-pink-500' : 
+                            topicScore > 40 ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 
+                            'bg-gradient-to-r from-emerald-500 to-teal-500'}`}
                           style={{ width: `${percentage}%` }}
                         ></div>
                       </div>
