@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import EntityActivityPanel from '@/components/dashboard/EntityActivityPanel';
 import StreamRefresh from '@/components/stream/StreamRefresh';
 import type { IntelligenceEvent } from '@/lib/mockData';
 
@@ -138,53 +139,53 @@ export default function StreamPage() {
             </div>
           </div>
 
-          {/* Right column: top signals & operations panels */}
-          <div className="space-y-6">
-            {/* Top Signals panel */}
-            <div className="p-4 rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/40 to-slate-950/90 backdrop-blur-sm shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
-              <div className="absolute -top-[1px] -left-[1px] -right-[1px] h-[2px] bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
-              <h2 className="text-sm font-semibold mb-4 text-slate-300">TOP SIGNALS</h2>
-              <div className="grid grid-cols-2 gap-2">
-                {events.slice(0, 5).map((event) => (
-                  <div
-                    key={event.id}
-                    className={`
-                      p-3 rounded-lg transition-all 
-                      ${event.impact === 'High'
-                        ? 'bg-red-900/20 border-red-500/30'
-                        : event.impact === 'Medium'
-                        ? 'bg-amber-900/20 border-amber-500/30'
-                        : 'bg-emerald-900/20 border-emerald-500/30'}
-                      hover:shadow-lg hover:border-white/20`}
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-mono {event.confidence === 'high' ? 'text-amber-400' : event.confidence === 'medium' ? 'text-slate-400' : 'text-slate-500'}">
-                        {event.confidence.toUpperCase()}
-                      </span>
-                      <span className="text-xs text-slate-400">{event.timeAgo}</span>
-                    </div>
-                    <h4 className="text-sm font-medium">{event.title}</h4>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Right column: analytics & operations */}
+          <div className="space-y-4">
+            {/* Entity Activity Panel */}
+            <EntityActivityPanel 
+              events={events}
+              groupBy="entity"
+              title="Strategic Entities"
+              description="Most signaled frameworks and assets."
+            />
 
-            {/* Operations panel – compact status tiles */}
-            <div className="p-4 rounded-xl border border-slate-800/50 bg-gradient-to-b from-emerald-900/15 to-slate-950/90 backdrop-blur-sm shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+            {/* Sector Activity Panel */}
+            <EntityActivityPanel 
+              events={events.filter(e => e.impact === 'High')}
+              groupBy="topic"
+              title="Critical Sectors"
+              description="Highest impact developments by topic."
+            />
+
+            {/* Operations Status */}
+            <div className="p-4 rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/40 to-slate-950/90 backdrop-blur-sm shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
               <div className="absolute -top-[1px] -left-[1px] -right-[1px] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"></div>
-              <h2 className="text-sm font-semibold mb-4 text-slate-300">OPERATIONS</h2>
-              <div className="grid grid-cols-2 gap-2">
-                {[['OPERATIONAL', 'STATUS', 'bg-amber-500', 'text-amber-300'], ['MONITORING', 'ACTIVE', 'bg-red-500', 'text-red-300']].map(
-                  ([label, value, bg, color]) => (
-                    <div
-                      key={label}
-                      className={`px-3 py-1.5 rounded text-xs font-medium bg-[#{bg}]/${'0.1'} text-[#{color}]`}
-                    >
-                      {label}
-                      <div className="mt-0.5">{value}</div>
-                    </div>
-                  )
-                )}
+              <h2 className="text-sm font-semibold mb-4 text-slate-300">OPERATIONS DASHBOARD</h2>
+              
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="flex flex-col p-2 bg-slate-800/20 rounded-lg border border-slate-800">
+                  <span className="text-xs text-slate-400">Alerts</span>
+                  <span className="text-xl font-medium text-emerald-300">{events.filter(e => e.impact === 'High').length}</span>
+                </div>
+                <div className="flex flex-col p-2 bg-slate-800/20 rounded-lg border border-slate-800">
+                  <span className="text-xs text-slate-400">Signals</span>
+                  <span className="text-xl font-medium text-amber-300">{events.length}</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-400">Monitor Frequency</span>
+                  <span className="font-mono text-emerald-300">30s</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-400">Last Update</span>
+                  <span className="font-mono text-slate-300">{liveUpdated}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-400">Data Freshness</span>
+                  <span className="font-mono text-amber-300">&lt;1min</span>
+                </div>
               </div>
             </div>
           </div>
