@@ -9,8 +9,8 @@ async function getLiveEvents(): Promise<IntelligenceEvent[]> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
       ? process.env.NEXT_PUBLIC_SITE_URL
       : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
     const response = await fetch(`${baseUrl}/api/feed`, {
       next: { revalidate: 60 },
@@ -30,8 +30,8 @@ async function getLiveTrends(): Promise<TrendSummary[]> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
       ? process.env.NEXT_PUBLIC_SITE_URL
       : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
     const response = await fetch(`${baseUrl}/api/trends`, {
       next: { revalidate: 120 },
@@ -51,16 +51,14 @@ async function getLiveBriefing(): Promise<DailyBriefing> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
       ? process.env.NEXT_PUBLIC_SITE_URL
       : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
     const response = await fetch(`${baseUrl}/api/briefing`, {
       next: { revalidate: 120 },
     });
 
-    if (!response.ok) {
-      throw new Error("Briefing fetch failed");
-    }
+    if (!response.ok) throw new Error("Briefing fetch failed");
 
     const data = await response.json();
     if (data?.briefing) return data.briefing;
@@ -101,146 +99,95 @@ export default async function HomePage() {
     .sort((a, b) => (b.score || 0) - (a.score || 0))
     .slice(0, 4);
 
-  const topEvent = liveEvents[0];
-
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 pattern-grid">
+    <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-3">
+        <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap gap-2 text-xs">
-              <span className="cli-status-tag">
-                LIVE_MONITORING
+            <div className="flex flex-wrap gap-3 text-xs text-slate-400">
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                Live monitoring active
               </span>
-              <span className="cli-status-tag">
-                EVENTS:{liveEvents.length}
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                {liveEvents.length} events
               </span>
-              <span className="cli-status-tag">
-                REGIONS:{activeRegions.length}
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                {activeRegions.length} regions
               </span>
-              <span className="cli-status-tag">
-                HIGH_INTENSITY:{highIntensitySignals}
+              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
+                {highIntensitySignals} high-intensity
               </span>
             </div>
-            <Link href="/stream" className="cli-action-btn text-xs font-medium px-3 py-1.5">
-              OPEN_STREAM →
+            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
+              Open full stream →
             </Link>
           </div>
         </div>
       </section>
 
       <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="cli-prompt mb-6">
-            <span className="text-emerald-400">{">"}</span>
-            <span className="text-slate-300">REDWOUD · REAL-TIME_GLOBAL_INTELLIGENCE</span>
+        <div className="mx-auto max-w-7xl px-6 py-14">
+          <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
+            REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-12">
-            <div className="lg:col-span-8">
-              <div className="cli-prompt">
-                <span className="text-emerald-400">{">"}</span>
-                <span className="text-slate-300">ACTIVE_MISSION</span>
-              </div>
+          <h1 className="max-w-5xl text-4xl font-semibold leading-tight sm:text-6xl">
+            Strategic intelligence for a world that moves too fast to read manually.
+          </h1>
 
-              <h1 className="mt-3 max-w-5xl text-4xl font-semibold leading-tight sm:text-6xl">
-                Operational intelligence for strategic decision-making.
-              </h1>
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+            REDWOUD transforms live public signals into structured intelligence for operators,
+            analysts, founders, investors, and strategic teams.
+          </p>
 
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-                REDWOUD transforms live public signals into structured intelligence for operators,
-                analysts, founders, investors, and strategic teams.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/stream"
-                  className="cli-action-btn"
-                >
-                  OPEN_STREAM
-                </Link>
-                <Link
-                  href="/briefing"
-                  className="cli-action-btn-secondary"
-                >
-                  READ_BRIEFING
-                </Link>
-                <Link
-                  href="/investors"
-                  className="cli-action-btn-secondary"
-                >
-                  INVESTOR_OVERVIEW
-                </Link>
-              </div>
-            </div>
-
-            <div className="lg:col-span-4">
-              <div className="glass-panel rounded-2xl p-5">
-                <div className="flex items-center justify-between">
-                  <p className="cli-prompt text-slate-400">
-                    TOP_SIGNAL
-                  </p>
-                  <span className="cli-status-tag bg-rose-500/10 text-rose-300">
-                    SCORE:{topEvent?.score ?? 0}
-                  </span>
-                </div>
-                <h2 className="mt-4 text-lg font-semibold text-slate-100">
-                  {topEvent?.title || "No top signal available"}
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-slate-300">
-                  {topEvent?.summary || "Live signals will appear here as they are processed."}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-400">
-                  {topEvent?.region ? <span>{topEvent.region}</span> : null}
-                  {topEvent?.topic ? (
-                    <>
-                      <span>•</span>
-                      <span>{topEvent.topic}</span>
-                    </>
-                  ) : null}
-                  {topEvent?.entity ? (
-                    <>
-                      <span>•</span>
-                      <Link
-                        href={`/entity/${slugify(topEvent.entity)}`}
-                        className="hover:text-slate-200 hover:underline"
-                      >
-                        {topEvent.entity}
-                      </Link>
-                    </>
-                  ) : null}
-                </div>
-              </div>
-            </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/stream"
+              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950"
+            >
+              Open Live Stream
+            </Link>
+            <Link
+              href="/briefing"
+              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+            >
+              Read Briefing
+            </Link>
+            <Link
+              href="/investors"
+              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200"
+            >
+              Investor Overview
+            </Link>
           </div>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="glass-panel rounded-2xl p-4">
-              <p className="cli-prompt text-slate-400">
-                EVENTS_MONITORED
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Events monitored now
               </p>
               <p className="mt-3 text-2xl font-semibold text-white">{liveEvents.length}</p>
             </div>
 
-            <div className="glass-panel rounded-2xl p-4">
-              <p className="cli-prompt text-slate-400">
-                ACTIVE_REGIONS
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Active regions
               </p>
               <p className="mt-3 text-2xl font-semibold text-white">{activeRegions.length}</p>
             </div>
 
-            <div className="glass-panel rounded-2xl p-4">
-              <p className="cli-prompt text-slate-400">
-                HIGH_INTENSITY
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                High-intensity signals
               </p>
               <p className="mt-3 text-2xl font-semibold text-white">{highIntensitySignals}</p>
             </div>
 
-            <div className="glass-panel rounded-2xl p-4">
-              <p className="cli-prompt text-slate-400">
-                BRIEFING_STATUS
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Briefing status
               </p>
-              <p className="mt-3 text-2xl font-semibold text-emerald-300">ACTIVE</p>
+              <p className="mt-3 text-2xl font-semibold text-emerald-300">Updated</p>
             </div>
           </div>
         </div>
@@ -280,12 +227,12 @@ export default async function HomePage() {
             {liveEvents.slice(0, 6).map((event) => (
               <article
                 key={event.id}
-                className={(
+                className={[
                   "rounded-lg border p-4 transition-all",
-                  event.intensity === "high" 
+                  event.intensity === "high"
                     ? "border-rose-800/30 bg-gradient-to-b from-rose-950/20 to-slate-950/80"
-                    : "border-slate-800/50 bg-slate-950/60"
-                )}
+                    : "border-slate-800/50 bg-slate-950/60",
+                ].join(" ")}
               >
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs uppercase tracking-wide text-slate-400">
@@ -295,9 +242,7 @@ export default async function HomePage() {
                     <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
                       Score {event.score ?? 0}
                     </span>
-                    <span className="font-mono text-xs tracking-tighter text-slate-400">
-                      {event.timeAgo.replace(' ago', '').join(" ")}
-                    </span>
+                    <span className="text-xs text-slate-500">{event.timeAgo}</span>
                   </div>
                 </div>
 
@@ -307,30 +252,15 @@ export default async function HomePage() {
                   <span>{event.topic}</span>
                   <span>•</span>
                   <Link
-                    href={`/entity/${slugify(event.entity).join(" ")}`}
+                    href={`/entity/${slugify(event.entity)}`}
                     className="hover:text-slate-200 hover:underline"
                   >
                     {event.entity}
                   </Link>
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
-                </div>
-                <div className="mt-2 flex items-center gap-3 text-[0.7rem]">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-medium text-slate-400">Source:</span>
-                    <span className="rounded border border-slate-800/50 bg-slate-900/50 px-2 py-1 font-mono text-xs text-slate-300 hover:bg-slate-800/50 transition-colors">
-                      {event.sources?.[0] || "Multiple public signals"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-medium text-slate-400">Updated:</span>
-                    <span className="rounded border border-slate-800/50 bg-slate-900/50 px-2 py-1 font-mono text-xs text-slate-300">
-                      {event.timeAgo.replace(' ago', '')}
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-2 text-[0.7rem] text-slate-400 border-t border-slate-800/50 pt-2">
-                  REDWOUD normalizes public signals into structured intelligence events with score, confidence and strategic framing. All events are verified through multiple independent sources.
+                  <span>•</span>
+                  <span>{event.sources?.[0] || "Source unavailable"}</span>
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
@@ -340,7 +270,7 @@ export default async function HomePage() {
                   {event.whyItMatters}
                 </p>
               </article>
-            )).join(" ")}
+            ))}
           </div>
         </div>
 
@@ -376,7 +306,7 @@ export default async function HomePage() {
                 </div>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
               </div>
-            )).join(" ")}
+            ))}
           </div>
         </div>
       </section>
