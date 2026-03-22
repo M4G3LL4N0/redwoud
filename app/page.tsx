@@ -214,6 +214,106 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="border-b border-slate-800 bg-slate-950/60">
+        <div className="mx-auto max-w-7xl px-6 py-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Signal Clusters</h2>
+            <p className="text-sm text-slate-400">Live signal concentration analysis</p>
+          </div>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {(() => {
+              // Calculate clusters
+              const totalSignals = liveEvents.length;
+              const regionCounts = new Map<string, number>();
+              const topicCounts = new Map<string, number>();
+              const entityCounts = new Map<string, number>();
+
+              liveEvents.forEach(event => {
+                regionCounts.set(event.region, (regionCounts.get(event.region) || 0) + 1);
+                topicCounts.set(event.topic, (topicCounts.get(event.topic) || 0) + 1);
+                entityCounts.set(event.entity, (entityCounts.get(event.entity) || 0) + 1);
+              });
+
+              // Get top clusters
+              const topRegions = Array.from(regionCounts.entries())
+                .filter(([_, count]) => count / totalSignals > 0.2)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+
+              const topTopics = Array.from(topicCounts.entries())
+                .filter(([_, count]) => count / totalSignals > 0.15)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+
+              const topEntities = Array.from(entityCounts.entries())
+                .filter(([_, count]) => count / totalSignals > 0.1)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+
+              const clusters = [
+                ...topRegions.map(([region, count]) => ({
+                  type: 'Region',
+                  name: region,
+                  count,
+                  percent: Math.round((count / totalSignals) * 100),
+                  events: liveEvents.filter(e => e.region === region).slice(0, 3)
+                })),
+                ...topTopics.map(([topic, count]) => ({
+                  type: 'Topic',
+                  name: topic,
+                  count,
+                  percent: Math.round((count / totalSignals) * 100),
+                  events: liveEvents.filter(e => e.topic === topic).slice(0, 3)
+                })),
+                ...topEntities.map(([entity, count]) => ({
+                  type: 'Entity',
+                  name: entity,
+                  count,
+                  percent: Math.round((count / totalSignals) * 100),
+                  events: liveEvents.filter(e => e.entity === entity).slice(0, 3)
+                }))
+              ].sort((a, b) => b.count - a.count);
+
+              return clusters.map((cluster, i) => (
+                <div
+                  key={`${cluster.type}-${cluster.name}`}
+                  className="group relative overflow-hidden rounded-2xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950/80 p-5 hover:border-slate-700/50"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                      {cluster.type}
+                    </span>
+                    <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
+                      {cluster.percent}%
+                    </span>
+                  </div>
+                  <h3 className="mt-2 text-lg font-semibold">{cluster.name}</h3>
+                  <p className="mt-1 text-sm text-slate-300">
+                    {cluster.count} signals clustered
+                  </p>
+
+                  <div className="mt-4 space-y-2">
+                    {cluster.events.map((event) => (
+                      <div
+                        key={event.id}
+                        className="rounded-lg border border-slate-800/50 bg-slate-950/60 p-2 text-sm"
+                      >
+                        <p className="truncate font-medium">{event.title}</p>
+                        <p className="text-xs text-slate-400">{event.timeAgo}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br from-slate-800/20 to-slate-900/50 opacity-50 transition-all group-hover:opacity-100" />
+                  <div className="absolute -left-8 -bottom-8 h-24 w-24 rounded-full bg-gradient-to-br from-slate-800/20 to-slate-900/50 opacity-50 transition-all group-hover:opacity-100" />
+                </div>
+              ));
+            })()}
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-12">
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
           <div className="flex items-center justify-between">
