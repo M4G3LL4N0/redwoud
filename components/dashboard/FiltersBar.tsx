@@ -1,79 +1,68 @@
-import { regions, topics, type Region, type Topic } from "@/lib/mockData";
+"use client";
+
+import type { Region, Topic } from "@/lib/mockData";
 
 interface FiltersBarProps {
-  selectedRegion: Region | "All";
-  selectedTopic: Topic | "All";
-  onRegionChange: (region: Region | "All") => void;
-  onTopicChange: (topic: Topic | "All") => void;
+  selectedRegion: Region;
+  selectedTopic: "All" | Topic;
+  onRegionChange: React.Dispatch<React.SetStateAction<Region>>;
+  onTopicChange: React.Dispatch<React.SetStateAction<"All" | Topic>>;
 }
 
-export function FiltersBar({
+const regions: Region[] = ["All", "Americas", "Europe", "Asia", "Middle East", "Africa"];
+const topics: Array<"All" | Topic> = [
+  "All",
+  "Geopolitics",
+  "Markets",
+  "Trade",
+  "Energy",
+  "Technology",
+  "Security",
+];
+
+export default function FiltersBar({
   selectedRegion,
   selectedTopic,
   onRegionChange,
   onTopicChange,
 }: FiltersBarProps) {
   return (
-    <section
-      aria-label="Filters"
-      className="rw-card flex flex-col gap-3 p-3.5 md:flex-row md:items-center md:justify-between md:px-4"
-    >
-      <div>
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
-          Scope
-        </p>
-        <p className="mt-1 text-sm text-slate-200">
-          Tune the live view by{" "}
-          <span className="font-semibold text-slate-50">region</span> and{" "}
-          <span className="font-semibold text-slate-50">topic</span>.
-        </p>
-      </div>
-      <div className="flex flex-wrap gap-2 md:justify-end">
-        <FilterSelect
-          label="Region"
-          value={selectedRegion}
-          onChange={(value) => onRegionChange(value as Region | "All")}
-          options={["All", ...regions]}
-        />
-        <FilterSelect
-          label="Topic"
-          value={selectedTopic}
-          onChange={(value) => onTopicChange(value as Topic | "All")}
-          options={["All", ...topics]}
-        />
-      </div>
-    </section>
-  );
-}
-
-interface FilterSelectProps {
-  label: string;
-  value: string;
-  options: string[];
-  onChange: (value: string) => void;
-}
-
-function FilterSelect({ label, value, options, onChange }: FilterSelectProps) {
-  return (
-    <label className="inline-flex items-center gap-2 rounded-full border border-rw-border/90 bg-rw-surface/80 px-3 py-1.5 text-xs text-slate-200 shadow-sm">
-      <span className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
-        {label}
-      </span>
-      <select
-        className="bg-transparent text-xs font-medium text-slate-50 outline-none"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-      >
-        {options.map((option) => (
-          <option
-            key={option}
-            value={option}
-            className="bg-slate-800 text-slate-100"
+    <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+            Region
+          </label>
+          <select
+            value={selectedRegion}
+            onChange={(e) => onRegionChange(e.target.value as Region)}
+            className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 outline-none"
           >
-            {option}
-          </option>
-        ))}
-      </select>
-    </label>
+            {regions.map((region) => (
+              <option key={region} value={region}>
+                {region}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+            Topic
+          </label>
+          <select
+            value={selectedTopic}
+            onChange={(e) => onTopicChange(e.target.value as "All" | Topic)}
+            className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 outline-none"
+          >
+            {topics.map((topic) => (
+              <option key={topic} value={topic}>
+                {topic}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </div>
   );
 }

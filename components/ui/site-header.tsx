@@ -1,89 +1,43 @@
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/product", label: "Product" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/briefing", label: "Briefing" },
+const navItems = [
+  { href: "/", label: "Dashboard" },
+  { href: "/stream", label: "Stream" },
   { href: "/trends", label: "Trends" },
+  { href: "/briefing", label: "Briefing" },
   { href: "/alerts", label: "Alerts" },
   { href: "/investors", label: "Investors" },
 ];
 
-export function SiteHeader() {
-  const session = useSession();
-
+export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-slate-950/95 border-b border-slate-800/50 backdrop-blur-sm">
-      <div className="mx-auto max-w-7xl px-4">
-        {/* Status bar */}
-        <div className="flex h-8 items-center justify-between border-b border-slate-800/30 px-3">
-          <div className="flex items-center gap-3">
-            <div className="cli-prompt">
-              <span className="status-light bg-emerald-400 shadow-[0_0_8px_theme(colors.emerald.400/0.3)]"></span>
-              OPERATIONAL
-            </div>
-            <div className="cli-prompt">
-              <span className="status-light bg-amber-400 shadow-[0_0_8px_theme(colors.amber.400/0.2)]"></span>
-              MONITORING_ACTIVE
-            </div>
-          </div>
-          <div className="flex items-center gap-3 font-mono text-xs">
-            <span className="text-slate-300">UTC:{new Date().toISOString().split('T')[1].slice(0,8)}</span>
-            <span className="text-slate-400">{new Date().toISOString().split('T')[0]}</span>
-          </div>
-        </div>
-
-        {/* Main navigation */}
-        <div className="flex h-14 items-center justify-between px-2">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.5)] group-hover:bg-emerald-300 transition-colors" />
-            <div className="-space-y-0.5">
-              <div className="font-mono text-sm font-semibold tracking-tight text-slate-200">{">"} REDWOUD</div>
-              <div className="text-[10px] uppercase tracking-[0.15em] text-slate-500">STRATEGIC INTELLIGENCE PLATFORM</div>
-            </div>
+    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/85 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="text-sm font-semibold tracking-[0.2em] text-emerald-300">
+            REDWOUD
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex">
-            {links.map((link) => (
+          <nav className="hidden md:flex items-center gap-5 text-sm text-slate-300">
+            {navItems.map((item) => (
               <Link
-                key={link.href}
-                href={link.href}
-                className="cli-nav-link relative rounded px-2.5 py-1 text-xs font-medium text-slate-300 transition-all hover:text-white group"
+                key={item.href}
+                href={item.href}
+                className="transition-colors hover:text-white"
               >
-                {link.label}
-                <span className="cli-nav-indicator absolute inset-x-2.5 bottom-1 h-px bg-emerald-400/0 transition-all duration-300 group-hover:bg-emerald-400/80" />
+                {item.label}
               </Link>
             ))}
           </nav>
+        </div>
 
-          <div className="flex items-center gap-2">
-            {/* Authenticated Insights Link */}
-            {session && (
-              <Link
-                href="/app/insights"
-                className="cli-action-btn hidden md:flex items-center gap-1.5 rounded border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-white hover:shadow-[0_0_15px_rgba(52,211,153,0.1)]"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
-                </span>
-                INSIGHTS
-              </Link>
-            )}
-
-            <Link
-              href="/stream"
-              className="cli-action-btn hidden md:flex items-center gap-1.5 rounded border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-white hover:shadow-[0_0_15px_rgba(52,211,153,0.1)]"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
-              </span>
-              STREAM
-            </Link>
-          </div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/stream"
+            className="rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-200 transition-colors hover:border-slate-500 hover:text-white"
+          >
+            Open Stream
+          </Link>
         </div>
       </div>
     </header>

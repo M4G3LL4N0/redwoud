@@ -1,10 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/ui/site-header";
+import SiteHeader from "@/components/ui/site-header";
 
 export const metadata: Metadata = {
   title: "REDWOUD",
-  description: "AI-powered real-time global intelligence platform",
+  description: "Global intelligence system",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-slate-950 text-slate-100 antialiased">
+      <body className="bg-slate-950 text-slate-100">
         <SiteHeader />
         {children}
       </body>
