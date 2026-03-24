@@ -202,15 +202,19 @@ export default function AlertsPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-10">
-        {/* Live high-priority alerts bridge */}
-        <div className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Active High-Priority Alerts</h2>
-            <span className="rw-chip">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              {filteredHighPriority.length} active
-            </span>
-          </div>
+        {/* Operational Control Center Layout */}
+        <div className="grid gap-8 lg:grid-cols-12">
+          {/* Main Content Column */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Active Alerts Bridge */}
+            <section className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-slate-100">Active High-Priority Signals</h2>
+                <span className="rw-chip bg-slate-800/50">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  {filteredHighPriority.length} active
+                </span>
+              </div>
           {filteredHighPriority.length > 0 ? (
             <EventFeed events={filteredHighPriority} />
           ) : (
@@ -228,15 +232,15 @@ export default function AlertsPage() {
           )}
         </div>
 
-        {/* Alert category summary cards */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-10">
-          {categories.map((cat) => (
-            <SummaryCard key={cat.title} {...cat} />
-          ))}
-        </div>
+            {/* Compact Summary Cards */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {categories.map((cat) => (
+                <SummaryCard key={cat.title} {...cat} />
+              ))}
+            </div>
 
-        <div className="grid gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-8 space-y-6">
+            {/* Signal Activity Panels */}
+            <div className="space-y-6">
             <FiltersBar
               selectedRegion={selectedRegion}
               selectedTopic={selectedTopic}
@@ -304,8 +308,22 @@ export default function AlertsPage() {
               </section>
             </div>
           </div>
-          <div className="lg:col-span-4">
+          </div>
+
+          {/* Configuration Column */}
+          <div className="lg:col-span-4 space-y-8">
             <AlertSettingsPanel />
+            {/* Future Controls Placeholder */}
+            <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                  Advanced Controls
+                </p>
+                <p className="mt-1 text-xs text-slate-400">
+                  Coming soon: Escalation workflows and team collaboration
+                </p>
+              </div>
+            </section>
           </div>
         </div>
       </section>

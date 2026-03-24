@@ -10,10 +10,10 @@ export default function AlertSettingsPanel() {
     <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-          Alert Settings
+          Alert Configuration
         </p>
         <p className="mt-1 text-xs text-slate-400">
-          Configure future REDWOUD alert workflows.
+          Operationalize intelligence workflows across entities, regions, and topics.
         </p>
       </div>
 
@@ -65,17 +65,22 @@ export default function AlertSettingsPanel() {
         <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-4 transition-all hover:bg-slate-950/70">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-medium text-slate-300">Active Configuration</p>
+              <p className="text-xs font-medium text-slate-300">Active Workflow</p>
               <p className="mt-1 text-sm font-semibold text-slate-100">
-                {selectedAlert} Monitoring
+                {selectedAlert} Intelligence Monitoring
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs font-medium text-slate-300">Cadence</p>
+              <p className="text-xs font-medium text-slate-300">Operational Cadence</p>
               <p className="mt-1 text-sm font-semibold text-slate-100">
-                {frequency} Updates
+                {frequency} Intelligence Updates
               </p>
             </div>
+          </div>
+          <div className="mt-3 pt-3 border-t border-slate-800">
+            <p className="text-xs text-slate-400">
+              This configuration will be applied to all new alerts.
+            </p>
           </div>
         </div>
       </div>
