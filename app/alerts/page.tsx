@@ -230,6 +230,7 @@ export default function AlertsPage() {
               </div>
             </div>
           )}
+        </section>
         </div>
 
             {/* Compact Summary Cards */}
