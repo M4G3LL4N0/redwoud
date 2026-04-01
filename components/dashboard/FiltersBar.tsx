@@ -27,8 +27,19 @@ export default function FiltersBar({
   onTopicChange,
 }: FiltersBarProps) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-      <div className="grid gap-4 md:grid-cols-2">
+    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+      <div className="border-b border-slate-800 pb-5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+          Signal Filters
+        </p>
+        <h3 className="mt-1 text-lg font-semibold text-slate-100">
+          Intelligence Monitoring Scope
+        </h3>
+        <p className="mt-2 text-sm text-slate-400">
+          Filter active alerts by strategic region and topic focus
+        </p>
+      </div>
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
         <div>
           <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
             Region

@@ -186,34 +186,60 @@ export default function AlertsPage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
+      {/* Header Section */}
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-16">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-            Alerting Control Center
-          </p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
-            Real-time intelligence alerts for the signals that matter most.
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            REDWOUD alerts are designed to notify users when important developments emerge across
-            tracked entities, regions, topics, and risk conditions.
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
+                Intelligence Alerting Control Center
+              </p>
+              <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
+                Operational Intelligence Alerts
+              </h1>
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+                Enterprise-grade alerting for strategic entities, regions, topics, and risk conditions.
+              </p>
+            </div>
+            <div className="hidden md:block">
+              <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+                <p className="text-xs uppercase tracking-wide text-slate-400">System Status</p>
+                <div className="mt-2 flex items-center space-x-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                  <span className="text-sm text-slate-200">Operational</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* Main Content Section */}
       <section className="mx-auto max-w-7xl px-6 py-10">
-        {/* Operational Control Center Layout */}
         <div className="grid gap-8 lg:grid-cols-12">
-          {/* Main Content Column */}
+          {/* Alerts Column */}
           <div className="lg:col-span-8 space-y-8">
-            {/* Active Alerts Bridge */}
+            {/* Active Alerts Module */}
             <section className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-slate-100">Active High-Priority Signals</h2>
-                <span className="rw-chip bg-slate-800/50">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  {filteredHighPriority.length} active
-                </span>
+                <div>
+                  <h2 className="text-xl font-semibold text-slate-100">Active High-Priority Signals</h2>
+                  <p className="mt-1 text-sm text-slate-400">
+                    Real-time alerts requiring immediate attention
+                  </p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="rw-chip bg-slate-800/50">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    {filteredHighPriority.length} active
+                  </span>
+                  <button
+                    className="text-sm font-medium text-emerald-400 hover:text-emerald-300"
+                    onClick={fetchEvents}
+                  >
+                    Refresh
+                  </button>
+                </div>
               </div>
           {filteredHighPriority.length > 0 ? (
             <EventFeed events={filteredHighPriority} />

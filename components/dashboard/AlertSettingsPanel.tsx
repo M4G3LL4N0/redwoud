@@ -8,16 +8,27 @@ export default function AlertSettingsPanel() {
 
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-      <div>
+      <div className="border-b border-slate-800 pb-5">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
           Alert Configuration
         </p>
-        <p className="mt-1 text-xs text-slate-400">
-          Operationalize intelligence workflows across entities, regions, and topics.
+        <h3 className="mt-1 text-lg font-semibold text-slate-100">
+          Intelligence Monitoring Settings
+        </h3>
+        <p className="mt-2 text-sm text-slate-400">
+          Configure enterprise-grade alerting workflows across strategic entities, regions, and topics.
         </p>
       </div>
 
-      <div className="mt-5 space-y-5">
+      <div className="mt-5 space-y-6">
+        <div className="space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+            Monitoring Configuration
+          </p>
+          <p className="text-sm text-slate-300">
+            Define alert types and operational cadence
+          </p>
+        </div>
         <div>
           <label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
             Alert type
