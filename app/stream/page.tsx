@@ -120,7 +120,7 @@ export default function StreamPage() {
                   <div className="flex items-center gap-2 text-sm mb-2">
                     <span className="text-slate-300 font-medium">{event.entity}</span>
                     <span className="text-slate-400">•</span>
-                    <span className="text-slate-400 text-xs">{event.source}</span>
+                    <span className="text-slate-400 text-xs">{getSourceName(event.source)}</span>
                   </div>
 
                   {/* Intensity & Why it matters */}

@@ -22,7 +22,7 @@ export default function EventFeed({ events = [] }: Props) {
         >
           <p className="text-sm text-slate-200">{event.title}</p>
           <p className="mt-1 text-xs text-slate-400">
-            {event.region} • {event.topic}
+            {event.region} • {event.topic} • {getSourceName(event.sources?.[0])}
           </p>
         </div>
       ))}

@@ -360,7 +360,7 @@ export default async function HomePage() {
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
                   <span>•</span>
-                  <span>{event.sources?.[0] || "Source unavailable"}</span>
+                  <span>{getSourceName(event.sources?.[0])}</span>
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
