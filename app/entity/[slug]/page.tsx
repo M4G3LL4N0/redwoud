@@ -1,6 +1,61 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { type Region } from "@/lib/mockData";
 
+type MetricCardProps = {
+  label: string;
+  value: number | string;
+  suffix?: string;
+  sublabel?: string;
+  variant?: 'positive' | 'warning' | 'negative' | 'neutral';
+  trend?: 'up' | 'down' | 'neutral';
+};
+
+function MetricCard({ 
+  label, 
+  value, 
+  suffix = '', 
+  sublabel, 
+  variant = 'neutral',
+  trend = 'neutral'
+}: MetricCardProps) {
+  const variantClasses = {
+    positive: 'text-emerald-400',
+    warning: 'text-amber-400',  
+    negative: 'text-rose-400',
+    neutral: 'text-blue-400',
+  };
+  
+  const trendIcons = {
+    up: '↑',
+    down: '↓',
+    neutral: '→'
+  };
+
+  const trendColors = {
+    up: 'text-emerald-500',
+    down: 'text-rose-500',  
+    neutral: 'text-slate-500'
+  };
+
+  return (
+    <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
+      <div className="flex items-center justify-between">
+        <p className="text-xs uppercase tracking-wider text-slate-400">{label}</p>
+        {trend !== 'neutral' && (
+          <span className={`text-xs ${trendColors[trend]}`}>{trendIcons[trend]}</span>
+        )}
+      </div>
+      <div className="mt-1 flex items-baseline gap-1">
+        <p className={`text-xl font-semibold ${variantClasses[variant]}`}>
+          {value}
+          {suffix}
+        </p>
+        {sublabel && <p className="text-xs text-slate-500 ml-1">{sublabel}</p>}
+      </div>
+    </div>
+  );
+}
+
 type PageProps = {
   params: {
     slug: string;
@@ -115,8 +170,181 @@ export default async function EntityPage({ params }: PageProps) {
 
       <section className="mx-auto grid max-w-6xl gap-6 px-6 py-8 lg:grid-cols-12">
         <div className="lg:col-span-4 space-y-6">
-          {/* Entity Risk Profile */}
+          {/* Spatial Intelligence */}
           <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Spatial Intelligence</h2>
+              <span className="text-xs text-slate-500">
+                Regional Exposure Distribution
+              </span>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Region Concentration */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-medium text-slate-300">
+                  Geographic Footprint
+                </h3>
+                <div className="space-y-3">
+                  {topRegions.map(([region, count]) => (
+                    <div key={region}>
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-slate-300">{region}</span>
+                        <span className="text-slate-400">
+                          {Math.round((count / totalSignals) * 100)}%
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-slate-800 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${
+                            ['Europe', 'Americas'].includes(region)
+                              ? 'bg-blue-500'
+                              : 'bg-emerald-500'
+                          }`}
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              (count / totalSignals) * 100 * 1.5
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Risk Map */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-medium text-slate-300">
+                  Regional Risk Profile
+                </h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {topRegions.slice(0, 4).map(([region]) => {
+                    const regionalEvents = events.filter(e => e.region === region);
+                    const regionalScore = Math.round(
+                      regionalEvents.reduce((sum, e) => sum + (e.score || 0), 0) /
+                        regionalEvents.length
+                    );
+                
+                    return (
+                      <div
+                        key={region}
+                        className="rounded-lg border border-slate-800 p-3"
+                      >
+                        <p className="text-xs text-slate-300">{region}</p>
+                        <p
+                          className={`mt-1 text-xl font-medium ${
+                            regionalScore > 70
+                              ? 'text-rose-400'
+                              : regionalScore > 40
+                              ? 'text-amber-400'
+                              : 'text-emerald-400'
+                          }`}
+                        >
+                          {regionalScore}
+                        </p>
+                        <p className="text-[10px] text-slate-400 mt-1">
+                          {regionalEvents.length} signals
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Thematic Intelligence */}
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Thematic Intelligence</h2>
+              <span className="text-xs text-slate-500">
+                Engagement Across Strategic Domains
+              </span>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Topic Distribution */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium text-slate-300">
+                  Focus Areas
+                </h3>
+                {topTopics.map(([topic, count]) => (
+                  <div key={topic} className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-300">{topic}</span>
+                      <span className="text-slate-400">
+                        {count} ({Math.round((count / totalSignals) * 100)}%)
+                      </span>
+                    </div>
+                    <div className="relative h-6 bg-slate-800 rounded-full overflow-hidden">
+                      <div
+                        className={`absolute inset-y-0 left-0 ${
+                          topic === 'Energy'
+                            ? 'bg-amber-500'
+                            : topic === 'Security'
+                            ? 'bg-rose-500'
+                            : topic === 'Technology'
+                            ? 'bg-blue-500'
+                            : 'bg-emerald-500'
+                        }`}
+                        style={{
+                          width: `${Math.min(
+                            100,
+                            (count / (topTopics[0]?.[1] || 1)) * 100
+                          )}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Topic Risk Indicators */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-medium text-slate-300">
+                  Topic Risk Indicators
+                </h3>
+                <div className="space-y-2">
+                  {topTopics.slice(0, 4).map(([topic]) => {
+                    const topicEvents = events.filter(e => e.topic === topic);
+                    const avgIntensity = topicEvents.filter(
+                      e => e.intensity === 'high'
+                    ).length;
+                
+                    return (
+                      <div
+                        key={topic}
+                        className="rounded-lg border border-slate-800 p-3"
+                      >
+                        <p className="text-xs text-slate-300">{topic}</p>
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`inline-block h-2 w-2 rounded-full ${
+                                avgIntensity > 3
+                                  ? 'bg-rose-500'
+                                  : avgIntensity > 1
+                                  ? 'bg-amber-500'
+                                  : 'bg-emerald-500'
+                              }`}
+                            />
+                            <span className="text-xs text-slate-400">
+                              {avgIntensity} high intensity
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500">
+                            {topicEvents.length} signals
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Strategic Risk Profile</h2>
               <div className={`rounded-full px-3 py-1 text-xs font-medium ${
