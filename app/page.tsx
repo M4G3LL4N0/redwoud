@@ -101,31 +101,60 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
+      {/* Mission Frame */}
       <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-6 py-8">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-3 w-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
+            </span>
+            <span className="text-sm font-medium text-emerald-300">LIVE</span>
+          </div>
+          <h1 className="mt-4 text-4xl font-medium tracking-tight">REDWOUD</h1>
+          <p className="mt-1 text-xl text-slate-300">Live strategic intelligence layer</p>
+          <p className="mt-2 max-w-2xl text-slate-400">
+            Real-time synthesis of global signals across geopolitics, markets, and systems.
+          </p>
+        </div>
+      </section>
+
+      {/* System Metrics */}
+      <section className="border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap gap-3 text-xs text-slate-400">
-              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
-                Live monitoring active
-              </span>
-              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
-                {liveEvents.length} events
-              </span>
-              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
-                {activeRegions.length} regions
-              </span>
-              <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1">
-                {highIntensitySignals} high-intensity
-              </span>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div>
+              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                Total Signals
+              </p>
+              <p className="mt-1 text-2xl font-semibold">{liveEvents.length}</p>
             </div>
-            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
-              Open full stream →
-            </Link>
+            <div>
+              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                High Risk
+              </p>
+              <p className="mt-1 text-2xl font-semibold">{highIntensitySignals}</p>
+            </div>
+            <div>
+              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                Regions
+              </p>
+              <p className="mt-1 text-2xl font-semibold">{activeRegions.length}</p>
+            </div>
+            <div>
+              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                Entities
+              </p>
+              <p className="mt-1 text-2xl font-semibold">
+                {new Set(liveEvents.map((e) => e.entity)).size}
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+      {/* Signal Clustering */}
+      <section className="border-b border-slate-800 bg-slate-950/60">
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
@@ -238,32 +267,47 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Priority Signals */}
       <section className="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-4">
+        <div className="mx-auto max-w-7xl px-6 py-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Priority Signals</h2>
-            <p className="text-sm text-slate-400">Highest-scoring developments requiring attention</p>
+            <h2 className="text-lg font-semibold">Escalating Now</h2>
+            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
+              View full stream →
+            </Link>
           </div>
 
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-4 space-y-4">
             {topAlerts.length ? (
               topAlerts.map((event) => (
                 <div
                   key={event.id}
-                  className="rounded-xl border border-slate-800 bg-slate-900/70 p-3"
+                  className="rounded-lg border border-slate-800 bg-slate-900/80 p-4"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm font-medium text-white">{event.region}</div>
-                    <div className="rounded-full bg-rose-500/15 px-2 py-1 text-xs font-medium text-rose-200">
-                      Score {event.score ?? 0}
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-medium text-white">{event.title}</h3>
+                      <div className="mt-1 flex items-center gap-2 text-sm text-slate-400">
+                        <span>{event.entity}</span>
+                        <span>•</span>
+                        <span>{event.region}</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <span className="rounded-full bg-rose-500/15 px-2 py-1 text-xs font-medium text-rose-200">
+                        Score {event.score ?? 0}
+                      </span>
+                      <span className="text-xs text-slate-500">
+                        {typeof event.sources?.[0] === "string"
+                          ? event.sources[0]
+                          : event.sources?.[0]?.name || "Unknown source"}
+                      </span>
                     </div>
                   </div>
-                  <h3 className="mt-2 text-sm font-semibold">{event.title}</h3>
-                  <p className="mt-1 text-xs text-slate-400">{event.topic}</p>
                 </div>
               ))
             ) : (
-              <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-3 text-sm text-slate-400">
+              <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-4 text-sm text-slate-400">
                 No high-priority alerts currently surfaced
               </div>
             )}
