@@ -9,7 +9,7 @@ export default function DailyBriefingSection({
   briefing,
 }: DailyBriefingSectionProps) {
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-300">
@@ -28,7 +28,7 @@ export default function DailyBriefingSection({
         <p className="mt-3 text-sm leading-7 text-slate-300">{briefing.summary}</p>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+      <div className="mt-4 grid gap-3 lg:grid-cols-2">
         <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
             Key themes
@@ -58,7 +58,7 @@ export default function DailyBriefingSection({
         </div>
       </div>
 
-      <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+      <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-3">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
           Why this matters
         </p>

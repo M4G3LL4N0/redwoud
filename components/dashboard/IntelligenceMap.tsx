@@ -94,7 +94,7 @@ export default function IntelligenceMap({
     [...filtered].sort((a, b) => b.count - a.count)[0] || displayRegions[0];
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
@@ -109,7 +109,7 @@ export default function IntelligenceMap({
         </span>
       </div>
 
-      <div className="mt-5 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+      <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-3">
         <div className="flex items-center justify-between gap-3">
           <h3 className="text-sm font-semibold text-slate-100">{topRegion.region}</h3>
           <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
@@ -119,7 +119,7 @@ export default function IntelligenceMap({
         <p className="mt-3 text-sm leading-6 text-slate-300">{topRegion.summary}</p>
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {filtered.map(({ region, count, conflictScore, economicScore, summary }) => (
           <div
             key={region}

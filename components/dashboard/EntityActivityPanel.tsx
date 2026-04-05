@@ -30,7 +30,7 @@ export default function EntityActivityPanel({
     .slice(0, 8);
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
       <div>
         <p className="text-xs uppercase tracking-wide text-slate-400">{title}</p>
         <p className="mt-1 text-xs text-slate-500">{description}</p>
@@ -41,7 +41,7 @@ export default function EntityActivityPanel({
           items.map(([label, count]) => (
             <div
               key={label}
-              className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2"
+              className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2"
             >
               <span className="text-sm text-slate-300">{label}</span>
               <span className="rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-300">
