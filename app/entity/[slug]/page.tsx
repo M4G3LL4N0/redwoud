@@ -10,6 +10,7 @@ type PageProps = {
 type EventItem = {
   id: string;
   title: string;
+  summary?: string;
   region: Region;
   topic: string;
   score: number;
