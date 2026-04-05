@@ -42,18 +42,82 @@ export default function StreamPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-300">
-      <div className="mx-auto max-w-7xl px-4 py-8">
-        {/* Header with console title and live status */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-extrabold tracking-tight">REDWOUD Intelligence Console</h1>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-white">LIVE</span>
-            <span className="ml-3 text-sm text-slate-300">{liveUpdated}</span>
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="mx-auto max-w-7xl px-4 py-6">
+        {/* Header */}
+        <div className="border-b border-slate-800 pb-6 mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">REDWOUD CONSOLE</h1>
+              <p className="text-sm text-slate-400 mt-1">Strategic Intelligence Operations Surface</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                <span className="text-xs font-mono text-slate-300">LIVE STREAM</span>
+              </div>
+              <div className="text-xs font-mono text-slate-400 px-2 py-1 bg-slate-900/50 rounded">
+                {liveUpdated} UTC
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Main grid: left = detailed stream, right = top signals & operations */}
+        {/* Priority Signals */}
+        {events.filter(e => (e.score ?? 0) >= 85 || 
+                          (e.impact === 'High' && e.intensity === 'high' && e.confidence === 'high')).length > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-rose-400">
+                Priority Signals
+              </h2>
+              <span className="text-xs text-slate-400">
+                {events.filter(e => (e.score ?? 0) >= 85).length} critical indicators
+              </span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {events
+                .filter(e => (e.score ?? 0) >= 85 || 
+                           (e.impact === 'High' && e.intensity === 'high' && e.confidence === 'high'))
+                .slice(0, 4)
+                .map(event => (
+                  <div key={event.id} className={`
+                    p-4 rounded-lg border 
+                    ${getTierClass(event)}
+                    shadow-[0_0_0_1px_theme(colors.rose.900/30)]
+                    relative
+                  `}>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`text-xs px-2 py-1 rounded font-medium ${
+                            event.impact === 'High' ? 'bg-rose-500/20 text-rose-300' :
+                            'bg-amber-500/20 text-amber-300'
+                          }`}>
+                            {event.topic}
+                          </span>
+                          <span className="text-xs px-2 py-1 rounded font-medium bg-slate-800/50 text-slate-300">
+                            {event.region}
+                          </span>
+                        </div>
+                        <h3 className="text-sm font-semibold line-clamp-2">{event.title}</h3>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="text-xs font-mono text-slate-300">{event.timeAgo}</span>
+                        <span className={`
+                          text-xs font-mono mt-1 px-1.5 py-0.5 rounded
+                          ${event.score && event.score >= 85 ? 'bg-rose-500/20 text-rose-300' : 
+                            'bg-amber-500/20 text-amber-300'}
+                        `}>
+                          {event.score ?? 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left column: detailed event list */}
           <div className="lg:col-span-2">
