@@ -1,6 +1,46 @@
 import StatusIndicator from "@/components/dashboard/StatusIndicator"
 import type { DailyBriefing } from "@/lib/mockData"
 
+function getRegionalBreakdown(events: IntelligenceEvent[]): [string, number][] {
+  const regionCounts = events.reduce((acc, event) => {
+    acc[event.region] = (acc[event.region] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
+
+  return Object.entries(regionCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+}
+
+function getThematicBreakdown(events: IntelligenceEvent[]): [string, number][] {
+  const topicCounts = events.reduce((acc, event) => {
+    acc[event.topic] = (acc[event.topic] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
+
+  return Object.entries(topicCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+}
+
+function getStrategicImplications(events: IntelligenceEvent[]): string {
+  if (!events.length) return "No significant strategic implications detected."
+
+  const highIntensityCount = events.filter(e => e.intensity === "high").length
+  const highConfidenceCount = events.filter(e => e.confidence === "high").length
+  const regionalConcentration = getRegionalBreakdown(events)[0][1]
+
+  if (highIntensityCount > 3 && highConfidenceCount > 3) {
+    return "Elevated strategic volatility detected across multiple regions. Recommend heightened situational awareness and contingency planning."
+  }
+
+  if (regionalConcentration > events.length * 0.5) {
+    return `Significant signal concentration in ${getRegionalBreakdown(events)[0][0]}. Recommend focused monitoring and resource allocation.`
+  }
+
+  return "Strategic environment remains within normal parameters. Continue routine monitoring and analysis."
+}
+
 function normalizeBriefing(input: any): DailyBriefing {
   const raw = input?.briefing ?? input ?? {}
 
@@ -71,6 +111,43 @@ export default async function BriefingPage() {
             </div>
 
             <StatusIndicator risks={briefing.primaryRisks.length} />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-800">
+        <div className="mx-auto max-w-7xl px-6 py-12">
+          <h2 className="text-2xl font-semibold mb-6">Strategic Landscape</h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
+              <h3 className="text-lg font-semibold mb-4">Regional Activity</h3>
+              {getRegionalBreakdown(events).map(([region, count], i) => (
+                <div key={region} className="flex items-center justify-between py-2 border-b border-slate-800/50">
+                  <span className="text-sm text-slate-300">{region}</span>
+                  <span className="text-sm font-medium text-slate-400">{count} signals</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
+              <h3 className="text-lg font-semibold mb-4">Thematic Focus</h3>
+              {getThematicBreakdown(events).map(([topic, count], i) => (
+                <div key={topic} className="flex items-center justify-between py-2 border-b border-slate-800/50">
+                  <span className="text-sm text-slate-300">{topic}</span>
+                  <span className="text-sm font-medium text-slate-400">{count} signals</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
+              <h3 className="text-lg font-semibold mb-4">Strategic Implications</h3>
+              <p className="text-sm text-slate-300 mb-4">
+                {getStrategicImplications(events)}
+              </p>
+              <div className="text-xs text-slate-400">
+                Analysis derived from signal intensity, confidence, and regional concentration.
+              </div>
+            </div>
           </div>
         </div>
       </section>
