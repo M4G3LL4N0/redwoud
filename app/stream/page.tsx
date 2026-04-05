@@ -113,26 +113,49 @@ export default function StreamPage() {
                     </div>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-base font-semibold mb-1">{event.title}</h3>
+                      {/* Title & Entity */}
+                      <h3 className="text-sm font-semibold text-slate-100 mb-1.5 line-clamp-2">
+                        {event.title}
+                      </h3>
+                      
+                      {/* Entity & Topic */}
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-medium text-slate-300">
+                          {event.entity}
+                        </span>
+                        <span className="text-slate-700">•</span>
+                        <span className={`text-xs px-1.5 py-0.5 rounded ${
+                          event.topic === 'Energy' ? 'bg-amber-500/10 text-amber-300' :
+                          event.topic === 'Technology' ? 'bg-blue-500/10 text-blue-300' :
+                          'bg-slate-800 text-slate-400'
+                        }`}>
+                          {event.topic}
+                        </span>
+                      </div>
 
-                  {/* Entity & Source */}
-                  <div className="flex items-center gap-2 text-sm mb-2">
-                    <span className="text-slate-300 font-medium">{event.entity}</span>
-                    <span className="text-slate-400">•</span>
-                    <span className="text-slate-400 text-xs">{typeof event.sources?.[0] === "string" ? event.sources[0] : event.sources?.[0]?.name || "Source unavailable"}</span>
-                  </div>
-
-                  {/* Intensity & Why it matters */}
-                  <div className="flex items-center justify-between text-sm">
-                    <p className="text-xs leading-5 text-slate-400/80">{event.whyItMatters}</p>
-                    <span className={`px-2 py-1 text-xs rounded ${
-                      event.intensity.toUpperCase() === 'HIGH' ? 'bg-red-500/20 text-red-300' :
-                      event.intensity.toUpperCase() === 'MEDIUM' ? 'bg-amber-500/20 text-amber-300' :
-                      'bg-emerald-500/20 text-emerald-300'
-                    }`}>
-                      {event.intensity.toUpperCase()}
-                    </span>
+                      {/* Source & Intensity */}
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-slate-400 flex items-center gap-1">
+                          <span className="max-w-[120px] truncate">
+                            {typeof event.sources?.[0] === "string" 
+                              ? event.sources[0] 
+                              : event.sources?.[0]?.name || "Unknown source"}
+                          </span>
+                          {event.sources?.[0]?.tier && (
+                            <span className="text-[10px] px-1 py-0.5 rounded bg-slate-800/50 text-slate-400">
+                              Tier {event.sources[0].tier}
+                            </span>
+                          )}
+                        </div>
+                        <span className={`text-xs px-2 py-0.5 rounded font-mono ${
+                          event.intensity === 'high' ? 'bg-rose-500/10 text-rose-300' :
+                          event.intensity === 'medium' ? 'bg-amber-500/10 text-amber-300' :
+                          'bg-emerald-500/10 text-emerald-300'
+                        }`}>
+                          {event.intensity.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -188,6 +211,24 @@ export default function StreamPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Status Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/80 backdrop-blur border-t border-slate-800/50 py-1.5 px-4">
+        <div className="mx-auto max-w-7xl flex justify-between items-center text-xs">
+          <div className="text-slate-400 font-mono">REDWOUD INTELLIGENCE CONSOLE v2.0</div>
+          <div className="flex items-center gap-3">
+            <span className="text-slate-400">Last refresh: {liveUpdated} UTC</span>
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-emerald-400">LIVE</span>
+            </span>
           </div>
         </div>
       </div>
