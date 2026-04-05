@@ -1,639 +1,388 @@
-import { supabaseAdmin } from "@/lib/supabase";
-import { type Region } from "@/lib/mockData";
-
-type MetricCardProps = {
-  label: string;
-  value: number | string;
-  suffix?: string;
-  sublabel?: string;
-  variant?: 'positive' | 'warning' | 'negative' | 'neutral';
-  trend?: 'up' | 'down' | 'neutral';
-};
-
-function MetricCard({ 
-  label, 
-  value, 
-  suffix = '', 
-  sublabel, 
-  variant = 'neutral',
-  trend = 'neutral'
-}: MetricCardProps) {
-  const variantClasses = {
-    positive: 'text-emerald-400',
-    warning: 'text-amber-400',  
-    negative: 'text-rose-400',
-    neutral: 'text-blue-400',
-  };
-  
-  const trendIcons = {
-    up: '↑',
-    down: '↓',
-    neutral: '→'
-  };
-
-  const trendColors = {
-    up: 'text-emerald-500',
-    down: 'text-rose-500',  
-    neutral: 'text-slate-500'
-  };
-
-  return (
-    <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-      <div className="flex items-center justify-between">
-        <p className="text-xs uppercase tracking-wider text-slate-400">{label}</p>
-        {trend !== 'neutral' && (
-          <span className={`text-xs ${trendColors[trend]}`}>{trendIcons[trend]}</span>
-        )}
-      </div>
-      <div className="mt-1 flex items-baseline gap-1">
-        <p className={`text-xl font-semibold ${variantClasses[variant]}`}>
-          {value}
-          {suffix}
-        </p>
-        {sublabel && <p className="text-xs text-slate-500 ml-1">{sublabel}</p>}
-      </div>
-    </div>
-  );
-}
-
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getSourceName } from "@/lib/utils";
+import type { EventSource } from "@/lib/types";
 
 type EventItem = {
-  id: string;
+  id?: string | number;
   title: string;
   summary?: string;
-  region: Region;
-  topic: string;
-  score: number;
-  intensity: string;
-  confidence: string;
-  timestamp: string;
-  sources?: Array<{ name: string }>;
-  why_it_matters?: string;
+  entity?: string;
+  region?: string;
+  topic?: string;
+  score?: number;
+  confidence?: number;
+  timestamp?: string;
+  sources?: Array<string | EventSource>;
 };
 
-export default async function EntityPage({ params }: PageProps) {
-  const slug = decodeURIComponent(params.slug);
-  const entityName = slug.replace(/-/g, " ");
+type PageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
 
-  let events: EventItem[] = [];
-
+async function getEvents(): Promise<EventItem[]> {
   try {
-    const { data } = await supabaseAdmin
-      .from("events")
-      .select("*")
-      .ilike("entity", `%${entityName}%`)
-      .order("score", { ascending: false })
-      .limit(50);
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL?.startsWith("http")
+        ? process.env.NEXT_PUBLIC_APP_URL
+        : process.env.NEXT_PUBLIC_APP_URL
+          ? `https://${process.env.NEXT_PUBLIC_APP_URL}`
+          : "http://localhost:3000";
 
-    events = (data as EventItem[]) || [];
+    const res = await fetch(`${baseUrl}/api/feed`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    if (Array.isArray(data)) return data as EventItem[];
+    if (Array.isArray(data?.events)) return data.events as EventItem[];
+    return [];
   } catch {
-    events = [];
+    return [];
+  }
+}
+
+function decodeSlug(slug: string) {
+  return decodeURIComponent(slug)
+    .replace(/-/g, " ")
+    .trim();
+}
+
+function normalizeText(value?: string) {
+  return (value || "").trim().toLowerCase();
+}
+
+function safeNumber(value: number | undefined, fallback = 0) {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+function average(values: number[]) {
+  if (!values.length) return 0;
+  return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
+}
+
+function formatTimestamp(timestamp?: string) {
+  if (!timestamp) return "Time unavailable";
+
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return "Time unavailable";
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function getSourceTier(source?: string | EventSource) {
+  if (!source || typeof source === "string") return null;
+  return source.tier;
+}
+
+function getTierClasses(tier: EventSource["tier"] | null) {
+  switch (tier) {
+    case "premium":
+      return "border-amber-500/30 bg-amber-500/10 text-amber-200";
+    case "verified":
+      return "border-emerald-500/30 bg-emerald-500/10 text-emerald-200";
+    case "standard":
+      return "border-slate-700 bg-slate-800/80 text-slate-300";
+    default:
+      return "border-slate-700 bg-slate-900 text-slate-400";
+  }
+}
+
+function getDistribution(items: Array<string | undefined>) {
+  const counts = items.reduce<Record<string, number>>((acc, item) => {
+    const key = item?.trim() || "Unattributed";
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+
+  return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+}
+
+function getExecutiveSummary(
+  entityName: string,
+  totalSignals: number,
+  avgScore: number,
+  avgConfidence: number,
+  topRegion?: string,
+  topTopic?: string
+) {
+  const activityLevel =
+    totalSignals >= 8 ? "high" : totalSignals >= 4 ? "elevated" : totalSignals >= 2 ? "active" : "light";
+
+  const scoreState =
+    avgScore >= 80 ? "high-risk" : avgScore >= 65 ? "elevated-risk" : avgScore >= 45 ? "moderate-risk" : "lower-risk";
+
+  const confidenceState =
+    avgConfidence >= 80
+      ? "high-conviction"
+      : avgConfidence >= 65
+        ? "credible"
+        : avgConfidence >= 45
+          ? "developing"
+          : "early-stage";
+
+  const regionText = topRegion ? `Signal concentration is strongest in ${topRegion}.` : "";
+  const topicText = topTopic ? `The dominant thematic association is ${topTopic}.` : "";
+
+  return `${entityName} is showing ${activityLevel} activity across the live intelligence stream, with a ${scoreState} profile and ${confidenceState} signal quality. ${regionText} ${topicText}`.trim();
+}
+
+export default async function EntityPage({ params }: PageProps) {
+  const { slug } = await params;
+  const entityName = decodeSlug(slug);
+
+  const events = await getEvents();
+
+  const entityEvents = events
+    .filter((event) => normalizeText(event.entity) === normalizeText(entityName))
+    .sort((a, b) => {
+      const scoreDiff = safeNumber(b.score) - safeNumber(a.score);
+      if (scoreDiff !== 0) return scoreDiff;
+      return safeNumber(b.confidence) - safeNumber(a.confidence);
+    });
+
+  if (!entityEvents.length) {
+    notFound();
   }
 
-  // Calculate metrics
-  const totalSignals = events.length;
-  const avgScore = totalSignals > 0 
-    ? Math.round(events.reduce((sum, e) => sum + (e.score || 0), 0) / totalSignals)
-    : 0;
+  const totalSignals = entityEvents.length;
+  const avgScore = average(entityEvents.map((event) => safeNumber(event.score)));
+  const avgConfidence = average(entityEvents.map((event) => safeNumber(event.confidence)));
 
-  // Calculate region distribution
-  const regions = events.reduce<Record<string, number>>((acc, event) => {
-    acc[event.region] = (acc[event.region] || 0) + 1;
-    return acc;
-  }, {});
+  const regionDistribution = getDistribution(entityEvents.map((event) => event.region));
+  const topicDistribution = getDistribution(entityEvents.map((event) => event.topic));
 
-  const topRegions = Object.entries(regions)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
+  const regionsActive = regionDistribution.length;
+  const topicsActive = topicDistribution.length;
 
-  // Calculate topic distribution
-  const topics = events.reduce<Record<string, number>>((acc, event) => {
-    acc[event.topic] = (acc[event.topic] || 0) + 1;
-    return acc;
-  }, {});
+  const topRegion = regionDistribution[0]?.[0];
+  const topTopic = topicDistribution[0]?.[0];
 
-  const topTopics = Object.entries(topics)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
+  const executiveSummary = getExecutiveSummary(
+    entityName,
+    totalSignals,
+    avgScore,
+    avgConfidence,
+    topRegion,
+    topTopic
+  );
 
-  // Calculate intensity distribution
-  const intensities = {
-    high: events.filter(e => e.intensity === "high").length,
-    medium: events.filter(e => e.intensity === "medium").length,
-    low: events.filter(e => e.intensity === "low").length
-  };
+  const topRegions = regionDistribution.slice(0, 5);
+  const topTopics = topicDistribution.slice(0, 5);
+  const strongestSignals = entityEvents.slice(0, 6);
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-900/30">
         <div className="mx-auto max-w-6xl px-6 py-12">
-          <div className="flex flex-col md:flex-row justify-between gap-8">
-            <div className="flex-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-                Strategic Entity Profile
-              </p>
-              <h1 className="mt-2 text-4xl font-semibold sm:text-5xl">
-                {entityName.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
+          <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-3xl">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/80 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-400">
+                Entity Intelligence Profile
+              </div>
+
+              <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+                {entityName}
               </h1>
-              <p className="mt-4 max-w-3xl text-lg leading-7 text-slate-300">
-                Comprehensive intelligence profile tracking {entityName}'s strategic positioning, 
-                regional exposure, and thematic engagement patterns.
+
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
+                {executiveSummary}
               </p>
+
+              <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                {topRegion ? <span>{topRegion}</span> : null}
+                {topRegion && topTopic ? <span>•</span> : null}
+                {topTopic ? <span>{topTopic}</span> : null}
+                {(topRegion || topTopic) ? <span>•</span> : null}
+                <span>{totalSignals} total signals</span>
+              </div>
             </div>
-            <div className="flex flex-col items-end gap-4">
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 w-full max-w-xs">
-                <p className="text-xs uppercase tracking-wider text-slate-400">Profile Status</p>
-                <div className="mt-2 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <p className="text-sm font-medium text-emerald-400">Live Monitoring</p>
-                  </div>
-                  <span className="text-xs text-slate-400">Updated</span>
-                </div>
-              </div>
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 w-full max-w-xs">
-                <p className="text-xs uppercase tracking-wider text-slate-400">Signal Volume</p>
-                <div className="mt-2 flex items-center justify-between">
-                  <span className="text-xl font-semibold text-white">{totalSignals}</span>
-                  <span className="text-xs text-slate-400">last 30d</span>
-                </div>
-              </div>
+
+            <div className="flex items-center gap-3">
+              <Link
+                href="/stream"
+                className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-300 transition hover:border-slate-700 hover:text-white"
+              >
+                Back to stream
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Total Signals</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{totalSignals}</div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Average Score</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{avgScore}</div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Average Confidence</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{avgConfidence}</div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Regions Active</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{regionsActive}</div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Topics Active</div>
+              <div className="mt-2 text-2xl font-semibold text-white">{topicsActive}</div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-8 lg:grid-cols-12">
-        <div className="lg:col-span-4 space-y-6">
-          {/* Spatial Intelligence */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Spatial Intelligence</h2>
-              <span className="text-xs text-slate-500">
-                Regional Exposure Distribution
-              </span>
+      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="space-y-6">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold text-white">Executive Summary</h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Current analytical view based on live signals associated with this entity.
+              </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-6">
-              {/* Region Concentration */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-medium text-slate-300">
-                  Geographic Footprint
-                </h3>
-                <div className="space-y-3">
-                  {topRegions.map(([region, count]) => (
-                    <div key={region}>
-                      <div className="flex items-center justify-between text-xs mb-1">
-                        <span className="text-slate-300">{region}</span>
-                        <span className="text-slate-400">
-                          {Math.round((count / totalSignals) * 100)}%
-                        </span>
-                      </div>
-                      <div className="h-1.5 w-full rounded-full bg-slate-800 overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${
-                            ['Europe', 'Americas'].includes(region)
-                              ? 'bg-blue-500'
-                              : 'bg-emerald-500'
-                          }`}
-                          style={{
-                            width: `${Math.min(
-                              100,
-                              (count / totalSignals) * 100 * 1.5
-                            )}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Risk Map */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-medium text-slate-300">
-                  Regional Risk Profile
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {topRegions.slice(0, 4).map(([region]) => {
-                    const regionalEvents = events.filter(e => e.region === region);
-                    const regionalScore = Math.round(
-                      regionalEvents.reduce((sum, e) => sum + (e.score || 0), 0) /
-                        regionalEvents.length
-                    );
-                
-                    return (
-                      <div
-                        key={region}
-                        className="rounded-lg border border-slate-800 p-3"
-                      >
-                        <p className="text-xs text-slate-300">{region}</p>
-                        <p
-                          className={`mt-1 text-xl font-medium ${
-                            regionalScore > 70
-                              ? 'text-rose-400'
-                              : regionalScore > 40
-                              ? 'text-amber-400'
-                              : 'text-emerald-400'
-                          }`}
-                        >
-                          {regionalScore}
-                        </p>
-                        <p className="text-[10px] text-slate-400 mt-1">
-                          {regionalEvents.length} signals
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-sm leading-7 text-slate-300">{executiveSummary}</p>
             </div>
           </div>
 
-          {/* Thematic Intelligence */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Thematic Intelligence</h2>
-              <span className="text-xs text-slate-500">
-                Engagement Across Strategic Domains
-              </span>
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold text-white">Recent Related Signals</h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Highest-priority and most recent normalized signals tied to this entity.
+              </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-6">
-              {/* Topic Distribution */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-slate-300">
-                  Focus Areas
-                </h3>
-                {topTopics.map(([topic, count]) => (
-                  <div key={topic} className="space-y-1">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-300">{topic}</span>
-                      <span className="text-slate-400">
-                        {count} ({Math.round((count / totalSignals) * 100)}%)
-                      </span>
-                    </div>
-                    <div className="relative h-6 bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className={`absolute inset-y-0 left-0 ${
-                          topic === 'Energy'
-                            ? 'bg-amber-500'
-                            : topic === 'Security'
-                            ? 'bg-rose-500'
-                            : topic === 'Technology'
-                            ? 'bg-blue-500'
-                            : 'bg-emerald-500'
-                        }`}
-                        style={{
-                          width: `${Math.min(
-                            100,
-                            (count / (topTopics[0]?.[1] || 1)) * 100
-                          )}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="space-y-4">
+              {strongestSignals.map((event, index) => {
+                const primarySource = event.sources?.[0];
+                const tier = getSourceTier(primarySource);
 
-              {/* Topic Risk Indicators */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-medium text-slate-300">
-                  Topic Risk Indicators
-                </h3>
-                <div className="space-y-2">
-                  {topTopics.slice(0, 4).map(([topic]) => {
-                    const topicEvents = events.filter(e => e.topic === topic);
-                    const avgIntensity = topicEvents.filter(
-                      e => e.intensity === 'high'
-                    ).length;
-                
-                    return (
-                      <div
-                        key={topic}
-                        className="rounded-lg border border-slate-800 p-3"
-                      >
-                        <p className="text-xs text-slate-300">{topic}</p>
-                        <div className="flex items-center justify-between mt-2">
-                          <div className="flex items-center gap-2">
+                return (
+                  <article
+                    key={event.id ?? `${event.title}-${index}`}
+                    className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5"
+                  >
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                      <div className="min-w-0 flex-1">
+                        <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                          <span>{event.region || "Unattributed"}</span>
+                          <span>•</span>
+                          <span>{event.topic || "General"}</span>
+                          <span>•</span>
+                          <span>{formatTimestamp(event.timestamp)}</span>
+                        </div>
+
+                        <h3 className="text-lg font-medium leading-6 text-white">{event.title}</h3>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                          <span>{getSourceName(primarySource)}</span>
+                          {tier ? (
                             <span
-                              className={`inline-block h-2 w-2 rounded-full ${
-                                avgIntensity > 3
-                                  ? 'bg-rose-500'
-                                  : avgIntensity > 1
-                                  ? 'bg-amber-500'
-                                  : 'bg-emerald-500'
-                              }`}
-                            />
-                            <span className="text-xs text-slate-400">
-                              {avgIntensity} high intensity
+                              className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${getTierClasses(
+                                tier
+                              )}`}
+                            >
+                              {tier}
                             </span>
-                          </div>
-                          <p className="text-xs text-slate-500">
-                            {topicEvents.length} signals
+                          ) : null}
+                        </div>
+
+                        <div className="mt-4">
+                          <p className="text-sm leading-6 text-slate-300">
+                            {event.summary || "No summary available."}
                           </p>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Strategic Risk Profile</h2>
-              <div className={`rounded-full px-3 py-1 text-xs font-medium ${
-                avgScore > 70 ? 'bg-red-500/10 text-red-400' :
-                avgScore > 40 ? 'bg-amber-500/10 text-amber-400' :
-                'bg-emerald-500/10 text-emerald-400'
-              }`}>
-                {avgScore > 70 ? 'High Risk' : avgScore > 40 ? 'Moderate Risk' : 'Low Risk'}
-              </div>
-            </div>
 
-            <div className="mt-6 grid grid-cols-3 gap-4">
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-                <p className="text-xs uppercase tracking-wider text-slate-500">Avg Score</p>
-                <p className={`mt-2 text-2xl font-semibold ${
-                  avgScore > 70 ? 'text-red-400' :
-                  avgScore > 40 ? 'text-amber-400' :
-                  'text-emerald-400'
-                }`}>
-                  {avgScore}
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-                <p className="text-xs uppercase tracking-wider text-slate-500">High Intensity</p>
-                <p className="mt-2 text-2xl font-semibold text-rose-400">{intensities.high}</p>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-                <p className="text-xs uppercase tracking-wider text-slate-500">Regions</p>
-                <p className="mt-2 text-2xl font-semibold text-sky-400">{topRegions.length}</p>
-              </div>
-            </div>
+                      <div className="grid min-w-[150px] grid-cols-2 gap-3 lg:grid-cols-1">
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                          <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500">Score</div>
+                          <div className="mt-2 text-xl font-semibold text-white">{safeNumber(event.score)}</div>
+                        </div>
 
-            <div className="mt-4">
-              <h3 className="text-sm font-medium text-slate-300 mb-2">Risk Composition</h3>
-              <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
-                <div 
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500"
-                  style={{ 
-                    background: `linear-gradient(90deg, 
-                      #10b981 ${Math.min(avgScore, 40)}%, 
-                      #f59e0b ${Math.min(avgScore, 40)}% ${Math.min(avgScore, 70)}%, 
-                      #ef4444 ${Math.min(avgScore, 70)}% ${avgScore}%, 
-                      #1e293b ${avgScore}%)`
-                  }}
-                />
-              </div>
-              <div className="mt-2 flex justify-between text-xs text-slate-400">
-                <span>Low</span>
-                <span>Moderate</span>
-                <span>High</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Signal Distribution */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
-            <h2 className="text-lg font-semibold">Signal Distribution</h2>
-            <p className="mt-1 text-sm text-slate-400">Breakdown of recent activity</p>
-            
-            <div className="mt-6 grid grid-cols-2 gap-4">
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-                <h3 className="text-sm font-medium text-slate-300 mb-3">By Region</h3>
-                <div className="space-y-3">
-                  {topRegions.map(([region, count]) => (
-                    <div key={region} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-slate-300">{region}</span>
-                        <span className="text-slate-400">{count} ({Math.round((count / totalSignals) * 100)}%)</span>
-                      </div>
-                      <div className="h-1.5 w-full rounded-full bg-slate-800">
-                        <div 
-                          className="h-full rounded-full bg-sky-500" 
-                          style={{ width: `${(count / totalSignals) * 100}%` }}
-                        />
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                          <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500">Confidence</div>
+                          <div className="mt-2 text-xl font-semibold text-white">
+                            {safeNumber(event.confidence)}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-                <h3 className="text-sm font-medium text-slate-300 mb-3">By Topic</h3>
-                <div className="space-y-3">
-                  {topTopics.map(([topic, count]) => (
-                    <div key={topic} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-slate-300">{topic}</span>
-                        <span className="text-slate-400">{count} ({Math.round((count / totalSignals) * 100)}%)</span>
-                      </div>
-                      <div className="h-1.5 w-full rounded-full bg-slate-800">
-                        <div 
-                          className="h-full rounded-full bg-emerald-500" 
-                          style={{ width: `${(count / totalSignals) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-              <h3 className="text-sm font-medium text-slate-300 mb-3">By Intensity</h3>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-1">
-                  <p className="text-xs text-slate-400">High</p>
-                  <p className="text-xl font-semibold text-rose-400">{intensities.high}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs text-slate-400">Medium</p>
-                  <p className="text-xl font-semibold text-amber-400">{intensities.medium}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs text-slate-400">Low</p>
-                  <p className="text-xl font-semibold text-emerald-400">{intensities.low}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Key Relationships */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
-            <h2 className="text-lg font-semibold">Key Relationships</h2>
-            <p className="mt-1 text-sm text-slate-400">Frequently co-occurring entities</p>
-            
-            <div className="mt-4 space-y-3">
-              {topTopics.map(([topic]) => (
-                <div key={topic} className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-                  <h3 className="text-sm font-medium text-slate-300">{topic}</h3>
-                  <p className="mt-1 text-xs text-slate-400">
-                    {events.filter(e => e.topic === topic).length} related signals
-                  </p>
-                </div>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-8 space-y-6">
-          {/* Recent Signals */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Recent Signals</h2>
-              <span className="rounded-full bg-slate-800/50 px-3 py-1 text-xs font-medium text-slate-400">
-                {totalSignals} intelligence items
-              </span>
-            </div>
-
-            <div className="mt-6 space-y-4">
-              {events.length > 0 ? (
-                events.slice(0, 10).map((event) => (
-                  <article
-                    key={event.id}
-                    className="rounded-xl border border-slate-800 bg-slate-950/70 p-5 transition-all hover:border-slate-700"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-slate-500">
-                          <span>{event.region}</span>
-                          <span>•</span>
-                          <span>{event.topic}</span>
-                        </div>
-                        <h3 className="mt-2 text-lg font-semibold text-white">{event.title}</h3>
-                      </div>
-                      <div className="flex flex-col items-end">
-                        <span className={`text-xs font-medium ${
-                          event.score > 70 ? 'text-red-400' :
-                          event.score > 40 ? 'text-amber-400' :
-                          'text-emerald-400'
-                        }`}>
-                          Score {event.score}
-                        </span>
-                        <span className="mt-1 text-xs text-slate-400">
-                          {new Date(event.timestamp).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-                      <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-2">
-                        <span className="text-slate-400">Intensity</span>
-                        <p className={`mt-1 font-medium ${
-                          event.intensity === 'high' ? 'text-red-400' :
-                          event.intensity === 'medium' ? 'text-amber-400' :
-                          'text-emerald-400'
-                        }`}>
-                          {event.intensity}
-                        </p>
-                      </div>
-                      <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-2">
-                        <span className="text-slate-400">Confidence</span>
-                        <p className={`mt-1 font-medium ${
-                          event.confidence === 'high' ? 'text-emerald-400' :
-                          event.confidence === 'medium' ? 'text-amber-400' :
-                          'text-red-400'
-                        }`}>
-                          {event.confidence}
-                        </p>
-                      </div>
-                      <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-2">
-                        <span className="text-slate-400">Source</span>
-                        <p className="mt-1 font-medium text-slate-300">
-                          {event.sources?.[0]?.name || 'Unknown'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <p className="text-sm leading-6 text-slate-300">
-                        {event.summary || "No summary available."}
-                      </p>
-                    </div>
-
-                    {event.why_it_matters && (
-                      <div className="mt-4 rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-                        <h4 className="text-xs uppercase tracking-wider text-slate-400">
-                          Strategic Implications
-                        </h4>
-                        <p className="mt-2 text-sm leading-6 text-slate-300">
-                          {event.why_it_matters}
-                        </p>
-                      </div>
-                    )}
-                  </article>
-                ))
+        <aside className="space-y-6">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
+            <h2 className="text-lg font-semibold text-white">Top Regions</h2>
+            <div className="mt-4 space-y-3">
+              {topRegions.length === 0 ? (
+                <p className="text-sm text-slate-500">No regional concentration detected.</p>
               ) : (
-                <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400">
-                  No signals yet for this entity.
-                </div>
+                topRegions.map(([region, count]) => {
+                  const width = `${Math.max(18, Math.round((count / totalSignals) * 100))}%`;
+
+                  return (
+                    <div key={region} className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-200">{region}</span>
+                        <span className="text-slate-400">{count}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-slate-800">
+                        <div className="h-2 rounded-full bg-slate-300/70" style={{ width }} />
+                      </div>
+                    </div>
+                  );
+                })
               )}
             </div>
           </div>
 
-          {/* Analysis Summary */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
-            <h2 className="text-lg font-semibold">Analysis Summary</h2>
-            <p className="mt-1 text-sm text-slate-400">Strategic assessment of entity activity</p>
-            
-            <div className="mt-6 space-y-4">
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-                <h3 className="text-sm font-medium text-slate-300">Key Risks</h3>
-                <ul className="mt-2 space-y-2 text-sm text-slate-400">
-                  {avgScore > 70 && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-400">•</span>
-                      <span>High strategic risk exposure across multiple regions</span>
-                    </li>
-                  )}
-                  {intensities.high > 3 && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-400">•</span>
-                      <span>Frequent high-intensity events requiring monitoring</span>
-                    </li>
-                  )}
-                  {topRegions.length > 3 && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-400">•</span>
-                      <span>Wide regional footprint increases operational complexity</span>
-                    </li>
-                  )}
-                  {topTopics.length > 2 && (
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-400">•</span>
-                      <span>Diverse thematic engagement across strategic domains</span>
-                    </li>
-                  )}
-                </ul>
-              </div>
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
+            <h2 className="text-lg font-semibold text-white">Top Topics</h2>
+            <div className="mt-4 space-y-3">
+              {topTopics.length === 0 ? (
+                <p className="text-sm text-slate-500">No topical concentration detected.</p>
+              ) : (
+                topTopics.map(([topic, count]) => {
+                  const width = `${Math.max(18, Math.round((count / totalSignals) * 100))}%`;
 
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-                <h3 className="text-sm font-medium text-slate-300">Monitoring Priorities</h3>
-                <ul className="mt-2 space-y-2 text-sm text-slate-400">
-                  {topRegions.slice(0, 2).map(([region]) => (
-                    <li key={region} className="flex items-start gap-2">
-                      <span className="text-sky-400">•</span>
-                      <span>Regional developments in {region}</span>
-                    </li>
-                  ))}
-                  {topTopics.slice(0, 2).map(([topic]) => (
-                    <li key={topic} className="flex items-start gap-2">
-                      <span className="text-sky-400">•</span>
-                      <span>{topic}-related policy and market movements</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                  return (
+                    <div key={topic} className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-200">{topic}</span>
+                        <span className="text-slate-400">{count}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-slate-800">
+                        <div className="h-2 rounded-full bg-slate-300/70" style={{ width }} />
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
-        </div>
+        </aside>
       </section>
     </main>
   );
