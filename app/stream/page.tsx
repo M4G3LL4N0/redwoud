@@ -1,301 +1,396 @@
-"use client";
+import Link from "next/link";
+import { getSourceName } from "@/lib/utils";
+import type { EventSource } from "@/lib/types";
 
-import { useState, useEffect } from 'react';
-import EntityActivityPanel from '@/components/dashboard/EntityActivityPanel';
-import StreamRefresh from '@/components/stream/StreamRefresh';
-import type { IntelligenceEvent } from '@/lib/mockData';
+type EventItem = {
+  id?: string | number;
+  title: string;
+  summary?: string;
+  entity?: string;
+  region?: string;
+  topic?: string;
+  score?: number;
+  confidence?: number;
+  timestamp?: string;
+  sources?: Array<string | EventSource>;
+};
 
-export default function StreamPage() {
-  const [events, setEvents] = useState<IntelligenceEvent[]>([]);
-  const [liveUpdated, setLiveUpdated] = useState<string>('');
+async function getEvents(): Promise<EventItem[]> {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL?.startsWith("http")
+        ? process.env.NEXT_PUBLIC_APP_URL
+        : process.env.NEXT_PUBLIC_APP_URL
+          ? `https://${process.env.NEXT_PUBLIC_APP_URL}`
+          : "http://localhost:3000";
 
-  // Simulate live feed – replace with real SSE or WebSocket in production
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const response = await fetch('/api/stream');
-      if (response.ok) {
-        const data = await response.json();
-        setEvents((prev) => [data, ...prev]);
-        setLiveUpdated(new Date().toISOString().split('T')[1].slice(0, 8));
-      }
-    };
-    fetchEvents();
-    const interval = setInterval(fetchEvents, 30_000); // poll every 30 s
-    return () => clearInterval(interval);
-  }, []);
+    const res = await fetch(`${baseUrl}/api/feed`, {
+      cache: "no-store",
+    });
 
-  // Helper to decide visual tier based on score & impact
-  const getTierClass = (event: IntelligenceEvent) => {
-    if (event.impact === 'High' && (event.score ?? 0) >= 90) 
-      return 'border-rose-500/30 bg-gradient-to-b from-rose-900/25 to-rose-950 animate-pulse shadow-rose-900/20';
-    if (event.impact === 'High' && (event.score ?? 0) >= 75) 
-      return 'border-rose-500/20 bg-gradient-to-b from-rose-900/15 to-slate-950 shadow-rose-900/10';
-    if (event.impact === 'Medium') 
-      return 'border-amber-500/20 bg-gradient-to-b from-amber-900/15 to-slate-950 shadow-amber-900/10';
-    return 'border-slate-700/30 bg-gradient-to-b from-slate-900/15 to-slate-950';
-  };
+    if (!res.ok) {
+      return [];
+    }
 
-  // Helper to create a group class for correlation display
-  const getGroupClass = (event: IntelligenceEvent) => {
-    const group = [event.region, event.topic, event.entity].join('|');
-    return `group-${group.replace(/[^a-z0-9]/gi, '-')}`;
-  };
+    const data = await res.json();
+    if (Array.isArray(data)) return data as EventItem[];
+    if (Array.isArray(data?.events)) return data.events as EventItem[];
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+function formatTimestamp(timestamp?: string) {
+  if (!timestamp) return "Time unavailable";
+
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return "Time unavailable";
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function getSourceTier(source?: string | EventSource) {
+  if (!source || typeof source === "string") return null;
+  return source.tier;
+}
+
+function getTierClasses(tier: EventSource["tier"] | null) {
+  switch (tier) {
+    case "premium":
+      return "border-amber-500/30 bg-amber-500/10 text-amber-200";
+    case "verified":
+      return "border-emerald-500/30 bg-emerald-500/10 text-emerald-200";
+    case "standard":
+      return "border-slate-700 bg-slate-800/80 text-slate-300";
+    default:
+      return "border-slate-700 bg-slate-900 text-slate-400";
+  }
+}
+
+function getWhyItMatters(event: EventItem) {
+  if (event.summary && event.summary.length > 140) {
+    return `${event.summary.slice(0, 140)}…`;
+  }
+
+  if (event.summary) return event.summary;
+
+  return "Signal may affect regional stability, market posture, and strategic decision-making.";
+}
+
+function safeNumber(value: number | undefined, fallback = 0) {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+export default async function StreamPage() {
+  const events = await getEvents();
+
+  const sortedEvents = [...events].sort((a, b) => {
+    const scoreDiff = safeNumber(b.score) - safeNumber(a.score);
+    if (scoreDiff !== 0) return scoreDiff;
+
+    return safeNumber(b.confidence) - safeNumber(a.confidence);
+  });
+
+  const prioritySignals = sortedEvents.slice(0, 4);
+  const liveStream = sortedEvents.slice(4);
+
+  const highRiskCount = sortedEvents.filter((event) => safeNumber(event.score) >= 80).length;
+
+  const regionCounts = sortedEvents.reduce<Record<string, number>>((acc, event) => {
+    const region = event.region || "Unattributed";
+    acc[region] = (acc[region] || 0) + 1;
+    return acc;
+  }, {});
+
+  const entityCounts = sortedEvents.reduce<Record<string, number>>((acc, event) => {
+    const entity = event.entity || "Unknown Entity";
+    acc[entity] = (acc[entity] || 0) + 1;
+    return acc;
+  }, {});
+
+  const hotRegions = Object.entries(regionCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4);
+
+  const hotEntities = Object.entries(entityCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
+  const latestTimestamp = sortedEvents[0]?.timestamp
+    ? formatTimestamp(sortedEvents[0].timestamp)
+    : "No recent timestamp";
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto max-w-7xl px-4 py-6">
-        {/* Header */}
-        <div className="border-b border-slate-800 pb-6 mb-6">
-          <div className="flex items-center justify-between">
+    <main className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <header className="mb-8 border-b border-slate-800 pb-6">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
+                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                Live Operations Stream
+              </div>
+
+              <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                Real-time strategic intelligence console
+              </h1>
+
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">
+                Monitor live signals across regions, entities, and topics with a denser operational view
+                of what matters now, what is escalating, and where attention is concentrating.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Signals</div>
+                <div className="mt-2 text-2xl font-semibold text-white">{sortedEvents.length}</div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">High Risk</div>
+                <div className="mt-2 text-2xl font-semibold text-white">{highRiskCount}</div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Hot Regions</div>
+                <div className="mt-2 text-2xl font-semibold text-white">{hotRegions.length}</div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Last Update</div>
+                <div className="mt-2 text-sm font-medium text-slate-200">{latestTimestamp}</div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section className="mb-8">
+          <div className="mb-4 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">REDWOUD CONSOLE</h1>
-              <p className="text-sm text-slate-400 mt-1">Strategic Intelligence Operations Surface</p>
+              <h2 className="text-xl font-semibold text-white">Priority Signals</h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Highest-scoring and highest-confidence developments across the live stream.
+              </p>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
-                <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                <span className="text-xs font-mono text-slate-300">LIVE STREAM</span>
-              </div>
-              <div className="text-xs font-mono text-slate-400 px-2 py-1 bg-slate-900/50 rounded">
-                {liveUpdated} UTC
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Priority Signals */}
-        {events.filter(e => (e.score ?? 0) >= 85 || 
-                          (e.impact === 'High' && e.intensity === 'high' && e.confidence === 'high')).length > 0 && (
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-rose-400">
-                Priority Signals
-              </h2>
-              <span className="text-xs text-slate-400">
-                {events.filter(e => (e.score ?? 0) >= 85).length} critical indicators
-              </span>
+            <Link
+              href="/briefing"
+              className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-300 transition hover:border-slate-700 hover:text-white"
+            >
+              Open briefing
+            </Link>
+          </div>
+
+          {prioritySignals.length === 0 ? (
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 text-sm text-slate-400">
+              No live priority signals available yet.
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {events
-                .filter(e => (e.score ?? 0) >= 85 || 
-                           (e.impact === 'High' && e.intensity === 'high' && e.confidence === 'high'))
-                .slice(0, 4)
-                .map(event => (
-                  <div key={event.id} className={`
-                    p-4 rounded-lg border 
-                    ${getTierClass(event)}
-                    shadow-[0_0_0_1px_theme(colors.rose.900/30)]
-                    relative
-                  `}>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className={`text-xs px-2 py-1 rounded font-medium ${
-                            event.impact === 'High' ? 'bg-rose-500/20 text-rose-300' :
-                            'bg-amber-500/20 text-amber-300'
-                          }`}>
-                            {event.topic}
-                          </span>
-                          <span className="text-xs px-2 py-1 rounded font-medium bg-slate-800/50 text-slate-300">
-                            {event.region}
-                          </span>
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {prioritySignals.map((event, index) => {
+                const primarySource = event.sources?.[0];
+                const tier = getSourceTier(primarySource);
+
+                return (
+                  <article
+                    key={event.id ?? `${event.title}-${index}`}
+                    className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-2xl shadow-black/10"
+                  >
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                          <span>Priority</span>
+                          {event.region ? <span>{event.region}</span> : null}
+                          {event.topic ? <span>{event.topic}</span> : null}
                         </div>
-                        <h3 className="text-sm font-semibold line-clamp-2">{event.title}</h3>
+
+                        <h3 className="text-lg font-semibold leading-6 text-white">{event.title}</h3>
                       </div>
-                      <div className="flex flex-col items-end">
-                        <span className="text-xs font-mono text-slate-300">{event.timeAgo}</span>
-                        <span className={`
-                          text-xs font-mono mt-1 px-1.5 py-0.5 rounded
-                          ${event.score && event.score >= 85 ? 'bg-rose-500/20 text-rose-300' : 
-                            'bg-amber-500/20 text-amber-300'}
-                        `}>
-                          {event.score ?? 'N/A'}
-                        </span>
+
+                      <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-right">
+                        <div className="text-[10px] uppercase tracking-[0.18em] text-rose-200/80">
+                          Score
+                        </div>
+                        <div className="text-lg font-semibold text-rose-200">
+                          {safeNumber(event.score)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                      <span className="font-medium text-slate-200">{event.entity || "Unknown Entity"}</span>
+                      <span>•</span>
+                      <span>Confidence {safeNumber(event.confidence)}</span>
+                      <span>•</span>
+                      <span>{getSourceName(primarySource)}</span>
+                      {tier ? (
+                        <span
+                          className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${getTierClasses(
+                            tier
+                          )}`}
+                        >
+                          {tier}
+                        </span>
+                      ) : null}
+                    </div>
+
+                    <p className="mt-4 text-sm leading-6 text-slate-300">
+                      {event.summary || "No summary available."}
+                    </p>
+
+                    <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/70 p-3">
+                      <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                        Why this matters
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-slate-300">{getWhyItMatters(event)}</p>
+                    </div>
+
+                    <div className="mt-4 text-xs text-slate-500">
+                      Updated {formatTimestamp(event.timestamp)}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
-          </div>
-        )}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left column: detailed event list */}
-          <div className="lg:col-span-2">
+          )}
+        </section>
+
+        <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div>
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold text-white">Live Stream</h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Continuous flow of normalized global signals across regions, entities, and themes.
+              </p>
+            </div>
+
             <div className="space-y-4">
-              {events.slice(0, 15).map((event) => (
-                <div
-                  key={event.id}
-                  className={`
-                    p-3 rounded-xl border shadow-[0_0_0_1px_theme(colors.slate.800/30)] backdrop-blur-sm 
-                    transition-all duration-200 ease-out
-                    ${getTierClass(event)} 
-                    hover:shadow-[0_0_15px_theme(colors.slate.800/30)] hover:border-slate-700/50
-                    ${getGroupClass(event)}
-                    relative overflow-hidden
-                    after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:to-slate-950/20 after:pointer-events-none
-                  `}
-                >
-                  {/* Score Indicator */}
-                  <div className="absolute top-2 right-2">
-                    <div className={`
-                      px-2 py-1 rounded-full text-xs font-semibold
-                      ${event.score && event.score >= 90 ? 'bg-red-500/20 text-red-300' :
-                        event.score && event.score >= 75 ? 'bg-amber-500/20 text-amber-300' :
-                        'bg-emerald-500/20 text-emerald-300'}
-                    `}>
-                      {event.score ?? 'N/A'}
-                    </div>
-                  </div>
+              {(liveStream.length > 0 ? liveStream : sortedEvents).map((event, index) => {
+                const primarySource = event.sources?.[0];
+                const tier = getSourceTier(primarySource);
 
-                  {/* Header row: topic & region tags */}
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className={`px-2 py-1 text-xs rounded font-semibold ${
-                        event.impact === 'High' ? 'bg-red-500/20 text-red-300' :
-                        event.impact === 'Medium' ? 'bg-amber-500/20 text-amber-300' :
-                        'bg-emerald-500/20 text-emerald-300'
-                      }`}>
-                        {event.topic}
-                      </span>
-                      <span className={`px-2 py-1 text-xs rounded font-semibold ${
-                        event.region === 'Americas' ? 'bg-blue-500/20 text-blue-300' :
-                        event.region === 'Europe' ? 'bg-indigo-500/20 text-indigo-300' :
-                        'bg-green-500/20 text-green-300'
-                      }`}>
-                        {event.region}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm text-slate-400 font-mono">{event.timeAgo.replace(' ago', '')}</div>
-                      <div className={`text-xs font-mono border border-slate-800/50 px-1.5 py-0.5 rounded ${
-                        event.confidence === 'high' ? 'text-amber-400' :
-                        event.confidence === 'medium' ? 'text-slate-400' :
-                        'text-slate-500'
-                      }`}>
-                        {event.confidence.toUpperCase()}
-                      </div>
-                    </div>
-                  </div>
-
-                      {/* Title & Entity */}
-                      <h3 className="text-sm font-semibold text-slate-100 mb-1.5 line-clamp-2">
-                        {event.title}
-                      </h3>
-                      
-                      {/* Entity & Topic */}
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs font-medium text-slate-300">
-                          {event.entity}
-                        </span>
-                        <span className="text-slate-700">•</span>
-                        <span className={`text-xs px-1.5 py-0.5 rounded ${
-                          event.topic === 'Energy' ? 'bg-amber-500/10 text-amber-300' :
-                          event.topic === 'Technology' ? 'bg-blue-500/10 text-blue-300' :
-                          'bg-slate-800 text-slate-400'
-                        }`}>
-                          {event.topic}
-                        </span>
-                      </div>
-
-                      {/* Source & Intensity */}
-                      <div className="flex items-center justify-between">
-                        <div className="text-xs text-slate-400 flex items-center gap-1">
-                          <span className="max-w-[120px] truncate">
-                            {typeof event.sources?.[0] === "string" 
-                              ? event.sources[0] 
-                              : event.sources?.[0]?.name || "Unknown source"}
-                          </span>
-                          {event.sources?.[0]?.tier && (
-                            <span className="text-[10px] px-1 py-0.5 rounded bg-slate-800/50 text-slate-400">
-                              Tier {event.sources[0].tier}
-                            </span>
-                          )}
+                return (
+                  <article
+                    key={event.id ?? `${event.title}-${index}`}
+                    className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5"
+                  >
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                      <div className="min-w-0 flex-1">
+                        <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                          <span>{event.region || "Unattributed"}</span>
+                          <span>•</span>
+                          <span>{event.topic || "General"}</span>
+                          <span>•</span>
+                          <span>{formatTimestamp(event.timestamp)}</span>
                         </div>
-                        <span className={`text-xs px-2 py-0.5 rounded font-mono ${
-                          event.intensity === 'high' ? 'bg-rose-500/10 text-rose-300' :
-                          event.intensity === 'medium' ? 'bg-amber-500/10 text-amber-300' :
-                          'bg-emerald-500/10 text-emerald-300'
-                        }`}>
-                          {event.intensity.toUpperCase()}
-                        </span>
+
+                        <h3 className="text-lg font-medium leading-6 text-white">{event.title}</h3>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                          <span className="font-medium text-slate-300">
+                            {event.entity || "Unknown Entity"}
+                          </span>
+                          <span>•</span>
+                          <span>{getSourceName(primarySource)}</span>
+                          {tier ? (
+                            <span
+                              className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${getTierClasses(
+                                tier
+                              )}`}
+                            >
+                              {tier}
+                            </span>
+                          ) : null}
+                        </div>
+
+                        <p className="mt-3 text-sm leading-6 text-slate-300">
+                          {event.summary || "No summary available."}
+                        </p>
+
+                        <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
+                          <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                            Analytical framing
+                          </div>
+                          <p className="mt-2 text-sm leading-6 text-slate-300">{getWhyItMatters(event)}</p>
+                        </div>
+                      </div>
+
+                      <div className="grid min-w-[150px] grid-cols-2 gap-3 lg:grid-cols-1">
+                        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
+                          <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500">Score</div>
+                          <div className="mt-2 text-xl font-semibold text-white">
+                            {safeNumber(event.score)}
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
+                          <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                            Confidence
+                          </div>
+                          <div className="mt-2 text-xl font-semibold text-white">
+                            {safeNumber(event.confidence)}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right column: analytics & operations */}
-          <div className="space-y-4">
-            {/* Entity Activity Panel */}
-            <EntityActivityPanel 
-              events={events}
-              groupBy="entity"
-              title="Strategic Entities"
-              description="Most signaled frameworks and assets."
-            />
-
-            {/* Sector Activity Panel */}
-            <EntityActivityPanel 
-              events={events.filter(e => e.impact === 'High')}
-              groupBy="topic"
-              title="Critical Sectors"
-              description="Highest impact developments by topic."
-            />
-
-            {/* Operations Status */}
-            <div className="p-4 rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/40 to-slate-950/90 backdrop-blur-sm shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
-              <div className="absolute -top-[1px] -left-[1px] -right-[1px] h-[2px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"></div>
-              <h2 className="text-sm font-semibold mb-4 text-slate-300">OPERATIONS DASHBOARD</h2>
-              
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="flex flex-col p-2 bg-slate-800/20 rounded-lg border border-slate-800">
-                  <span className="text-xs text-slate-400">Alerts</span>
-                  <span className="text-xl font-medium text-emerald-300">{events.filter(e => e.impact === 'High').length}</span>
-                </div>
-                <div className="flex flex-col p-2 bg-slate-800/20 rounded-lg border border-slate-800">
-                  <span className="text-xs text-slate-400">Signals</span>
-                  <span className="text-xl font-medium text-amber-300">{events.length}</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-400">Monitor Frequency</span>
-                  <span className="font-mono text-emerald-300">30s</span>
-                </div>
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-400">Last Update</span>
-                  <span className="font-mono text-slate-300">{liveUpdated}</span>
-                </div>
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-400">Data Freshness</span>
-                  <span className="font-mono text-amber-300">&lt;1min</span>
-                </div>
+          <aside className="space-y-4">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
+                Hot Regions
+              </h3>
+              <div className="mt-4 space-y-3">
+                {hotRegions.length === 0 ? (
+                  <p className="text-sm text-slate-500">No regional concentration detected.</p>
+                ) : (
+                  hotRegions.map(([region, count]) => (
+                    <div
+                      key={region}
+                      className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/70 px-3 py-2"
+                    >
+                      <span className="text-sm text-slate-200">{region}</span>
+                      <span className="text-xs text-slate-400">{count} signals</span>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
+                Active Entities
+              </h3>
+              <div className="mt-4 space-y-3">
+                {hotEntities.length === 0 ? (
+                  <p className="text-sm text-slate-500">No entity concentration detected.</p>
+                ) : (
+                  hotEntities.map(([entity, count]) => (
+                    <div
+                      key={entity}
+                      className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/70 px-3 py-2"
+                    >
+                      <span className="text-sm text-slate-200">{entity}</span>
+                      <span className="text-xs text-slate-400">{count} signals</span>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
-          </div>
-        </div>
+          </aside>
+        </section>
       </div>
-      
-      {/* Status Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/80 backdrop-blur border-t border-slate-800/50 py-1.5 px-4">
-        <div className="mx-auto max-w-7xl flex justify-between items-center text-xs">
-          <div className="text-slate-400 font-mono">REDWOUD INTELLIGENCE CONSOLE v2.0</div>
-          <div className="flex items-center gap-3">
-            <span className="text-slate-400">Last refresh: {liveUpdated} UTC</span>
-            <span className="flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-emerald-400">LIVE</span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+    </main>
   );
 }
