@@ -498,11 +498,25 @@ export default async function HomePage() {
                   <span>•</span>
                   <span>Confidence {event.confidence}</span>
                   <span>•</span>
-                  <span>
-                    {typeof event.sources?.[0] === "string"
-                      ? event.sources[0]
-                      : event.sources?.[0]?.name || "Source unavailable"}
-                  </span>
+                  <div className="flex items-center gap-1">
+                    <span>
+                      {typeof event.sources?.[0] === "string"
+                        ? event.sources[0]
+                        : event.sources?.[0]?.name || "Source unavailable"}
+                    </span>
+                    {event.sources?.[0]?.tier && (
+                      <span className={[
+                        "rounded-full px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
+                        event.sources?.[0]?.tier === "premium" 
+                          ? "bg-amber-500/15 text-amber-300"
+                          : event.sources?.[0]?.tier === "verified"
+                            ? "bg-emerald-500/15 text-emerald-300"
+                            : "bg-slate-700/20 text-slate-400"
+                      ].join(" ")}>
+                        {event.sources?.[0]?.tier}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
