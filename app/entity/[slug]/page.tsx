@@ -187,7 +187,10 @@ export default async function EntityPage({ params }: PageProps) {
           <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
             <div className="max-w-3xl">
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/80 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-400">
-                Entity Intelligence Profile
+                Intelligence Dossier
+              </div>
+              <div className="mt-1 text-xs text-slate-500">
+                Analytical profile compiled from live intelligence stream
               </div>
 
               <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
@@ -250,22 +253,27 @@ export default async function EntityPage({ params }: PageProps) {
         <div className="space-y-6">
           <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold text-white">Executive Summary</h2>
+              <h2 className="text-xl font-semibold text-white">Analytical Assessment</h2>
               <p className="mt-1 text-sm text-slate-400">
-                Current analytical view based on live signals associated with this entity.
+                Current intelligence assessment derived from live signal analysis.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-              <p className="text-sm leading-7 text-slate-300">{executiveSummary}</p>
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                <span>Assessment</span>
+                <span>•</span>
+                <span>Live Intelligence</span>
+              </div>
+              <p className="mt-3 text-sm leading-7 text-slate-300">{executiveSummary}</p>
             </div>
           </div>
 
           <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
             <div className="mb-4">
-              <h2 className="text-xl font-semibold text-white">Recent Related Signals</h2>
+              <h2 className="text-xl font-semibold text-white">Evidence Items</h2>
               <p className="mt-1 text-sm text-slate-400">
-                Highest-priority and most recent normalized signals tied to this entity.
+                Verified intelligence signals associated with this entity.
               </p>
             </div>
 
@@ -292,16 +300,18 @@ export default async function EntityPage({ params }: PageProps) {
                         <h3 className="text-lg font-medium leading-6 text-white">{event.title}</h3>
 
                         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-400">
-                          <span>{getSourceName(primarySource)}</span>
+                          <span className="font-medium text-slate-300">{getSourceName(primarySource)}</span>
                           {tier ? (
                             <span
                               className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${getTierClasses(
                                 tier
                               )}`}
                             >
-                              {tier}
+                              {tier} source
                             </span>
                           ) : null}
+                          <span>•</span>
+                          <span>Verified intelligence</span>
                         </div>
 
                         <div className="mt-4">
@@ -334,7 +344,10 @@ export default async function EntityPage({ params }: PageProps) {
 
         <aside className="space-y-6">
           <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
-            <h2 className="text-lg font-semibold text-white">Top Regions</h2>
+            <h2 className="text-lg font-semibold text-white">Regional Distribution</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Geographic concentration of associated signals.
+            </p>
             <div className="mt-4 space-y-3">
               {topRegions.length === 0 ? (
                 <p className="text-sm text-slate-500">No regional concentration detected.</p>
@@ -359,7 +372,10 @@ export default async function EntityPage({ params }: PageProps) {
           </div>
 
           <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6">
-            <h2 className="text-lg font-semibold text-white">Top Topics</h2>
+            <h2 className="text-lg font-semibold text-white">Thematic Distribution</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Dominant themes across associated signals.
+            </p>
             <div className="mt-4 space-y-3">
               {topTopics.length === 0 ? (
                 <p className="text-sm text-slate-500">No topical concentration detected.</p>
