@@ -109,7 +109,10 @@ export default async function HomePage() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
             </span>
-            <span className="text-sm font-medium text-emerald-300">LIVE</span>
+            <span className="text-sm font-medium text-emerald-300">LIVE INTELLIGENCE LAYER</span>
+            <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
+              Verified Signals
+            </span>
           </div>
           <h1 className="mt-4 text-4xl font-medium tracking-tight">REDWOUD</h1>
           <p className="mt-1 text-xl text-slate-300">Live strategic intelligence layer</p>
@@ -158,8 +161,16 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <div className="mb-6 inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
-                REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
+              <div className="mb-6 inline-flex items-center gap-2">
+                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
+                  REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
+                </span>
+                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
+                  Verified Sources
+                </span>
+                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
+                  Signal Integrity Monitoring
+                </span>
               </div>
 
               <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
@@ -297,11 +308,25 @@ export default async function HomePage() {
                       <span className="rounded-full bg-rose-500/15 px-2 py-1 text-xs font-medium text-rose-200">
                         Score {event.score ?? 0}
                       </span>
-                      <span className="text-xs text-slate-500">
-                        {typeof event.sources?.[0] === "string"
-                          ? event.sources[0]
-                          : event.sources?.[0]?.name || "Unknown source"}
-                      </span>
+                      <div className="flex items-center gap-1 text-xs">
+                        <span className="text-slate-500">
+                          {typeof event.sources?.[0] === "string"
+                            ? event.sources[0]
+                            : event.sources?.[0]?.name || "Unknown source"}
+                        </span>
+                        {event.sources?.[0]?.tier && (
+                          <span className={[
+                            "rounded-full px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
+                            event.sources?.[0]?.tier === "premium" 
+                              ? "bg-amber-500/15 text-amber-300"
+                              : event.sources?.[0]?.tier === "verified"
+                                ? "bg-emerald-500/15 text-emerald-300"
+                                : "bg-slate-700/20 text-slate-400"
+                          ].join(" ")}>
+                            {event.sources?.[0]?.tier}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -440,9 +465,21 @@ export default async function HomePage() {
                     {event.region}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
-                      Score {event.score ?? 0}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
+                        Score {event.score ?? 0}
+                      </span>
+                      <span className={[
+                        "rounded-full px-2 py-1 text-xs font-medium",
+                        event.confidence === "high"
+                          ? "bg-emerald-500/15 text-emerald-300"
+                          : event.confidence === "medium"
+                            ? "bg-amber-500/15 text-amber-300"
+                            : "bg-slate-700/20 text-slate-400"
+                      ].join(" ")}>
+                        Confidence {event.confidence}
+                      </span>
+                    </div>
                     <span className="text-xs text-slate-500">{event.timeAgo}</span>
                   </div>
                 </div>
