@@ -9,15 +9,15 @@ export default function InvestorsPage() {
           </div>
 
           <h1 className="max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
-            The Bloomberg Terminal for Geopolitical Intelligence
+            The Strategic Intelligence Layer for a Volatile World
           </h1>
 
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            REDWOUD is building the world's most advanced intelligence platform -
-            transforming global events, market signals, and geopolitical developments
-            into structured, predictive insights. Our AI-native architecture processes
-            millions of data points daily, delivering real-time intelligence to
-            enterprises, governments, and financial institutions.
+            REDWOUD is building the first real-time understanding layer for global strategy - 
+            transforming raw events into structured intelligence with executive-grade outputs.
+            Our proprietary event grammar and entity-topic-region fusion creates a new 
+            category between news monitoring and business intelligence - delivering 
+            predictive insights, scenario planning, and decision support at scale.
           </p>
         </div>
       </section>
@@ -25,24 +25,27 @@ export default function InvestorsPage() {
       {/* Why Now Section */}
       <section className="border-b border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 py-16">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-semibold">Why Now: The Strategic Intelligence Imperative</h2>
+          <h2 className="text-2xl font-semibold">The Intelligence Infrastructure Gap</h2>
           <div className="mt-8 grid gap-8 md:grid-cols-3">
             <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <h3 className="text-lg font-semibold">Geopolitical Volatility</h3>
+              <h3 className="text-lg font-semibold">From Monitoring to Understanding</h3>
               <p className="mt-2 text-sm text-slate-300">
-                78% of Fortune 500 companies cite geopolitical risk as their top external threat (McKinsey 2025)
+                Enterprises need structured intelligence, not just news feeds. REDWOUD's 
+                event grammar turns raw data into decision-ready insights.
               </p>
             </div>
             <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <h3 className="text-lg font-semibold">AI Maturity</h3>
+              <h3 className="text-lg font-semibold">The Predictive Imperative</h3>
               <p className="mt-2 text-sm text-slate-300">
-                Breakthroughs in NLP enable real-time analysis of unstructured intelligence data
+                With 78% of Fortune 500 citing geopolitical risk as their top threat, 
+                real-time scenario modeling becomes essential infrastructure.
               </p>
             </div>
             <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-              <h3 className="text-lg font-semibold">Market Gap</h3>
+              <h3 className="text-lg font-semibold">Category Creation</h3>
               <p className="mt-2 text-sm text-slate-300">
-                $47B TAM with no dominant player in AI-driven strategic intelligence
+                $58B TAM for strategic intelligence as enterprises shift from reactive 
+                monitoring to predictive decision support.
               </p>
             </div>
           </div>
@@ -110,39 +113,39 @@ export default function InvestorsPage() {
       {/* Competitive Moats */}
       <section className="border-t border-slate-800 bg-slate-950 py-16">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-semibold">Unassailable Competitive Advantages</h2>
+          <h2 className="text-2xl font-semibold">Architectural Advantages</h2>
           <div className="mt-8 grid gap-8 md:grid-cols-2">
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-              <h3 className="text-lg font-semibold">Data Network Effects</h3>
+              <h3 className="text-lg font-semibold">Structured Intelligence Core</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300">
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  Proprietary intelligence graph with 10M+ connected entities
+                  Proprietary event grammar normalizes chaos into decision variables
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  Enterprise feedback loops continuously improve model accuracy
+                  Entity-region-topic fusion creates strategic context automatically
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  5+ years of structured event data for predictive analytics
+                  Executive outputs (not raw data) drive enterprise workflows
                 </li>
               </ul>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-              <h3 className="text-lg font-semibold">Technical Differentiation</h3>
+              <h3 className="text-lg font-semibold">Defensible Data Flywheel</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300">
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  Sub-second processing of 10M+ daily events
+                  Public product trains models on global strategic patterns
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  Proprietary NLP models trained on strategic intelligence corpus
+                  Enterprise deployments reinforce industry-specific intelligence
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  99.95% uptime enterprise-grade infrastructure
+                  5+ years of normalized events create predictive benchmarks
                 </li>
               </ul>
             </div>
