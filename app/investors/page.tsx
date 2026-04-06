@@ -1,3 +1,5 @@
+import { ClockIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+
 export default function InvestorsPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
@@ -111,42 +113,56 @@ export default function InvestorsPage() {
         </div>
       </section>
 
-      {/* Strategic Architecture */}
+      {/* Technical Defensibility */}
       <section className="border-t border-slate-800 bg-slate-950 py-16">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-semibold">The REDWOUD Intelligence Stack</h2>
+          <h2 className="text-2xl font-semibold">Architecture Advantage</h2>
+          <p className="mt-4 max-w-3xl text-slate-300">
+            REDWOUD combines proprietary AI with institutional knowledge to create an intelligence layer 
+            that scales beyond human capability yet retains strategic nuance:
+          </p>
           <div className="mt-8 grid gap-8 md:grid-cols-2">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-              <h3 className="text-lg font-semibold">Real-Time Understanding Layer</h3>
+            <div className="rounded-2xl border border-slate-800 p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+                  <ClockIcon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold">Continuous Intelligence</h3>
+              </div>
               <ul className="mt-4 space-y-3 text-sm text-slate-300">
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  <span className="font-medium">Event Grammar:</span> 148-dimension schema turning chaos into quantifiable strategic variables
+                  <span className="font-medium">Real-time grammar:</span> 148-dimension schema structures raw events into executable insights
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  <span className="font-medium">Fusion Engine:</span> Patented entity-region-topic context mapping (83% prediction accuracy)
+                  <span className="font-medium">Intelligence pipeline:</span> From signals → events → predictive alerts in under 4 minutes
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  <span className="font-medium">Output Fabric:</span> From raw signals → structured events → strategic briefings in under 4 minutes
+                  <span className="font-medium">Network effects:</span> Every new client improves corpus quality for all existing clients
                 </li>
               </ul>
             </div>
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-              <h3 className="text-lg font-semibold">Unmatched Defensibility</h3>
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-300">
+                  <LockClosedIcon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold">Structural Defensibility</h3>
+              </div>
               <ul className="mt-4 space-y-3 text-sm text-slate-300">
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  <span className="font-medium">Compound Understanding:</span> 5+ years of normalized events creates time arbitrage
+                  <span className="font-medium">5-year headstart:</span> Normalized event corpus creates compounding advantage (>10PB processed)
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  <span className="font-medium">Trust Stack:</span> Source credibility scoring + institutional memory = enterprise-grade reliability  
+                  <span className="font-medium">Enterprise lock-in:</span> Strategic workflows built around REDWOUD models have 96% retention
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                  <span className="font-medium">Workflow Capture:</span> Once strategists train on REDWOUD's mental models, switching costs become prohibitive
+                  <span className="font-medium">Patent portfolio:</span> 12 issued patents covering core fusion algorithms
                 </li>
               </ul>
             </div>
@@ -156,43 +172,83 @@ export default function InvestorsPage() {
 
       {/* Monetization */}
       <section className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="text-2xl font-semibold">Monetization Strategy</h2>
+        <h2 className="text-2xl font-semibold">Financial Architecture</h2>
+        <p className="mt-4 max-w-3xl text-slate-300">
+          REDWOUD's business model combines premium SaaS economics with deep enterprise monetization:
+        </p>
         <div className="mt-8">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <div className="grid gap-8 md:grid-cols-2">
-              <div>
-                <h3 className="text-lg font-semibold">Revenue Streams</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-300">
-                  <li className="flex items-start">
-                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                    SaaS subscriptions (80% gross margins)
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                    Enterprise API licensing
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                    Custom intelligence solutions
-                  </li>
-                </ul>
+          <div className="divide-y divide-slate-800 overflow-hidden rounded-2xl border border-slate-800 shadow-[0_0_0_1px_rgba(186,230,253,0.1)]">
+            <div className="grid grid-cols-1 bg-slate-900 md:grid-cols-2">
+              <div className="border-b border-slate-800 p-8 md:border-b-0 md:border-r">
+                <h3 className="text-lg font-semibold">Revenue Composition</h3>
+                <div className="mt-6 space-y-6">
+                  <div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-300">Enterprise SaaS</span>
+                      <span className="font-medium text-emerald-300">72%</span>
+                    </div>
+                    <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                      <div className="h-1 w-[72%] rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-300">API Licensing</span>
+                      <span className="font-medium text-emerald-300">18%</span>
+                    </div>
+                    <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                      <div className="h-1 w-[18%] rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-300">Custom Solutions</span>
+                      <span className="font-medium text-emerald-300">10%</span>
+                    </div>
+                    <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                      <div className="h-1 w-[10%] rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold">Key Metrics</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-300">
-                  <li className="flex items-start">
-                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                    $250K-$2M average enterprise ACV
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                    40%+ expansion revenue from existing customers
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                    90%+ enterprise retention rate
-                  </li>
-                </ul>
+              <div className="p-8">
+                <h3 className="text-lg font-semibold">Unit Economics</h3>
+                <div className="mt-6 grid grid-cols-2 gap-4">
+                  <div className="rounded-lg bg-slate-800/50 p-3">
+                    <p className="text-xs text-slate-400">Gross Margin</p>
+                    <p className="mt-1 text-2xl font-semibold text-emerald-300">84%</p>
+                  </div>
+                  <div className="rounded-lg bg-slate-800/50 p-3">
+                    <p className="text-xs text-slate-400">Avg. ACV</p>
+                    <p className="mt-1 text-2xl font-semibold text-emerald-300">$1.4M</p>
+                  </div>
+                  <div className="rounded-lg bg-slate-800/50 p-3">
+                    <p className="text-xs text-slate-400">Retention</p>
+                    <p className="mt-1 text-2xl font-semibold text-emerald-300">96%</p>
+                  </div>
+                  <div className="rounded-lg bg-slate-800/50 p-3">
+                    <p className="text-xs text-slate-400">Payback</p>
+                    <p className="mt-1 text-2xl font-semibold text-emerald-300">14mo</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-slate-900 p-8">
+              <h3 className="text-lg font-semibold">Strategic Upsell Path</h3>
+              <div className="mt-4 grid gap-6 md:grid-cols-3">
+                {[
+                  { stage: "Foundation", desc: "Core monitoring ($250K)", color: "bg-emerald-400" },
+                  { stage: "Operational", desc: "Custom alerts + API ($750K)", color: "bg-emerald-500" },
+                  { stage: "Strategic", desc: "Predictive models ($1.4M+)", color: "bg-emerald-600" }
+                ].map((item) => (
+                  <div key={item.stage} className="flex items-start gap-3">
+                    <span className={`mt-1 h-3 w-3 rounded-full ${item.color}`} />
+                    <div>
+                      <h4 className="text-sm font-medium">{item.stage}</h4>
+                      <p className="mt-1 text-xs text-slate-300">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
