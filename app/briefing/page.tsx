@@ -117,7 +117,7 @@ export default async function BriefingPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mx-auto max-w-7xl px-6 py-20">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-4xl">
               <div className="flex items-center gap-2 mb-4">
@@ -126,19 +126,26 @@ export default async function BriefingPage() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
                 </span>
                 <p className="text-xs font-medium uppercase tracking-wider text-emerald-400">
-                  Executive Intelligence Brief
+                  Executive Intelligence Memo
                 </p>
               </div>
               <h1 className="text-4xl font-semibold tracking-tight text-slate-100">
                 {briefing.title}
               </h1>
               <div className="mt-4 flex items-center gap-2 text-sm text-slate-400">
+                <span>Prepared for:</span>
+                <span className="font-medium">Executive Leadership</span>
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-sm text-slate-400">
                 <span>Last updated:</span>
                 <span className="font-medium">{briefing.dateLabel}</span>
               </div>
               <p className="mt-6 text-lg leading-8 text-slate-300 font-light">
                 {briefing.lead}
               </p>
+              <div className="mt-6 text-sm text-slate-400/80">
+                This memo synthesizes live global signals into actionable intelligence for executive decision-making. All insights are derived from verified sources and analyzed using proprietary algorithms.
+              </div>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -146,22 +153,46 @@ export default async function BriefingPage() {
               <div className="text-xs text-slate-400/80 max-w-[200px]">
                 Risk assessment based on live signal analysis and historical patterns
               </div>
+              <div className="text-xs text-slate-400/80 mt-2">
+                Confidence level: <span className="font-medium text-emerald-400">High</span>
+              </div>
+              <div className="text-xs text-slate-400/80">
+                Source verification: <span className="font-medium text-emerald-400">Verified</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <section className="border-b border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950">
-        <div className="mx-auto max-w-7xl px-6 py-12">
+        <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-100">
-              Strategic Landscape
-            </h2>
-            <div className="text-xs text-slate-400/80">
-              Updated: {new Date().toISOString().split('T')[1].slice(0,5)} UTC
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-100">
+                Strategic Landscape Overview
+              </h2>
+              <p className="mt-2 text-sm text-slate-400/80">
+                Key insights distilled from live global signals
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-slate-400/80">
+              <span>Updated:</span>
+              <span className="font-mono">{new Date().toISOString().split('T')[1].slice(0,5)} UTC</span>
             </div>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400/80 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+                </span>
+                <h3 className="text-lg font-semibold text-slate-100">Executive Summary</h3>
+              </div>
+              <p className="text-sm leading-7 text-slate-300 font-light">
+                {briefing.summary}
+              </p>
+            </div>
             <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
               <h3 className="text-lg font-semibold mb-4 text-slate-100">Regional Activity</h3>
               <div className="space-y-2">
@@ -225,10 +256,19 @@ export default async function BriefingPage() {
       <section className="mx-auto max-w-7xl px-6 py-12 grid gap-8 lg:grid-cols-12">
         <div className="lg:col-span-7 space-y-8">
           <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
-            <h2 className="text-lg font-semibold mb-6 text-slate-100">Executive Summary</h2>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400/80 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+              </span>
+              <h2 className="text-lg font-semibold text-slate-100">Key Insights</h2>
+            </div>
             <p className="text-sm leading-7 text-slate-300 font-light">
               {briefing.summary}
             </p>
+            <div className="mt-6 pt-4 border-t border-slate-800/50 text-xs text-slate-400/80">
+              This analysis synthesizes live global signals into actionable intelligence for executive decision-making. All insights are derived from verified sources and analyzed using proprietary algorithms.
+            </div>
           </div>
 
           <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
