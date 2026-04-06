@@ -1,46 +1,53 @@
 const plans = [
   {
-    name: "Free",
-    price: "$0",
+    name: "Signal Scout",
+    price: "Free",
+    highlight: false,
     subtitle: "Public intelligence utility",
     features: [
-      "Live event feed",
-      "Daily AI briefing",
-      "Trend summaries",
-      "Region and topic filters",
+      "Live strategic pulse feed",
+      "Daily executive briefing",
+      "Regional trend monitoring",
+      "Basic alert system"
     ],
   },
   {
-    name: "Pro",
-    price: "$39/mo",
-    subtitle: "For analysts and power users",
+    name: "Tactical Analyst",
+    price: "$99/mo",
+    highlight: true,
+    subtitle: "Strategic decision advantage",
     features: [
-      "Saved dashboards",
-      "Custom alerts",
-      "Advanced filtering",
-      "Premium briefings",
+      "Advanced alert workflow builder",
+      "Custom indicator dashboards", 
+      "Automated briefings",
+      "Source credibility scoring",
+      "12hr tactical warning window"
     ],
   },
   {
-    name: "Team",
-    price: "$149/mo",
-    subtitle: "For research and strategy teams",
+    name: "Command Team", 
+    price: "$499/mo",
+    highlight: false,
+    subtitle: "Organizational awareness",
     features: [
-      "Shared dashboards",
-      "Team collaboration",
-      "Workspace organization",
-      "Priority intelligence views",
+      "Multi-user collaboration suites",
+      "AI-enhanced scenario planning",
+      "Enterprise workflow integrations",
+      "Centralized intelligence library",
+      "Private intelligence pod"
     ],
   },
   {
-    name: "Enterprise",
+    name: "Strategic Enterprise",
     price: "Custom",
-    subtitle: "For institutions and large organizations",
+    highlight: false,
+    subtitle: "Institutional decision infrastructure",
     features: [
-      "Organization workspaces",
-      "Custom integrations",
-      "Scenario analysis",
-      "Enterprise support",
+      "Dedicated intelligence pods",
+      "Predictive modeling API",
+      "Executive risk analytics suite",
+      "24/7 analyst support",
+      "Custom model training"
     ],
   },
 ];
@@ -50,15 +57,15 @@ export default function PricingPage() {
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-16">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-            Pricing
-          </p>
+          <div className="inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
+            Pricing & Packaging
+          </div>
           <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
-            From public intelligence utility to enterprise decision support.
+            Structured Intelligence for Every Strategic Tier
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            REDWOUD is designed to attract public users first, then expand into professional and
-            enterprise workflows with alerts, dashboards, intelligence search, and collaboration.
+            REDWOUD's pricing architecture is designed to attract broad monitoring needs then 
+            convert to high-value decision advantage through enterprise-grade predictive intelligence.
           </p>
         </div>
       </section>
@@ -66,15 +73,31 @@ export default function PricingPage() {
       <section className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid gap-6 lg:grid-cols-4">
           {plans.map((plan) => (
-            <article key={plan.name} className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <article
+              key={plan.name}
+              className={`relative rounded-2xl border p-6 ${plan.highlight ? "border-emerald-500/30 bg-emerald-500/10" : "border-slate-800 bg-slate-900"}`}
+            >
+              {plan.highlight && (
+                <div className="absolute -top-2 right-4 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 px-3 py-1 text-xs font-medium text-white">
+                  Most common
+                </div>
+              )}
               <h2 className="text-xl font-semibold">{plan.name}</h2>
-              <p className="mt-2 text-3xl font-semibold text-white">{plan.price}</p>
+              <p className="mt-1 text-3xl font-semibold text-white">{plan.price}</p>
               <p className="mt-2 text-sm text-slate-400">{plan.subtitle}</p>
-              <ul className="mt-6 space-y-3 text-sm text-slate-300">
+              <ul className="mt-6 space-y-2.5 text-sm leading-6 text-slate-300">
                 {plan.features.map((feature) => (
-                  <li key={feature}>• {feature}</li>
+                  <li key={feature} className="flex">
+                    <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400 align-middle" />
+                    {feature}
+                  </li>
                 ))}
               </ul>
+              <button
+                className={`mt-8 w-full rounded-lg py-2 text-sm font-medium ring-1 ring-inset ${plan.highlight ? "bg-emerald-500 text-white ring-emerald-500 hover:bg-emerald-400" : "bg-slate-800 text-slate-300 ring-slate-700 hover:bg-slate-700"}`}
+              >
+                {plan.price === "Free" ? "Start Monitoring" : "Get Strategic Advantage"}
+              </button>
             </article>
           ))}
         </div>
