@@ -1,9 +1,22 @@
 import StatusIndicator from "@/components/dashboard/StatusIndicator"
 import type { DailyBriefing } from "@/lib/mockData"
+type EventItem = {
+  title: string;
+  summary?: string;
+  entity?: string;
+  region?: string;
+  topic?: string;
+  score?: number;
+  confidence?: number;
+  timestamp?: string;
+  sources?: any[];
+};
 
-function getRegionalBreakdown(events: IntelligenceEvent[]): [string, number][] {
+
+function getRegionalBreakdown(events: EventItem[]): [string, number][] {
   const regionCounts = events.reduce((acc, event) => {
-    acc[event.region] = (acc[event.region] || 0) + 1
+    const region = event.region || "Unattributed";
+    acc[region] = (acc[region] || 0) + 1
     return acc
   }, {} as Record<string, number>)
 
@@ -12,9 +25,10 @@ function getRegionalBreakdown(events: IntelligenceEvent[]): [string, number][] {
     .slice(0, 5)
 }
 
-function getThematicBreakdown(events: IntelligenceEvent[]): [string, number][] {
+function getThematicBreakdown(events: EventItem[]): [string, number][] {
   const topicCounts = events.reduce((acc, event) => {
-    acc[event.topic] = (acc[event.topic] || 0) + 1
+    const topic = event.topic || "General";
+    acc[topic] = (acc[topic] || 0) + 1
     return acc
   }, {} as Record<string, number>)
 
@@ -23,12 +37,12 @@ function getThematicBreakdown(events: IntelligenceEvent[]): [string, number][] {
     .slice(0, 5)
 }
 
-function getStrategicImplications(events: IntelligenceEvent[]): string {
+function getStrategicImplications(events: EventItem[]): string {
   if (!events.length) return "No significant strategic implications detected."
 
-  const highIntensityCount = events.filter(e => e.intensity === "high").length
-  const highConfidenceCount = events.filter(e => e.confidence === "high").length
-  const regionalConcentration = getRegionalBreakdown(events)[0][1]
+  const highIntensityCount = events.filter(e => (e.score || 0) >= 80).length
+  const highConfidenceCount = events.filter(e => (e.confidence || 0) >= 80).length
+  const regionalConcentration = getRegionalBreakdown(events)[0]?.[1] || 0;
 
   if (highIntensityCount > 3 && highConfidenceCount > 3) {
     return "Elevated strategic volatility detected across multiple regions. Recommend heightened situational awareness and contingency planning."
@@ -92,7 +106,13 @@ async function getLiveBriefing(): Promise<DailyBriefing> {
 }
 
 export default async function BriefingPage() {
-  const briefing = await getLiveBriefing()
+  const briefing = await getLiveBriefing();
+
+  const events: EventItem[] =
+    (Array.isArray((briefing as any)?.events) && (briefing as any).events) ||
+    (Array.isArray((briefing as any)?.signals) && (briefing as any).signals) ||
+    (Array.isArray((briefing as any)?.items) && (briefing as any).items) ||
+    []
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
