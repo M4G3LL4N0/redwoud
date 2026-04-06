@@ -103,22 +103,47 @@ export default async function HomePage() {
     <main className="min-h-screen bg-slate-950 text-slate-100">
       {/* Mission Frame */}
       <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-3 w-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
-            </span>
-            <span className="text-sm font-medium text-emerald-300">LIVE INTELLIGENCE LAYER</span>
-            <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
-              Verified Signals
-            </span>
+        <div className="mx-auto max-w-7xl px-6 py-12">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <span className="relative flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-emerald-300">LIVE INTELLIGENCE LAYER</span>
+                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
+                  Verified Signals
+                </span>
+                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
+                  Enterprise-Grade
+                </span>
+              </div>
+            </div>
+            <h1 className="text-5xl font-semibold tracking-tight text-white">
+              The Intelligence Layer for a Complex World
+            </h1>
+            <p className="text-xl text-slate-300">
+              REDWOUD synthesizes global signals into actionable intelligence
+            </p>
+            <p className="max-w-2xl text-slate-400">
+              Real-time strategic intelligence infrastructure for enterprises, governments, and institutions navigating systemic risk and volatility.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                href="/stream"
+                className="rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-white/90"
+              >
+                Explore Live Intelligence
+              </Link>
+              <Link
+                href="/briefing"
+                className="rounded-lg border border-slate-700 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white"
+              >
+                Request Enterprise Demo
+              </Link>
+            </div>
           </div>
-          <h1 className="mt-4 text-4xl font-medium tracking-tight">REDWOUD</h1>
-          <p className="mt-1 text-xl text-slate-300">Live strategic intelligence layer</p>
-          <p className="mt-2 max-w-2xl text-slate-400">
-            Real-time synthesis of global signals across geopolitics, markets, and systems.
-          </p>
         </div>
       </section>
 
