@@ -116,85 +116,116 @@ export default async function BriefingPage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-14">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+      <section className="border-b border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950">
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-4xl">
-              <p className="text-xs uppercase tracking-wider text-emerald-400">
-                Executive Intelligence Brief
-              </p>
-              <h1 className="mt-2 text-4xl font-semibold">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                </span>
+                <p className="text-xs font-medium uppercase tracking-wider text-emerald-400">
+                  Executive Intelligence Brief
+                </p>
+              </div>
+              <h1 className="text-4xl font-semibold tracking-tight text-slate-100">
                 {briefing.title}
               </h1>
-              <p className="mt-3 text-slate-400">{briefing.dateLabel}</p>
-              <p className="mt-5 text-lg leading-8 text-slate-300">{briefing.lead}</p>
-            </div>
-
-            <StatusIndicator risks={briefing.primaryRisks.length} />
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <h2 className="text-2xl font-semibold mb-6">Strategic Landscape</h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
-              <h3 className="text-lg font-semibold mb-4">Regional Activity</h3>
-              {getRegionalBreakdown(events).map(([region, count], i) => (
-                <div key={region} className="flex items-center justify-between py-2 border-b border-slate-800/50">
-                  <span className="text-sm text-slate-300">{region}</span>
-                  <span className="text-sm font-medium text-slate-400">{count} signals</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
-              <h3 className="text-lg font-semibold mb-4">Thematic Focus</h3>
-              {getThematicBreakdown(events).map(([topic, count], i) => (
-                <div key={topic} className="flex items-center justify-between py-2 border-b border-slate-800/50">
-                  <span className="text-sm text-slate-300">{topic}</span>
-                  <span className="text-sm font-medium text-slate-400">{count} signals</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6">
-              <h3 className="text-lg font-semibold mb-4">Strategic Implications</h3>
-              <p className="text-sm text-slate-300 mb-4">
-                {getStrategicImplications(events)}
+              <div className="mt-4 flex items-center gap-2 text-sm text-slate-400">
+                <span>Last updated:</span>
+                <span className="font-medium">{briefing.dateLabel}</span>
+              </div>
+              <p className="mt-6 text-lg leading-8 text-slate-300 font-light">
+                {briefing.lead}
               </p>
-              <div className="text-xs text-slate-400">
-                Analysis derived from signal intensity, confidence, and regional concentration.
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <StatusIndicator risks={briefing.primaryRisks.length} />
+              <div className="text-xs text-slate-400/80 max-w-[200px]">
+                Risk assessment based on live signal analysis and historical patterns
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12 grid gap-6 lg:grid-cols-12">
-        <div className="lg:col-span-7 rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
-          <h2 className="text-lg font-semibold mb-4">Summary</h2>
-          <p className="text-sm leading-7 text-slate-300">{briefing.summary}</p>
+      <section className="border-b border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950">
+        <div className="mx-auto max-w-7xl px-6 py-12">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-100">
+              Strategic Landscape
+            </h2>
+            <div className="text-xs text-slate-400/80">
+              Updated: {new Date().toISOString().split('T')[1].slice(0,5)} UTC
+            </div>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+              <h3 className="text-lg font-semibold mb-4 text-slate-100">Regional Activity</h3>
+              <div className="space-y-2">
+                {getRegionalBreakdown(events).map(([region, count], i) => (
+                  <div key={region} className="flex items-center justify-between py-2">
+                    <span className="text-sm text-slate-300">{region}</span>
+                    <span className="text-sm font-medium text-slate-400">{count} signals</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-          <div className="mt-8 rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-5 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-              Why This Matters
+            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+              <h3 className="text-lg font-semibold mb-4 text-slate-100">Thematic Focus</h3>
+              <div className="space-y-2">
+                {getThematicBreakdown(events).map(([topic, count], i) => (
+                  <div key={topic} className="flex items-center justify-between py-2">
+                    <span className="text-sm text-slate-300">{topic}</span>
+                    <span className="text-sm font-medium text-slate-400">{count} signals</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+              <h3 className="text-lg font-semibold mb-4 text-slate-100">Strategic Implications</h3>
+              <p className="text-sm leading-6 text-slate-300 mb-4">
+                {getStrategicImplications(events)}
+              </p>
+              <div className="text-xs text-slate-400/80">
+                Analysis derived from signal intensity, confidence, and regional concentration
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-12 grid gap-8 lg:grid-cols-12">
+        <div className="lg:col-span-7 space-y-8">
+          <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+            <h2 className="text-lg font-semibold mb-6 text-slate-100">Executive Summary</h2>
+            <p className="text-sm leading-7 text-slate-300 font-light">
+              {briefing.summary}
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-4">
+              Strategic Context
             </h3>
-            <p className="mt-3 text-sm leading-7 text-slate-300">
+            <p className="text-sm leading-7 text-slate-300 font-light">
               {briefing.whyThisMatters}
             </p>
-            <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400/90">
+            <div className="mt-6 pt-4 border-t border-slate-800/50 text-xs text-slate-400/80">
               REDWOUD normalizes public signals into structured intelligence briefings with strategic context and risk analysis. All briefings are derived from verified sources and updated in real-time.
             </div>
           </div>
         </div>
 
         <div className="lg:col-span-5 space-y-8">
-          <div className="rounded-lg border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Primary Risks</h2>
-              <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400">
+          <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-slate-100">Primary Risks</h2>
+              <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400/80">
                 <span>Updated:</span>
                 <span className="font-mono border border-slate-800/50 bg-slate-900/50 px-2 py-1 rounded animate-pulse">
                   {new Date().toISOString().split('T')[1].slice(0,5)} UTC
@@ -205,19 +236,20 @@ export default async function BriefingPage() {
               <ul className="space-y-3">
                 {briefing.primaryRisks.map((risk, i) => (
                   <li key={i} className="text-sm text-slate-300">
-                    • {risk}
+                    <span className="mr-2 text-slate-400/80">•</span>
+                    {risk}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-slate-400">No major live risks currently surfaced.</p>
+              <p className="text-sm text-slate-400/80">No major live risks currently surfaced.</p>
             )}
           </div>
 
-          <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Key Themes</h2>
-              <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400">
+          <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-slate-100">Key Themes</h2>
+              <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400/80">
                 <span>Updated:</span>
                 <span className="font-mono">{new Date().toISOString().split('T')[1].slice(0,5)}</span>
               </div>
@@ -226,12 +258,13 @@ export default async function BriefingPage() {
               <ul className="space-y-3">
                 {briefing.keyThemes.map((theme, i) => (
                   <li key={i} className="text-sm text-slate-300">
-                    • {theme}
+                    <span className="mr-2 text-slate-400/80">•</span>
+                    {theme}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-slate-400">No major themes currently surfaced.</p>
+              <p className="text-sm text-slate-400/80">No major themes currently surfaced.</p>
             )}
           </div>
         </div>
