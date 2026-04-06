@@ -165,12 +165,25 @@ export default async function BriefingPage() {
             <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
               <h3 className="text-lg font-semibold mb-4 text-slate-100">Regional Activity</h3>
               <div className="space-y-2">
-                {getRegionalBreakdown(events).map(([region, count], i) => (
-                  <div key={region} className="flex items-center justify-between py-2">
-                    <span className="text-sm text-slate-300">{region}</span>
-                    <span className="text-sm font-medium text-slate-400">{count} signals</span>
-                  </div>
-                ))}
+                {getRegionalBreakdown(events).map(([region, count], i) => {
+                  const percentage = Math.round((count / events.length) * 100);
+                  return (
+                    <div key={region} className="group flex items-center justify-between py-2">
+                      <span className="text-sm text-slate-300">{region}</span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-16 bg-slate-800/50 rounded-full h-1">
+                          <div 
+                            className="bg-emerald-400/80 h-1 rounded-full transition-all duration-300" 
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                        <span className="text-xs font-mono text-slate-400 group-hover:text-emerald-300 transition-colors">
+                          {count} · {percentage}%
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -188,9 +201,19 @@ export default async function BriefingPage() {
 
             <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
               <h3 className="text-lg font-semibold mb-4 text-slate-100">Strategic Implications</h3>
-              <p className="text-sm leading-6 text-slate-300 mb-4">
-                {getStrategicImplications(events)}
-              </p>
+              <div className="relative">
+                <div className="absolute -left-5 top-0.5 h-full w-0.5 bg-gradient-to-b from-emerald-400/20 to-transparent"></div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 flex-shrink-0">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-emerald-400">
+                      <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm1 12H7V7h2v5zm0-6H7V4h2v2z" fill="currentColor"></path>
+                    </svg>
+                  </div>
+                  <p className="text-sm leading-6 text-slate-300 mb-4">
+                    {getStrategicImplications(events)}
+                  </p>
+                </div>
+              </div>
               <div className="text-xs text-slate-400/80">
                 Analysis derived from signal intensity, confidence, and regional concentration
               </div>
@@ -223,13 +246,21 @@ export default async function BriefingPage() {
 
         <div className="lg:col-span-5 space-y-8">
           <div className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 p-6 shadow-[0_0_0_1px_theme(colors.slate.800/30)]">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-slate-100">Primary Risks</h2>
-              <div className="flex items-center gap-1.5 text-[0.7rem] text-slate-400/80">
-                <span>Updated:</span>
-                <span className="font-mono border border-slate-800/50 bg-slate-900/50 px-2 py-1 rounded animate-pulse">
-                  {new Date().toISOString().split('T')[1].slice(0,5)} UTC
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-100">Primary Risks</h2>
+                <p className="text-xs text-slate-400 mt-1">
+                  Critical risk vectors requiring executive attention
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400/80 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-400"></span>
                 </span>
+                <div className="text-[11px] font-medium text-slate-400 uppercase tracking-[0.2em]">
+                  LIVE PRIORITIZATION
+                </div>
               </div>
             </div>
             {briefing.primaryRisks.length ? (
