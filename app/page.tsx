@@ -102,43 +102,43 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       {/* Mission Frame */}
-      <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="flex flex-col gap-4">
+      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-950/90 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
               <span className="relative flex h-3 w-3">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-emerald-300">LIVE INTELLIGENCE LAYER</span>
-                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
-                  Verified Signals
+                <span className="text-sm font-medium text-emerald-300 tracking-[0.15em]">OPERATIONAL INTELLIGENCE PLATFORM</span>
+                <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
+                  Enterprise-Grade
                 </span>
                 <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
-                  Enterprise-Grade
+                  Verified Sources
                 </span>
               </div>
             </div>
             <h1 className="text-5xl font-semibold tracking-tight text-white">
-              The Intelligence Layer for a Complex World
+              Strategic Intelligence<br/>for Decision Advantage
             </h1>
-            <p className="text-xl text-slate-300">
-              REDWOUD synthesizes global signals into actionable intelligence
+            <p className="text-xl text-slate-300 max-w-2xl">
+              REDWOUD delivers real-time, structured intelligence for enterprises and institutions navigating systemic risk and volatility.
             </p>
             <p className="max-w-2xl text-slate-400">
-              Real-time strategic intelligence infrastructure for enterprises, governments, and institutions navigating systemic risk and volatility.
+              Our operational intelligence platform synthesizes global signals into actionable insights, enabling faster, more informed decision-making at scale.
             </p>
-            <div className="mt-4 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/stream"
-                className="rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-white/90"
+                className="rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-white/90 transition-all"
               >
                 Explore Live Intelligence
               </Link>
               <Link
                 href="/briefing"
-                className="rounded-lg border border-slate-700 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white"
+                className="rounded-lg border border-slate-700 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white transition-all"
               >
                 Request Enterprise Demo
               </Link>
@@ -148,32 +148,32 @@ export default async function HomePage() {
       </section>
 
       {/* System Metrics */}
-      <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-4">
+      <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-6 py-6">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div>
+            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
               <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 Total Signals
               </p>
-              <p className="mt-1 text-2xl font-semibold">{liveEvents.length}</p>
+              <p className="mt-1 text-2xl font-semibold text-white">{liveEvents.length}</p>
             </div>
-            <div>
+            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
               <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 High Risk
               </p>
-              <p className="mt-1 text-2xl font-semibold">{highIntensitySignals}</p>
+              <p className="mt-1 text-2xl font-semibold text-white">{highIntensitySignals}</p>
             </div>
-            <div>
+            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
               <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                Regions
+                Active Regions
               </p>
-              <p className="mt-1 text-2xl font-semibold">{activeRegions.length}</p>
+              <p className="mt-1 text-2xl font-semibold text-white">{activeRegions.length}</p>
             </div>
-            <div>
+            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
               <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                Entities
+                Entity Activity
               </p>
-              <p className="mt-1 text-2xl font-semibold">
+              <p className="mt-1 text-2xl font-semibold text-white">
                 {new Set(liveEvents.map((e) => e.entity)).size}
               </p>
             </div>
