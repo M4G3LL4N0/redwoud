@@ -171,81 +171,142 @@ export default async function HomePage() {
 
       {/* Platform Modules */}
       <section className="border-b border-slate-800 bg-slate-950/60 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="grid gap-6 lg:grid-cols-4">
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-emerald-950/20 to-slatea-950/80 p-6">
-              <div className="text-emerald-300 flex items-center gap-2 text-sm font-medium">
-                <span>Strategic Pulse</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Real-time normalized event stream with entity/topic/region fusion
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  148-dimension grammar
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  4-min processing latency
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Predictive triggers
-                </span>
-              </div>
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          <div className="mb-12 text-center">
+            <div className="inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-300">
+              ForeverLuvd Platform
             </div>
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-amber-950/20 to-slate-950/80 p-6">
-              <div className="text-amber-300 flex items-center gap-2 text-sm font-medium">
-                <span>Global Command</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Geospatial intelligence dashboard for regional escalation monitoring
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Heatmap visualization
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Cluster detection
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Choke points
-                </span>
-              </div>
-            </div>
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-blue-950/20 to-slate-950/80 p-6">
-              <div className="text-blue-300 flex items-center gap-2 text-sm font-medium">
-                <span>Executive Brief</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Automated strategic synthesis updated every 6 hours
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Priority intelligence
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Impact forecasting
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Response playbooks
-                </span>
-              </div>
-            </div>
+            <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
+              The Complete Continuity System
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
+              ForeverLuvd combines multiple preservation technologies into one integrated platform.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* Memory Archive */}
             <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-purple-950/20 to-slate-950/80 p-6">
               <div className="text-purple-300 flex items-center gap-2 text-sm font-medium">
-                <span>Risk Horizon</span>
+                <span>Memory Archive</span>
               </div>
               <p className="mt-2 text-sm text-slate-300">
-                Forward-looking threat and opportunity modeling
+                Preserve photos, stories and moments in our secure digital archive.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Scenario planning
+                  Military-grade encryption
                 </span>
                 <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Probability weighting
+                  Geo-redundant storage
                 </span>
                 <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Stress testing
+                  Permission controls
+                </span>
+              </div>
+            </div>
+
+            {/* Identity Engine */}
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-blue-950/20 to-slate-950/80 p-6">
+              <div className="text-blue-300 flex items-center gap-2 text-sm font-medium">
+                <span>Identity Engine</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Maintain a comprehensive, multi-dimensional profile of your loved one.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Life story preservation
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Personality mapping
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Timeline curation
+                </span>
+              </div>
+            </div>
+
+            {/* Voice Continuity */}
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-emerald-950/20 to-slate-950/80 p-6">
+              <div className="text-emerald-300 flex items-center gap-2 text-sm font-medium">
+                <span>Voice Continuity</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Preserve and treasure voice recordings in a private, respectful way.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Authentic recordings only
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Consent-based access
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Lossless quality
+                </span>
+              </div>
+            </div>
+
+            {/* Family Layer */}
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-amber-950/20 to-slate-950/80 p-6">
+              <div className="text-amber-300 flex items-center gap-2 text-sm font-medium">
+                <span>Family Layer</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Collaborate with family and friends to build a shared memory archive.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Multi-contributor
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Permission controls
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Stewardship tracking
+                </span>
+              </div>
+            </div>
+
+            {/* Legacy System */}
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-rose-950/20 to-slate-950/80 p-6">
+              <div className="text-rose-300 flex items-center gap-2 text-sm font-medium">
+                <span>Legacy System</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Ensure long-term preservation and generational continuity.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Multi-decade planning
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Succession tools
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Access scheduling
+                </span>
+              </div>
+            </div>
+
+            {/* Privacy Layer */}
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-teal-950/20 to-slate-950/80 p-6">
+              <div className="text-teal-300 flex items-center gap-2 text-sm font-medium">
+                <span>Privacy Layer</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Comprehensive controls over what's shared and with whom.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Granular permissions
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Encrypted storage
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Consent tracking
                 </span>
               </div>
             </div>
