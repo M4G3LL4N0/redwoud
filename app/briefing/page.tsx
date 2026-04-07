@@ -284,7 +284,7 @@ export default async function BriefingPage() {
               <span className="relative flex h-6 w-6 flex-none items-center justify-center">
                 <span className="absolute h-5 w-5 rounded-full bg-amber-400/20"></span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" class="text-amber-400"></path>
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" className="text-amber-400"></path>
                 </svg>
               </span>
               <div>
