@@ -9,15 +9,11 @@ export default function InvestorsPage() {
             </div>
 
             <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              REDWOUD is building the live strategic intelligence layer for the modern world.
+              Building the Intelligence Operating System for the Modern World
             </h1>
 
             <p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
-              REDWOUD transforms fast-moving global signals into structured, readable, decision-oriented
-              intelligence across geopolitics, markets, entities, regions, and emerging risk patterns.
-              The company is positioned not as a media product, but as an intelligence operating layer
-              for analysts, founders, investors, operators, and eventually teams that need faster
-              situational awareness.
+              REDWOUD is creating a new category of strategic intelligence infrastructure - transforming fragmented global signals into structured, actionable intelligence for decision-makers navigating volatile environments.
             </p>
           </div>
 
@@ -78,6 +74,32 @@ export default function InvestorsPage() {
       <section className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
+            <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Market Opportunity</div>
+            <h2 className="mt-3 text-2xl font-semibold text-white">$200B+ Global Intelligence Market</h2>
+            <p className="mt-4 text-sm leading-7 text-slate-400">
+              The global intelligence market spans geopolitical risk, market intelligence, competitive strategy, and operational security. REDWOUD addresses the growing need for real-time, structured intelligence across these domains.
+            </p>
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <div>
+                <div className="text-sm font-medium text-white">Geopolitical Risk</div>
+                <div className="mt-1 text-sm text-slate-400">$50B+ market growing at 15% CAGR</div>
+              </div>
+              <div>
+                <div className="text-sm font-medium text-white">Market Intelligence</div>
+                <div className="mt-1 text-sm text-slate-400">$80B+ market growing at 12% CAGR</div>
+              </div>
+              <div>
+                <div className="text-sm font-medium text-white">Competitive Strategy</div>
+                <div className="mt-1 text-sm text-slate-400">$40B+ market growing at 18% CAGR</div>
+              </div>
+              <div>
+                <div className="text-sm font-medium text-white">Operational Security</div>
+                <div className="mt-1 text-sm text-slate-400">$30B+ market growing at 20% CAGR</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
             <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Why Now</div>
             <h2 className="mt-3 text-2xl font-semibold text-white">The world is more visible and more unreadable at the same time.</h2>
             <p className="mt-4 text-sm leading-7 text-slate-400">
@@ -85,16 +107,6 @@ export default function InvestorsPage() {
               technology, and security. But most users still rely on fragmented headlines, social feeds,
               terminal-heavy workflows, or expensive institutional stacks. REDWOUD compresses noise into
               structured awareness.
-            </p>
-          </div>
-
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
-            <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Initial Wedge</div>
-            <h2 className="mt-3 text-2xl font-semibold text-white">Start with decision-focused users who already feel the pain.</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-400">
-              Early value is strongest for analysts, macro-curious investors, founders, operators,
-              researchers, and globally aware users who need an always-on briefing layer. Over time,
-              REDWOUD expands upward into premium professional workflows and outward into team intelligence.
             </p>
           </div>
         </div>
@@ -142,6 +154,30 @@ export default function InvestorsPage() {
               <li>Team and enterprise tiers for workflows, monitoring, collaboration, and exports.</li>
               <li>Potential long-term data/API and infrastructure layers for intelligence-enabled products.</li>
             </ul>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
+          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Investor Opportunity</div>
+          <div className="mt-4 grid gap-6 lg:grid-cols-3">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Market Leadership</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                First-mover advantage in building the intelligence operating system for the modern world.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white">Scalable Platform</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                Highly scalable architecture with multiple expansion vectors across intelligence domains.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white">Strong Unit Economics</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                High-margin subscription model with predictable recurring revenue streams.
+              </p>
+            </div>
           </div>
         </div>
       </section>
