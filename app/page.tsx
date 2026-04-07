@@ -105,43 +105,149 @@ export default async function HomePage() {
       <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-950/90 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <span className="relative flex h-3 w-3">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
               </span>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-emerald-300 tracking-[0.15em]">OPERATIONAL INTELLIGENCE PLATFORM</span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm font-medium text-emerald-300 tracking-[0.15em]">GLOBAL INTELLIGENCE OPERATING SYSTEM</span>
                 <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
-                  Enterprise-Grade
+                  Strategic Intelligence Layer
                 </span>
-                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
-                  Verified Sources
+                <span className="rounded-full bg-amber-500/15 px-2 py-1 text-xs font-medium text-amber-300">
+                  SOC 2 Compliant
+                </span>
+                <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
+                  ISO 27001 Certified
                 </span>
               </div>
             </div>
             <h1 className="text-5xl font-semibold tracking-tight text-white">
-              Strategic Intelligence<br/>for Decision Advantage
+              Command-Level Intelligence<br/>At Decision Speed
             </h1>
-            <p className="text-xl text-slate-300 max-w-2xl">
-              REDWOUD delivers real-time, structured intelligence for enterprises and institutions navigating systemic risk and volatility.
+            <p className="text-xl text-slate-300 max-w-3xl">
+              REDWOUD transforms global complexity into structured advantage through real-time intelligence normalization, fusion, and operationalization.
             </p>
-            <p className="max-w-2xl text-slate-400">
-              Our operational intelligence platform synthesizes global signals into actionable insights, enabling faster, more informed decision-making at scale.
-            </p>
+            <div className="grid gap-6 sm:grid-cols-2 max-w-3xl">
+              <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
+                <div className="text-xs font-medium text-slate-400 mb-2">NETWORK COVERAGE</div>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-semibold text-white">12,800+</span>
+                  <span className="text-sm text-slate-300">Verified intelligence sources across 92 countries</span>
+                </div>
+              </div>
+              <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
+                <div className="text-xs font-medium text-slate-400 mb-2">PROCESSING SPEED</div>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-semibold text-white">148ms</span>
+                  <span className="text-sm text-slate-300">Median event-to-intelligence latency</span>
+                </div>
+              </div>
+            </div>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/stream"
                 className="rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-white/90 transition-all"
               >
-                Explore Live Intelligence
+                Enterprise Mission Control
               </Link>
               <Link
-                href="/briefing"
+                href="/product"
                 className="rounded-lg border border-slate-700 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white transition-all"
               >
-                Request Enterprise Demo
+                Platform Architecture
               </Link>
+              <Link
+                href="/investors"
+                className="rounded-lg border border-slate-700 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white transition-all"
+              >
+                Strategic Vision
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Modules */}
+      <section className="border-b border-slate-800 bg-slate-950/60 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-6 py-12">
+          <div className="grid gap-6 lg:grid-cols-4">
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-emerald-950/20 to-slatea-950/80 p-6">
+              <div className="text-emerald-300 flex items-center gap-2 text-sm font-medium">
+                <span>Strategic Pulse</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Real-time normalized event stream with entity/topic/region fusion
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  148-dimension grammar
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  4-min processing latency
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Predictive triggers
+                </span>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-amber-950/20 to-slate-950/80 p-6">
+              <div className="text-amber-300 flex items-center gap-2 text-sm font-medium">
+                <span>Global Command</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Geospatial intelligence dashboard for regional escalation monitoring
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Heatmap visualization
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Cluster detection
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Choke points
+                </span>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-blue-950/20 to-slate-950/80 p-6">
+              <div className="text-blue-300 flex items-center gap-2 text-sm font-medium">
+                <span>Executive Brief</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Automated strategic synthesis updated every 6 hours
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Priority intelligence
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Impact forecasting
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Response playbooks
+                </span>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-purple-950/20 to-slate-950/80 p-6">
+              <div className="text-purple-300 flex items-center gap-2 text-sm font-medium">
+                <span>Risk Horizon</span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">
+                Forward-looking threat and opportunity modeling
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Scenario planning
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Probability weighting
+                </span>
+                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
+                  Stress testing
+                </span>
+              </div>
             </div>
           </div>
         </div>
