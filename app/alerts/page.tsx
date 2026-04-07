@@ -76,81 +76,194 @@ export default function AlertsPage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-16 lg:grid-cols-12">
-        <div className="space-y-6 lg:col-span-7">
+        <div className="space-y-6 lg:col-span-8">
           <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-xl font-semibold">Active Alerts</h2>
-              <span className="rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-200">
-                Live priority view
-              </span>
+              <div>
+                <h2 className="text-xl font-semibold">Active Alert Conditions</h2>
+                <p className="mt-1 text-sm text-slate-400">Live signal thresholds triggered in last 24 hours</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-400"></span>
+                </span>
+                <span className="rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-200">
+                  Operational Priority
+                </span>
+              </div>
             </div>
 
-            <div className="mt-6 space-y-3">
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
               {activeAlerts.map((alert) => (
                 <article
                   key={alert.title}
-                  className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                  className="rounded-xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950/80 p-4"
                 >
-                  <h3 className="text-sm font-semibold text-slate-100">{alert.title}</h3>
-                  <p className="mt-2 text-xs text-slate-400">{alert.meta}</p>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="text-sm font-semibold text-slate-100">{alert.title}</h3>
+                      <p className="mt-1 text-xs text-slate-400">{alert.meta}</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <span className="rounded-full bg-rose-500/15 px-2 py-1 text-xs font-medium text-rose-200">
+                        Active
+                      </span>
+                      <span className="text-xs text-slate-500">Last updated: 12m ago</span>
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-center gap-3">
+                    <div className="flex-1">
+                      <div className="h-1 w-full rounded-full bg-slate-800">
+                        <div 
+                          className="h-1 rounded-full bg-gradient-to-r from-rose-500 to-rose-400" 
+                          style={{ width: '85%' }}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-xs font-medium text-slate-300">85% intensity</span>
+                  </div>
                 </article>
               ))}
             </div>
           </section>
 
           <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-xl font-semibold">Supporting Signal Activity</h2>
-            <div className="mt-6 space-y-3">
-              {signalActivity.map((item) => (
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Trigger Activity</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-400">Last 24h</span>
+                <select className="rounded-lg border border-slate-800 bg-slate-950/50 px-2 py-1 text-xs text-slate-300">
+                  <option>All alert types</option>
+                  <option>Entity alerts</option>
+                  <option>Region alerts</option>
+                  <option>Topic alerts</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {signalActivity.map((item, i) => (
                 <div
-                  key={item}
-                  className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm leading-7 text-slate-300"
+                  key={i}
+                  className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4"
                 >
-                  {item}
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-slate-800/50">
+                      <div className="h-2 w-2 rounded-full bg-emerald-400"></div>
+                    </div>
+                    <div>
+                      <p className="text-sm leading-6 text-slate-300">{item}</p>
+                      <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+                        <span>12:42 PM</span>
+                        <span>•</span>
+                        <span>High confidence</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           </section>
         </div>
 
-        <div className="space-y-6 lg:col-span-5">
+        <div className="space-y-6 lg:col-span-4">
           <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-xl font-semibold">Configuration</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-300">
-              Configure future entity, region, topic, and risk alert workflows. This surface is
-              designed to evolve into a full operational control layer for REDWOUD users.
-            </p>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Alert Configuration</h2>
+              <button className="rounded-lg border border-slate-700 px-3 py-1 text-xs font-medium text-slate-200 hover:border-slate-600 hover:text-white">
+                New Alert
+              </button>
+            </div>
 
-            <div className="mt-6 grid gap-3">
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
-                  Alert Type
-                </p>
-                <p className="mt-2 text-sm text-slate-200">Entity / Region / Topic / Risk</p>
+            <div className="mt-6 space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1">Threshold Sensitivity</label>
+                <select className="w-full rounded-lg border border-slate-800 bg-slate-950/50 px-3 py-2 text-sm text-slate-300">
+                  <option>Standard (recommended)</option>
+                  <option>High sensitivity</option>
+                  <option>Low sensitivity</option>
+                  <option>Custom thresholds</option>
+                </select>
               </div>
 
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
-                  Frequency
-                </p>
-                <p className="mt-2 text-sm text-slate-200">Real-time / Hourly / Daily</p>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1">Scope Filtering</label>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" id="regions" className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-emerald-400" />
+                    <label htmlFor="regions" className="text-sm text-slate-300">Regional alerts</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" id="entities" className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-emerald-400" checked />
+                    <label htmlFor="entities" className="text-sm text-slate-300">Entity alerts</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" id="topics" className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-emerald-400" checked />
+                    <label htmlFor="topics" className="text-sm text-slate-300">Topic alerts</label>
+                  </div>
+                </div>
               </div>
 
-              <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
-                  Delivery
-                </p>
-                <p className="mt-2 text-sm text-slate-200">Dashboard / Email / Push</p>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1">Delivery Channels</label>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" id="dashboard" className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-emerald-400" checked />
+                    <label htmlFor="dashboard" className="text-sm text-slate-300">Dashboard</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" id="email" className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-emerald-400" />
+                    <label htmlFor="email" className="text-sm text-slate-300">Email digest</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" id="mobile" className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-emerald-400" />
+                    <label htmlFor="mobile" className="text-sm text-slate-300">Mobile push</label>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
           <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="text-xl font-semibold">Control Center Status</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-300">
-              REDWOUD alerting is positioned as a strategic monitoring layer that converts live
-              signal concentration into structured operational awareness.
-            </p>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">System Status</h2>
+              <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
+                Operational
+              </span>
+            </div>
+            
+            <div className="mt-6 space-y-4">
+              <div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-300">Signal processing</span>
+                  <span className="font-mono text-xs text-emerald-400">148ms latency</span>
+                </div>
+                <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                  <div className="h-1 rounded-full bg-emerald-400" style={{ width: '95%' }}></div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-300">Alert evaluation</span>
+                  <span className="font-mono text-xs text-emerald-400">12ms latency</span>
+                </div>
+                <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                  <div className="h-1 rounded-full bg-emerald-400" style={{ width: '99%' }}></div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-300">Source coverage</span>
+                  <span className="font-mono text-xs text-emerald-400">12,800+ feeds</span>
+                </div>
+                <div className="mt-1 h-1 w-full rounded-full bg-slate-800">
+                  <div className="h-1 rounded-full bg-emerald-400" style={{ width: '92%' }}></div>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
       </section>
