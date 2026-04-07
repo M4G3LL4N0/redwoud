@@ -15,6 +15,16 @@ body {
     radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
   background-size: 200% 200%;
   background-position: 0% 0%;
+  animation: subtlePulse 60s ease infinite alternate;
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
 }
 
 /* Premium glassmorphism utilities */
@@ -41,12 +51,24 @@ body {
 
 /* Mission-Control Glass */
 .glass-panel {
-  @apply bg-slate-950/80 backdrop-blur border border-slate-800/20;
+  @apply bg-slate-950/80 backdrop-blur-lg border border-slate-800/20 relative;
   box-shadow: 
     0 1px 0 rgba(255,255,255,0.02) inset,
     0 0 20px rgba(16, 185, 129, 0.03),
     0 0 40px rgba(6, 182, 212, 0.02);
   transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.glass-panel::before {
+  content: '';
+  @apply absolute inset-0 -z-10 rounded-[inherit] opacity-20;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.1) 0%,
+    rgba(6, 182, 212, 0.1) 100%
+  );
+  transform: translateZ(-1px);
 }
 
 .glass-panel:hover {
@@ -95,6 +117,23 @@ body {
 /* Premium button styles */
 .btn-primary {
   @apply relative overflow-hidden rounded-lg bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98];
+  transform-style: preserve-3d;
+}
+
+.btn-primary::before {
+  content: '';
+  @apply absolute inset-0 opacity-0 rounded-[inherit];
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.1) 0%,
+    rgba(255,255,255,0) 60%
+  );
+  transition: opacity 0.3s ease;
+  transform: translateZ(-1px);
+}
+
+.btn-primary:hover::before {
+  @apply opacity-100;
 }
 
 .btn-secondary {
@@ -128,6 +167,18 @@ body {
   background-size: 40px 40px;
   background-position: 0 0;
   animation: subtleGridPan 120s linear infinite;
+  position: relative;
+}
+
+.pattern-grid::before {
+  content: '';
+  @apply absolute inset-0;
+  background: radial-gradient(
+    circle at center,
+    rgba(16, 185, 129, 0.02) 0%,
+    transparent 70%
+  );
+  animation: subtlePulse 30s ease infinite alternate;
 }
 
 @keyframes subtleGridPan {
