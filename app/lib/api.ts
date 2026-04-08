@@ -2,6 +2,9 @@ import type { IntelligenceEvent } from "@/lib/mockData";
 
 export async function getLiveEvents(): Promise<IntelligenceEvent[]> {
   try {
+    if (!process.env.NEXT_PUBLIC_SITE_URL && !process.env.VERCEL_URL) {
+      console.warn('Missing environment configuration - using fallback URL');
+    }
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
       ? process.env.NEXT_PUBLIC_SITE_URL
       : process.env.VERCEL_URL

@@ -9,7 +9,7 @@ export interface StreamRefreshProps {
 }
 
 export default function StreamRefresh({
-  refreshInterval = 60000,
+  refreshInterval = 300000, // Matches feed's cache TTL of 5 minutes
   children,
 }: StreamRefreshProps) {
   const router = useRouter();
