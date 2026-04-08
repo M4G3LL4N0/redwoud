@@ -21,7 +21,7 @@ export async function GET() {
       .slice(0, 4);
 
     const briefing = {
-      title: "Global intelligence briefing",
+      title: "REDWOUD Global Intelligence Briefing",
       dateLabel: "Updated live",
       lead:
         topTitles[0] ||

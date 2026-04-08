@@ -1,3 +1,4 @@
+import { getSourceName } from "@/lib/utils";
 import type { IntelligenceEvent } from "@/lib/mockData";
 
 interface Props {

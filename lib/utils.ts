@@ -1,10 +1,15 @@
-export function slugify(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+import { EventSource } from "./types";
+
+export function getSourceName(source?: EventSource | string) {
+  if (!source) return "Source unavailable";
+  return typeof source === "string" ? source : source.name;
 }
 
-export function getSourceName(source: string | { name: string }): string {
-  return typeof source === 'string' ? source : source?.name || 'Unknown';
+export function normalizeSource(
+  source: EventSource | string
+): EventSource {
+  if (typeof source === "string") {
+    return { name: source, tier: "verified" };
+  }
+  return source;
 }

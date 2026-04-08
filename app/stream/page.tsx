@@ -33,8 +33,15 @@ async function getEvents(): Promise<EventItem[]> {
     }
 
     const data = await res.json();
-    if (Array.isArray(data)) return data as EventItem[];
-    if (Array.isArray(data?.events)) return data.events as EventItem[];
+
+    if (Array.isArray(data)) {
+      return data as EventItem[];
+    }
+
+    if (Array.isArray(data?.events)) {
+      return data.events as EventItem[];
+    }
+
     return [];
   } catch {
     return [];
@@ -133,8 +140,11 @@ export default async function StreamPage() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                LIVE INTELLIGENCE CONSOLE
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                </span>
+                Live Operations Stream
               </div>
 
               <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
@@ -166,6 +176,8 @@ export default async function StreamPage() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
                 <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Last Update</div>
                 <div className="mt-2 text-sm font-medium text-slate-200">{latestTimestamp}</div>
+                <div className="mt-1 text-xs text-slate-500">UTC</div>
+                <div className="mt-1 text-xs text-emerald-400">Live</div>
               </div>
             </div>
           </div>
@@ -214,38 +226,29 @@ export default async function StreamPage() {
                         <h3 className="text-lg font-semibold leading-6 text-white">{event.title}</h3>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <div className="rounded-2xl border border-rose-500/20 bg-gradient-to-br from-rose-900/20 to-rose-900/30 px-3 py-2 text-right">
-                          <div className="text-[10px] uppercase tracking-[0.18em] text-rose-200/80">
-                            OPERATIONAL
-                          </div>
-                          <div className="mt-1 text-lg font-bold tracking-tight text-rose-100">
-                            {safeNumber(event.score)}
-                          </div>
+                      <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-right">
+                        <div className="text-[10px] uppercase tracking-[0.18em] text-rose-200/80">
+                          Score
                         </div>
-                        <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-emerald-900/30 px-3 py-2 text-right">
-                          <div className="text-[10px] uppercase tracking-[0.18em] text-emerald-200/80">
-                            CONFIDENCE
-                          </div>
-                          <div className="mt-1 text-lg font-bold tracking-tight text-emerald-100">
-                            {safeNumber(event.confidence)}
-                          </div>
+                        <div className="text-lg font-semibold text-rose-200">
+                          {safeNumber(event.score)}
                         </div>
-                      </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
                       <span className="font-medium text-slate-200">{event.entity || "Unknown Entity"}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-slate-500">&bull;</span>
-                        {tier ? (
-                          <Link
-                            href="/sources"
-                            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${getTierClasses(tier)}`}
-                          >
-                            <span className="h-2 w-2 rounded-full bg-current opacity-80" /> 
-                            {tier}
+                      <span>•</span>
+                      <span>Confidence {safeNumber(event.confidence)}</span>
+                      <span>•</span>
+                      <span>{getSourceName(primarySource)}</span>
+                      {tier ? (
+                        <span
+                          className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${getTierClasses(
+                            tier
+                          )}`}
+                        >
+                          {tier}
                         </span>
                       ) : null}
                     </div>

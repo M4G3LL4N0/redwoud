@@ -91,7 +91,7 @@ export const liveEvents: EventItem[] = [
     whyItMatters:
       "Energy transport instability can spill into pricing pressure, industrial costs, and wider regional market volatility.",
     score: 84,
-    sources: ["BBC World"],
+    sources: [{ name: "BBC World", tier: "verified" }],
     timestamp: new Date().toISOString(),
   },
   {
@@ -109,7 +109,7 @@ export const liveEvents: EventItem[] = [
     whyItMatters:
       "Chip restrictions can reshape capital allocation, supply chains, and competitive positioning across multiple industries.",
     score: 67,
-    sources: ["NYT World"],
+    sources: [{ name: "NYT World", tier: "verified" }],
     timestamp: new Date().toISOString(),
   },
   {
@@ -127,7 +127,7 @@ export const liveEvents: EventItem[] = [
     whyItMatters:
       "Trade-route disruption can affect delivery times, insurance costs, commodities pricing, and global supply reliability.",
     score: 79,
-    sources: ["Al Jazeera"],
+    sources: [{ name: "Al Jazeera", tier: "verified" }],
     timestamp: new Date().toISOString(),
   },
 ];
