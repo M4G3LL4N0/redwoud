@@ -111,7 +111,7 @@ export default async function HomePage() {
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
               </span>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-medium text-emerald-300 tracking-[0.15em]">GLOBAL INTELLIGENCE OPERATING SYSTEM</span>
+                <span className="text-sm font-medium text-emerald-300 tracking-[0.15em] animate-pulse [animation-duration:2s]">GLOBAL INTELLIGENCE OPERATING SYSTEM</span>
                 <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
                   Strategic Intelligence Layer
                 </span>
@@ -790,3 +790,4 @@ export default async function HomePage() {
     </main>
   );
 }
+"use client"
