@@ -29,6 +29,25 @@ export interface Database {
         Insert: Omit<EventItem, 'id'>;
         Update: Partial<EventItem>;
       };
+      event_sources: {
+        Row: {
+          event_id: string;
+          source_id: string;
+        };
+        Insert: {
+          event_id: string;
+          source_id: string;
+        };
+        Update: Partial<{
+          event_id: string;
+          source_id: string;
+        }>;
+      };
+      sources: {
+        Row: EventSource;
+        Insert: Omit<EventSource, 'name'>;
+        Update: Partial<EventSource>;
+      };
     };
   };
 }

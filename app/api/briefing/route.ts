@@ -2,13 +2,28 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { Database } from "@/lib/types";
 
+type EventWithSources = Database['public']['Tables']['events']['Row'] & {
+  sources: Array<{
+    sources: Database['public']['Tables']['sources']['Row']
+  }>
+};
+
 export async function GET() {
   try {
     const { data, error } = await supabaseAdmin
       .from("events")
-      .select("*")
+      .select(`
+        *,
+        sources:event_sources(
+          source_id,
+          sources:source_id(
+            *
+          )
+        )
+      `)
       .order("score", { ascending: false })
-      .limit(12);
+      .limit(12)
+      .returns<EventWithSources[]>();
 
     if (error) throw error;
 
