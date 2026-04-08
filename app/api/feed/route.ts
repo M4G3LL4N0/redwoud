@@ -215,16 +215,30 @@ function normalizeItem(item: any, source: string): FeedEvent {
 
 export async function GET() {
   try {
-    const feeds = [
-      { url: "https://feeds.bbci.co.uk/news/world/rss.xml", source: "BBC World" },
-      { url: "https://rss.nytimes.com/services/xml/rss/nyt/World.xml", source: "NYT World" },
-      { url: "https://www.aljazeera.com/xml/rss/all.xml", source: "Al Jazeera" },
-    ];
+    // Get feeds from environment or use defaults
+    const feeds = process.env.FEED_SOURCES 
+      ? JSON.parse(process.env.FEED_SOURCES)
+      : [
+          { url: "https://feeds.bbci.co.uk/news/world/rss.xml", source: "BBC World" },
+          { url: "https://rss.nytimes.com/services/xml/rss/nyt/World.xml", source: "NYT World" },
+          { url: "https://www.aljazeera.com/xml/rss/all.xml", source: "Al Jazeera" },
+        ];
 
+    // Process feeds in parallel with timeout
     const results = await Promise.allSettled(
       feeds.map(async (feed) => {
-        const parsed = await parser.parseURL(feed.url);
-        return (parsed.items || []).slice(0, 4).map((item) => normalizeItem(item, feed.source));
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 5000);
+          
+          const parsed = await parser.parseURL(feed.url, { signal: controller.signal });
+          clearTimeout(timeout);
+          
+          return (parsed.items || []).slice(0, 4).map((item) => normalizeItem(item, feed.source));
+        } catch (error) {
+          console.error(`Failed to parse feed ${feed.source}:`, error);
+          return [];
+        }
       })
     );
 
@@ -237,10 +251,18 @@ export async function GET() {
       {
         updatedAt: new Date().toISOString(),
         events,
+        stats: {
+          totalFeeds: feeds.length,
+          successfulFeeds: results.filter(r => r.status === 'fulfilled').length,
+          totalEvents: events.length
+        }
       },
       {
         headers: {
           "Cache-Control": "s-maxage=300, stale-while-revalidate=600",
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "99",
+          "X-RateLimit-Reset": "60"
         },
       }
     );

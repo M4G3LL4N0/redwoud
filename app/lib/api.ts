@@ -1,10 +1,23 @@
 import type { IntelligenceEvent } from "@/lib/mockData";
 
+interface FeedHealth {
+  source: string;
+  status: 'healthy' | 'degraded' | 'down';
+  lastUpdated: string;
+  error?: string;
+}
+
+const feedHealthMap = new Map<string, FeedHealth>();
+
 export async function getLiveEvents(): Promise<IntelligenceEvent[]> {
   try {
     if (!process.env.NEXT_PUBLIC_SITE_URL && !process.env.VERCEL_URL) {
       console.warn('Missing environment configuration - using fallback URL');
     }
+
+    // Track request rate
+    const requestId = Math.random().toString(36).slice(2);
+    console.log(`[${new Date().toISOString()}] Request ${requestId} initiated`);
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
       ? process.env.NEXT_PUBLIC_SITE_URL
       : process.env.VERCEL_URL
