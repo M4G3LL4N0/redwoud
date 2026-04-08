@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import type { DailyBriefing, IntelligenceEvent, TrendSummary } from "@/lib/mockData";
 import DailyBriefingSection from "@/components/dashboard/DailyBriefing";
@@ -790,4 +792,3 @@ export default async function HomePage() {
     </main>
   );
 }
-"use client"
