@@ -24,7 +24,14 @@ function inferTopic(text: string): string {
   const value = text.toLowerCase();
 
   if (value.includes("energy") || value.includes("oil") || value.includes("gas")) return "Energy";
-  if (value.includes("market") || value.includes("stocks") || value.includes("inflation")) return "Markets";
+  if (
+    value.includes("market") || 
+    value.includes("stocks") || 
+    value.includes("inflation") ||
+    value.includes("financial") ||
+    value.includes("currency") ||
+    value.includes("bank")
+  ) return "Markets";
   if (value.includes("trade") || value.includes("shipping") || value.includes("tariff")) return "Trade";
   if (value.includes("tech") || value.includes("chip") || value.includes("ai")) return "Technology";
   if (value.includes("war") || value.includes("security") || value.includes("military")) return "Security";
