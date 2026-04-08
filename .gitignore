@@ -41,3 +41,7 @@ venv/
 
 # Local Supabase
 supabase/
+.vercel/
+.env.development.local
+.env.test.local
+.env.production.local
