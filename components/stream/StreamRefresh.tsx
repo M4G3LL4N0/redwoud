@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-interface StreamRefreshProps {
+export interface StreamRefreshProps {
   refreshInterval?: number;
   children?: React.ReactNode;
 }
