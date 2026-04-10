@@ -213,7 +213,19 @@ export default async function StreamPage() {
                 return (
                   <article
                     key={event.id ?? `${event.title}-${index}`}
-                    className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-2xl shadow-black/10"
+                    className={`rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-2xl shadow-black/10 transition-all duration-300 ease-out ${
+                      index % 2 === 0 ? 'animate-fade-in' : 'animate-fade-in-2'
+                    } ${
+                      safeNumber(event.score) >= 80 
+                        ? 'ring-1 ring-rose-500/30 hover:ring-rose-500/50' 
+                        : 'hover:border-slate-700'
+                    }`}
+                    style={{
+                      animationDelay: `${index * 0.05}s`,
+                      ...(safeNumber(event.score) >= 80 && {
+                        boxShadow: '0 0 10px rgba(244, 63, 94, 0.3)'
+                      })
+                    }}
                   >
                     <div className="mb-4 flex items-start justify-between gap-3">
                       <div className="space-y-2">
@@ -226,7 +238,7 @@ export default async function StreamPage() {
                         <h3 className="text-lg font-semibold leading-6 text-white">{event.title}</h3>
                       </div>
 
-                      <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-right">
+                      <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-right animate-pulse">
                         <div className="text-[10px] uppercase tracking-[0.18em] text-rose-200/80">
                           Score
                         </div>
@@ -291,7 +303,10 @@ export default async function StreamPage() {
                 return (
                   <article
                     key={event.id ?? `${event.title}-${index}`}
-                    className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5"
+                    className={`rounded-3xl border border-slate-800 bg-slate-900/60 p-5 transition-all duration-300 ease-out ${
+                      index % 2 === 0 ? 'animate-fade-in' : 'animate-fade-in-2'
+                    } hover:border-slate-700`}
+                    style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                       <div className="min-w-0 flex-1">
@@ -335,7 +350,7 @@ export default async function StreamPage() {
                       </div>
 
                       <div className="grid min-w-[150px] grid-cols-2 gap-3 lg:grid-cols-1">
-                        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
+                        <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-3 transition-all hover:bg-slate-950/90">
                           <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500">Score</div>
                           <div className="mt-2 text-xl font-semibold text-white">
                             {safeNumber(event.score)}
