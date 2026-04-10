@@ -136,7 +136,7 @@ export default function PricingPage() {
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-4">
+          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-5">
             {plans.map((plan) => (
               <div
                 key={plan.name}
@@ -155,12 +155,23 @@ export default function PricingPage() {
                   )}
                 </div>
                 <p className="mt-1 text-sm text-slate-400">{plan.subtitle}</p>
-                <div className="mt-6 flex items-baseline gap-2">
+                <p className="mt-2 text-xs text-slate-500">{plan.for}</p>
+                <div className="mt-4 flex items-baseline gap-2">
                   <span className="text-3xl font-semibold">{plan.price}</span>
                   {plan.price !== "Free" && plan.price !== "Custom" && (
                     <span className="text-sm text-slate-400">/month</span>
                   )}
                 </div>
+                {plan.annualPrice && (
+                  <p className="mt-1 text-xs text-slate-500">
+                    {plan.annualPrice}
+                  </p>
+                )}
+                {plan.upgradeReason && (
+                  <p className="mt-3 text-xs text-purple-400">
+                    {plan.upgradeReason}
+                  </p>
+                )}
                 <ul className="mt-6 space-y-3">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">
@@ -223,7 +234,12 @@ export default function PricingPage() {
                       key={plan.name}
                       className="px-6 py-4 text-center text-sm font-medium text-slate-300"
                     >
-                      {plan.name}
+                      <div className="flex flex-col items-center">
+                        <span>{plan.name}</span>
+                        <span className="mt-1 text-xs font-normal text-slate-500">
+                          {plan.price === "Free" ? "Free" : plan.price === "Custom" ? "Contact sales" : plan.price}
+                        </span>
+                      </div>
                     </th>
                   ))}
                 </tr>
