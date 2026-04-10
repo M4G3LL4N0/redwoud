@@ -216,7 +216,7 @@ export default function PricingPage() {
               <thead className="border-b border-slate-800 bg-slate-900/50">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-medium text-slate-300">
-                    Intelligence Feature
+                    Core Capabilities
                   </th>
                   {plans.map((plan) => (
                     <th
@@ -229,80 +229,57 @@ export default function PricingPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
-                <tr className="hover:bg-slate-900/50">
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-300">
-                    Real-time Event Monitoring
-                  </td>
-                  {plans.map((plan) => (
-                    <td key={plan.name} className="px-6 py-4 text-center">
-                      <svg
-                        className={`mx-auto h-5 w-5 ${
-                          plan.name === "Signal Scout" ? "text-slate-500" : "text-emerald-400"
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                {[
+                  "Real-time event monitoring",
+                  "Historical analysis",
+                  "Custom alerts",
+                  "Source credibility scoring",
+                  "Team collaboration",
+                  "API access",
+                  "Private intelligence spaces",
+                  "Predictive modeling",
+                  "Custom model training",
+                  "Dedicated infrastructure"
+                ].map((feature) => (
+                  <tr key={feature} className="hover:bg-slate-900/50">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-300">
+                      {feature}
                     </td>
-                  ))}
-                </tr>
-                <tr className="hover:bg-slate-900/50">
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-300">
-                    Advanced Risk Analytics
-                  </td>
-                  {plans.map((plan) => (
-                    <td key={plan.name} className="px-6 py-4 text-center">
-                      <svg
-                        className={`mx-auto h-5 w-5 ${
-                          plan.name === "Strategic Enterprise" || plan.name === "Command Team"
-                            ? "text-emerald-400"
-                            : "text-slate-500"
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </td>
-                  ))}
-                </tr>
-                <tr className="hover:bg-slate-900/50">
-                  <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-300">
-                    Predictive Modeling
-                  </td>
-                  {plans.map((plan) => (
-                    <td key={plan.name} className="px-6 py-4 text-center">
-                      <svg
-                        className={`mx-auto h-5 w-5 ${
-                          plan.name === "Strategic Enterprise" ? "text-emerald-400" : "text-slate-500"
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </td>
-                  ))}
-                </tr>
+                    {plans.map((plan) => {
+                      const hasFeature = 
+                        (feature === "Real-time event monitoring") ||
+                        (feature === "Historical analysis" && plan.name !== "Signal Scout") ||
+                        (feature === "Custom alerts" && plan.name !== "Signal Scout") ||
+                        (feature === "Source credibility scoring" && plan.name !== "Signal Scout") ||
+                        (feature === "Team collaboration" && ["Strategic Team", "Command Hub", "Strategic Enterprise"].includes(plan.name)) ||
+                        (feature === "API access" && ["Strategic Team", "Command Hub", "Strategic Enterprise"].includes(plan.name)) ||
+                        (feature === "Private intelligence spaces" && ["Command Hub", "Strategic Enterprise"].includes(plan.name)) ||
+                        (feature === "Predictive modeling" && plan.name === "Strategic Enterprise") ||
+                        (feature === "Custom model training" && plan.name === "Strategic Enterprise") ||
+                        (feature === "Dedicated infrastructure" && plan.name === "Strategic Enterprise");
+                      
+                      return (
+                        <td key={plan.name} className="px-6 py-4 text-center">
+                          <svg
+                            className={`mx-auto h-5 w-5 ${
+                              hasFeature ? "text-emerald-400" : "text-slate-500"
+                            }`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d={hasFeature ? "M5 13l4 4L19 7" : "M6 18L18 6M6 6l12 12"}
+                            />
+                          </svg>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -410,11 +387,11 @@ export default function PricingPage() {
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
               <div>
                 <div className="inline-flex rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300">
-                  Enterprise Solutions
+                  Institutional Grade
                 </div>
                 <h2 className="mt-4 text-3xl font-semibold">Strategic Intelligence Infrastructure</h2>
                 <p className="mt-4 text-slate-300">
-                  Our enterprise solutions provide the intelligence architecture needed for institutional decision-making at scale.
+                  For organizations requiring national-grade intelligence capabilities with dedicated infrastructure and support.
                 </p>
                 <ul className="mt-6 space-y-4">
                   <li className="flex items-start gap-3">
@@ -424,7 +401,7 @@ export default function PricingPage() {
                       </svg>
                     </div>
                     <span className="text-sm text-slate-300">
-                      Dedicated intelligence pods with custom model training
+                      <strong>Dedicated Intelligence Pods</strong> - Isolated infrastructure with custom-trained models
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
@@ -434,7 +411,17 @@ export default function PricingPage() {
                       </svg>
                     </div>
                     <span className="text-sm text-slate-300">
-                      White-glove onboarding and 24/7 analyst support
+                      <strong>24/7 Analyst Support</strong> - Direct access to REDWOUD intelligence analysts
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-amber-500/10 text-amber-400">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-sm text-slate-300">
+                      <strong>Custom Threat Modeling</strong> - Tailored scenario planning for your risk profile
                     </span>
                   </li>
                 </ul>
@@ -484,14 +471,23 @@ export default function PricingPage() {
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-slate-800"></div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-800 text-lg font-medium text-sky-400">
+                  <span>FI</span>
+                </div>
                 <div>
-                  <h4 className="font-medium">Chief Risk Officer</h4>
-                  <p className="text-sm text-slate-400">Fortune 100 Financial Institution</p>
+                  <h4 className="font-medium">Global Risk Director</h4>
+                  <p className="text-sm text-slate-400">Top 5 Financial Institution</p>
+                  <div className="mt-1 flex">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
                 </div>
               </div>
               <p className="mt-4 text-sm text-slate-300">
-                "REDWOUD's intelligence infrastructure has transformed our risk management capabilities, giving us a 6-month predictive advantage over conventional methods."
+                "We've reduced false positives by 63% while catching 89% of material risks earlier than traditional methods. The Command Hub has become our operational nerve center."
               </p>
             </div>
             <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
