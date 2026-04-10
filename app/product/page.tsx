@@ -87,6 +87,88 @@ export default function ProductPage() {
         </div>
       </section>
 
+      {/* Platform Overview */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid gap-16 md:grid-cols-2">
+          <div>
+            <h2 className="text-2xl font-semibold">Platform Overview</h2>
+            <p className="mt-4 text-slate-300">
+              REDWOUD integrates real-time intelligence collection, advanced analytics, 
+              and decision support into a unified platform for strategic advantage.
+            </p>
+            <div className="mt-8 space-y-6">
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+                <h3 className="text-sm font-medium text-emerald-300">Mission Control</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Centralized dashboard for monitoring global volatility and strategic posture
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+                <h3 className="text-sm font-medium text-emerald-300">Operations Hub</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Real-time event stream with entity/topic/region analysis and alerting
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+                <h3 className="text-sm font-medium text-emerald-300">Executive Synthesis</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Automated strategic briefings updated every 6 hours with impact forecasting
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+              <h3 className="text-sm font-medium text-emerald-300">Strategic Value</h3>
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">4-minute event processing latency</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">148-dimension event analysis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">150+ integrated intelligence sources</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Enterprise-grade security & compliance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Workflows */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-semibold">Core Workflows</h2>
+            <p className="mt-4 text-slate-300">
+              REDWOUD powers strategic decision-making across key operational roles:
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                "Analyst Monitoring",
+                "Executive Briefing", 
+                "Entity Intelligence",
+                "Regional Analysis",
+                "Strategic Forecasting",
+                "Workflow Automation"
+              ].map((workflow) => (
+                <div key={workflow} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+                  <p className="text-sm font-medium text-emerald-300">{workflow}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Platform Architecture */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-16 md:grid-cols-2">
@@ -210,6 +292,58 @@ export default function ProductPage() {
               ].map((domain) => (
                 <div key={domain} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
                   <p className="text-sm font-medium text-emerald-300">{domain}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Integration */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-semibold">Platform Integration</h2>
+            <p className="mt-4 text-slate-300">
+              REDWOUD connects intelligence surfaces into a unified strategic workflow:
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                "Mission Control → Operations",
+                "Operations → Briefing", 
+                "Briefing → Entity Intelligence",
+                "Entity Intelligence → Forecasting",
+                "Forecasting → Workflow Automation",
+                "Automation → Mission Control"
+              ].map((integration) => (
+                <div key={integration} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+                  <p className="text-sm font-medium text-emerald-300">{integration}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Strategic Value */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-semibold">Strategic Value</h2>
+            <p className="mt-4 text-slate-300">
+              REDWOUD delivers measurable impact across key strategic dimensions:
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                "4-minute event processing",
+                "148-dimension analysis", 
+                "150+ integrated sources",
+                "Enterprise-grade security",
+                "Scalable infrastructure",
+                "Custom workflow automation"
+              ].map((value) => (
+                <div key={value} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+                  <p className="text-sm font-medium text-emerald-300">{value}</p>
                 </div>
               ))}
             </div>
