@@ -5,12 +5,15 @@ export default function InvestorsPage() {
         <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="max-w-4xl">
             <div className="mb-4 inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
-              Category Creation
+              Strategic Intelligence OS
             </div>
 
             <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              The Intelligence Operating System for the Modern World
+              The Intelligence Layer for Decision-Makers
             </h1>
+            <p className="mt-2 text-lg font-medium text-emerald-400">
+              Transforming global signals into structured intelligence workflows
+            </p>
 
             <p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
               REDWOUD is creating a new category of strategic intelligence infrastructure - transforming fragmented global signals into structured, actionable intelligence for decision-makers navigating volatile environments. We are building the operating system that connects geopolitics, markets, trade, energy, technology, and security into a unified intelligence layer.
@@ -112,25 +115,97 @@ export default function InvestorsPage() {
         </div>
 
         <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
+          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Why This Works Now</div>
+          <div className="mt-4 grid gap-6 lg:grid-cols-2">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Macro Complexity Acceleration</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                Geopolitical volatility, supply chain fragmentation, and compressed decision cycles demand real-time structured intelligence - not just news monitoring.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white">Decision-Maker Pain</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                Professionals waste hours daily stitching together signals from news, terminals, and internal reports with no unified view or workflow.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Platform Strategy</div>
           <div className="mt-4 grid gap-6 lg:grid-cols-3">
             <div>
               <h3 className="text-lg font-semibold text-white">Phase 1: Public Intelligence</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-400">
-                Build premium public intelligence surface with mission control, stream, entity profiles, alerts, and executive briefing.
-              </p>
+              <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
+                <li>• Mission control dashboard</li>
+                <li>• Live intelligence stream</li>
+                <li>• Entity/region/topic profiles</li>
+                <li>• Executive briefing</li>
+                <li>• Core alerting system</li>
+              </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white">Phase 2: Premium Workflows</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-400">
-                Introduce premium tracking, alert specificity, briefing depth, saved views, and stronger signal provenance.
-              </p>
+              <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
+                <li>• Custom tracking & alerts</li>
+                <li>• Deeper briefing layers</li>
+                <li>• Saved views & dashboards</li>
+                <li>• Signal provenance tracking</li>
+                <li>• Team collaboration</li>
+              </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white">Phase 3: Enterprise Scale</h3>
+              <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
+                <li>• Historical archives</li>
+                <li>• Scenario planning</li>
+                <li>• Workflow integrations</li>
+                <li>• Export tooling</li>
+                <li>• API access</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
+          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Competitive Landscape</div>
+          <div className="mt-4 grid gap-6 lg:grid-cols-2">
+            <div>
+              <h3 className="text-lg font-semibold text-white">News Aggregators</h3>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                Expand into team workflows, historical archives, scenario tooling, exports, and enterprise-grade decision support.
+                Provide raw articles without structured intelligence, entity tracking, or decision workflows.
               </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white">Institutional Services</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                High-cost human analysis with limited real-time capabilities and no self-service platform.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
+          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Traction & Roadmap</div>
+          <div className="mt-4 grid gap-6 lg:grid-cols-2">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Current Traction</h3>
+              <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
+                <li>• Core intelligence platform live</li>
+                <li>• 100+ normalized events daily</li>
+                <li>• 50+ tracked entities</li>
+                <li>• Early enterprise pilots</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white">12-Month Roadmap</h3>
+              <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
+                <li>• Premium workflows launch</li>
+                <li>• Mobile experience</li>
+                <li>• Team collaboration features</li>
+                <li>• API access beta</li>
+              </ul>
             </div>
           </div>
         </div>
