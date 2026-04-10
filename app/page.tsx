@@ -45,6 +45,13 @@ function safeNumber(value: number | undefined, fallback = 0) {
   return typeof value === "number" && Number.isFinite(value) ? value : fallback;
 }
 
+function average(values: number[]): number {
+  if (!values || values.length === 0) return 0;
+  const sum = values.reduce((acc, v) => acc + (Number.isFinite(v) ? v : 0), 0);
+  return sum / values.length;
+}
+
+
 function formatTimestamp(timestamp?: string) {
   if (!timestamp) return "Time unavailable";
 
