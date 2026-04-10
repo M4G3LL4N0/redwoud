@@ -104,8 +104,10 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       {/* Mission Frame */}
-      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-950/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-950/90 backdrop-blur relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/10 via-slate-950/80 to-slate-950/90"></div>
+        <div className="mx-auto max-w-7xl px-6 py-16 relative">
+          <div className="animate-fade-in [animation-delay:100ms] opacity-0">
           <div className="flex flex-col gap-6">
             <div className="flex flex-wrap items-center gap-3">
               <span className="relative flex h-3 w-3">
@@ -188,7 +190,8 @@ export default async function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Memory Archive */}
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-purple-950/20 to-slate-950/80 p-6">
+            <div className="animate-fade-in [animation-delay:200ms] opacity-0 rounded-2xl border border-slate-800/50 bg-gradient-to-b from-purple-950/20 to-slate-950/80 p-6 relative overflow-hidden group">
+              <div className="absolute -inset-1 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="text-purple-300 flex items-center gap-2 text-sm font-medium">
                 <span>Memory Archive</span>
               </div>
@@ -317,10 +320,11 @@ export default async function HomePage() {
       </section>
 
       {/* System Metrics */}
-      <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-6">
+      <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/20 via-slate-950/80 to-slate-950/90"></div>
+        <div className="mx-auto max-w-7xl px-6 py-6 relative">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
+            <div className="animate-fade-in [animation-delay:300ms] opacity-0 rounded-xl border border-slate-800/50 bg-slate-950/60 p-4 hover:bg-slate-950/70 transition-colors">
               <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 Total Signals
               </p>
@@ -598,8 +602,9 @@ export default async function HomePage() {
               return clusters.map((cluster, i) => (
                 <div
                   key={`${cluster.type}-${cluster.name}`}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950/80 p-5 hover:border-slate-700/50"
+                  className="animate-fade-in [animation-delay:400ms] opacity-0 group relative overflow-hidden rounded-2xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950/80 p-5 hover:border-slate-700/50 transition-all"
                 >
+                  <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#1e293b_0%,#0f172a_50%,#1e293b_100%)] opacity-5 group-hover:opacity-10 transition-opacity"></div>
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
                       {cluster.type}
@@ -648,12 +653,13 @@ export default async function HomePage() {
               <article
                 key={event.id}
                 className={[
-                  "rounded-xl border p-4 transition-all hover:border-slate-700",
+                  "animate-fade-in rounded-xl border p-4 transition-all hover:border-slate-700 relative overflow-hidden",
                   event.intensity === "high"
-                    ? "border-rose-800/30 bg-gradient-to-b from-rose-950/20 to-slate-950/80"
-                    : "border-slate-800/50 bg-slate-950/60",
+                    ? "border-rose-800/30 bg-gradient-to-b from-rose-950/20 to-slate-950/80 hover:shadow-[0_0_15px_rgba(244,63,94,0.3)]"
+                    : "border-slate-800/50 bg-slate-950/60 hover:shadow-[0_0_15px_rgba(30,41,59,0.3)]",
                 ].join(" ")}
               >
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800/10 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity"></div>
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs uppercase tracking-wide text-slate-400">
                     {event.region}
