@@ -5,15 +5,15 @@ export default function InvestorsPage() {
         <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="max-w-4xl">
             <div className="mb-4 inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
-              Investor Overview
+              Category Creation
             </div>
 
             <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Building the Intelligence Operating System for the Modern World
+              The Intelligence Operating System for the Modern World
             </h1>
 
             <p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
-              REDWOUD is creating a new category of strategic intelligence infrastructure - transforming fragmented global signals into structured, actionable intelligence for decision-makers navigating volatile environments.
+              REDWOUD is creating a new category of strategic intelligence infrastructure - transforming fragmented global signals into structured, actionable intelligence for decision-makers navigating volatile environments. We are building the operating system that connects geopolitics, markets, trade, energy, technology, and security into a unified intelligence layer.
             </p>
           </div>
 
@@ -24,9 +24,9 @@ export default function InvestorsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18M7 14l3-3 4 4 5-5" />
                 </svg>
               </div>
-              <div className="text-sm font-medium text-white">Category Creation</div>
+              <div className="text-sm font-medium text-white">Strategic Intelligence Layer</div>
               <p className="mt-2 text-sm leading-6 text-slate-400">
-                REDWOUD sits between noisy global news consumption and high-cost institutional intelligence workflows.
+                REDWOUD sits between noisy global news consumption and high-cost institutional intelligence workflows, creating a new strategic intelligence layer.
               </p>
             </div>
 
@@ -39,7 +39,7 @@ export default function InvestorsPage() {
               </div>
               <div className="text-sm font-medium text-white">Real-Time Relevance</div>
               <p className="mt-2 text-sm leading-6 text-slate-400">
-                Users do not want raw articles. They want fast, current, structured understanding of what matters now.
+                Users don't want raw articles - they want fast, current, structured understanding of what matters now across geopolitics, markets, and security.
               </p>
             </div>
 
@@ -52,7 +52,7 @@ export default function InvestorsPage() {
               </div>
               <div className="text-sm font-medium text-white">Defensible Structure</div>
               <p className="mt-2 text-sm leading-6 text-slate-400">
-                The long-term moat comes from normalized events, entity-region-topic fusion, trust grammar, and workflow depth.
+                Our moat comes from normalized events, entity-region-topic fusion, trust grammar, alerts, briefings, and future workflow depth.
               </p>
             </div>
 
@@ -64,7 +64,7 @@ export default function InvestorsPage() {
               </div>
               <div className="text-sm font-medium text-white">Expansion Path</div>
               <p className="mt-2 text-sm leading-6 text-slate-400">
-                Public intelligence surface first, then premium briefings, alerting, tracking, history, team workflows, and enterprise use cases.
+                Public intelligence surface → premium briefings → alerts/tracking → team workflows → enterprise intelligence → historical archives.
               </p>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function InvestorsPage() {
               There is more signal than ever across geopolitics, economics, trade, markets, energy,
               technology, and security. But most users still rely on fragmented headlines, social feeds,
               terminal-heavy workflows, or expensive institutional stacks. REDWOUD compresses noise into
-              structured awareness.
+              structured awareness through normalized events, entity-region-topic fusion, and trust grammar.
             </p>
           </div>
         </div>
@@ -115,21 +115,21 @@ export default function InvestorsPage() {
           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Platform Strategy</div>
           <div className="mt-4 grid gap-6 lg:grid-cols-3">
             <div>
-              <h3 className="text-lg font-semibold text-white">Phase 1</h3>
+              <h3 className="text-lg font-semibold text-white">Phase 1: Public Intelligence</h3>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                Build a premium public intelligence surface with mission control, stream, entity profiles, alerts, and executive briefing.
+                Build premium public intelligence surface with mission control, stream, entity profiles, alerts, and executive briefing.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Phase 2</h3>
+              <h3 className="text-lg font-semibold text-white">Phase 2: Premium Workflows</h3>
               <p className="mt-2 text-sm leading-7 text-slate-400">
                 Introduce premium tracking, alert specificity, briefing depth, saved views, and stronger signal provenance.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Phase 3</h3>
+              <h3 className="text-lg font-semibold text-white">Phase 3: Enterprise Scale</h3>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                Expand into team workflows, historical intelligence archives, scenario tooling, exports, and enterprise-grade decision support.
+                Expand into team workflows, historical archives, scenario tooling, exports, and enterprise-grade decision support.
               </p>
             </div>
           </div>
@@ -139,20 +139,22 @@ export default function InvestorsPage() {
           <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
             <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Defensibility</div>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-400">
-              <li>Normalized intelligence objects instead of raw article dependency.</li>
-              <li>Entity-region-topic fusion that compounds in usefulness as coverage grows.</li>
-              <li>Trust grammar through source handling, confidence cues, and structured presentation.</li>
-              <li>Executive briefing and control surfaces that turn data into decision workflows.</li>
+              <li>Normalized intelligence objects instead of raw article dependency</li>
+              <li>Entity-region-topic fusion that compounds in usefulness as coverage grows</li>
+              <li>Trust grammar through source handling, confidence cues, and structured presentation</li>
+              <li>Executive briefing and control surfaces that turn data into decision workflows</li>
+              <li>Future workflow depth through alerts, tracking, and historical archives</li>
             </ul>
           </div>
 
           <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
             <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Business Model</div>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-400">
-              <li>Free public layer for distribution, trust, and habit formation.</li>
-              <li>Pro intelligence subscriptions for deeper briefings, saved tracking, and alerting.</li>
-              <li>Team and enterprise tiers for workflows, monitoring, collaboration, and exports.</li>
-              <li>Potential long-term data/API and infrastructure layers for intelligence-enabled products.</li>
+              <li>Free public layer for distribution, trust, and habit formation</li>
+              <li>Pro intelligence subscriptions for deeper briefings, saved tracking, and alerting</li>
+              <li>Team and enterprise tiers for workflows, monitoring, collaboration, and exports</li>
+              <li>Potential long-term data/API and infrastructure layers for intelligence-enabled products</li>
+              <li>High-margin subscription model with predictable recurring revenue streams</li>
             </ul>
           </div>
         </div>
@@ -163,19 +165,19 @@ export default function InvestorsPage() {
             <div>
               <h3 className="text-lg font-semibold text-white">Market Leadership</h3>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                First-mover advantage in building the intelligence operating system for the modern world.
+                First-mover advantage in building the intelligence operating system for the modern world across geopolitics, markets, and security.
               </p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white">Scalable Platform</h3>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                Highly scalable architecture with multiple expansion vectors across intelligence domains.
+                Highly scalable architecture with multiple expansion vectors across intelligence domains and enterprise use cases.
               </p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white">Strong Unit Economics</h3>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                High-margin subscription model with predictable recurring revenue streams.
+                High-margin subscription model with predictable recurring revenue streams and clear expansion path.
               </p>
             </div>
           </div>
