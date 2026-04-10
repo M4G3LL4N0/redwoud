@@ -5,18 +5,47 @@ export default function InvestorsPage() {
         <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="max-w-4xl">
             <div className="mb-4 inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
-              Strategic Intelligence OS
+              Real-Time Intelligence Layer
             </div>
 
             <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              The Intelligence Layer for Decision-Makers
+              The Operating System for Global Intelligence
             </h1>
             <p className="mt-2 text-lg font-medium text-emerald-400">
-              Transforming global signals into structured intelligence workflows
+              Transforming fragmented signals into structured, actionable intelligence
             </p>
 
             <p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
-              REDWOUD is creating a new category of strategic intelligence infrastructure - transforming fragmented global signals into structured, actionable intelligence for decision-makers navigating volatile environments. We are building the operating system that connects geopolitics, markets, trade, energy, technology, and security into a unified intelligence layer.
+              REDWOUD is building the real-time intelligence layer for the world - a category-defining platform that transforms fragmented global signals into structured, actionable intelligence. We're creating the operating system that connects geopolitics, markets, trade, energy, technology, and security into a unified intelligence workflow.
+
+              <div className="mt-6 space-y-6">
+                <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+                  <h3 className="text-lg font-semibold text-white">The Problem: Information Chaos</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-400">
+                    Decision-makers face an overwhelming flood of fragmented signals across geopolitics, markets, and security. Current solutions - from news aggregators to institutional intelligence - fail to provide real-time, structured understanding.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+                  <h3 className="text-lg font-semibold text-white">The Shift: Real-Time Intelligence</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-400">
+                    The world needs a new category of intelligence infrastructure - one that compresses noise into structured awareness through normalized events, entity-region-topic fusion, and trust grammar.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+                  <h3 className="text-lg font-semibold text-white">The Platform: REDWOUD System</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-400">
+                    Our platform creates a unified intelligence layer that transforms raw signals into structured workflows through:
+                    <ul className="mt-2 space-y-2 pl-5">
+                      <li className="text-sm text-slate-400">• Normalized intelligence objects</li>
+                      <li className="text-sm text-slate-400">• Entity-region-topic fusion</li>
+                      <li className="text-sm text-slate-400">• Trust scoring and provenance</li>
+                      <li className="text-sm text-slate-400">• Executive briefing workflows</li>
+                    </ul>
+                  </p>
+                </div>
+              </div>
             </p>
           </div>
 
@@ -144,34 +173,52 @@ export default function InvestorsPage() {
           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Platform Strategy</div>
           <div className="mt-4 grid gap-6 lg:grid-cols-3">
             <div>
-              <h3 className="text-lg font-semibold text-white">Phase 1: Public Intelligence</h3>
+              <h3 className="text-lg font-semibold text-white">Phase 1: Intelligence Foundation</h3>
               <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
-                <li>• Mission control dashboard</li>
-                <li>• Live intelligence stream</li>
-                <li>• Entity/region/topic profiles</li>
-                <li>• Executive briefing</li>
-                <li>• Core alerting system</li>
+                <li>• Normalized event architecture</li>
+                <li>• Entity-region-topic fusion</li>
+                <li>• Trust scoring system</li>
+                <li>• Executive briefing workflows</li>
+                <li>• Core alerting infrastructure</li>
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Phase 2: Premium Workflows</h3>
+              <h3 className="text-lg font-semibold text-white">Phase 2: Workflow Layer</h3>
               <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
-                <li>• Custom tracking & alerts</li>
-                <li>• Deeper briefing layers</li>
-                <li>• Saved views & dashboards</li>
+                <li>• Custom tracking & monitoring</li>
+                <li>• Deep briefing capabilities</li>
+                <li>• Team collaboration tools</li>
                 <li>• Signal provenance tracking</li>
-                <li>• Team collaboration</li>
+                <li>• Workflow integrations</li>
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Phase 3: Enterprise Scale</h3>
+              <h3 className="text-lg font-semibold text-white">Phase 3: Intelligence Network</h3>
               <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-400">
-                <li>• Historical archives</li>
-                <li>• Scenario planning</li>
-                <li>• Workflow integrations</li>
-                <li>• Export tooling</li>
-                <li>• API access</li>
+                <li>• Historical archives & analysis</li>
+                <li>• Scenario planning tools</li>
+                <li>• Enterprise-grade APIs</li>
+                <li>• Intelligence-enabled products</li>
+                <li>• Global intelligence network</li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/50 p-8">
+          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Long-Term Vision</div>
+          <div className="mt-4 grid gap-6 lg:grid-cols-2">
+            <div>
+              <h3 className="text-lg font-semibold text-white">The Intelligence Layer</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                REDWOUD aims to become the fundamental intelligence layer for global decision-making - connecting geopolitics, markets, and security into a unified platform.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white">Network Effects</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                As more entities, regions, and topics are tracked, the platform becomes increasingly valuable through compounding intelligence fusion.
+              </p>
             </div>
           </div>
         </div>
