@@ -38,11 +38,39 @@ body {
 }
 
 .cli-action-btn {
-  @apply font-mono rounded-lg border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-white hover:shadow-lg hover:shadow-emerald-400/20;
+    @apply font-mono rounded-lg border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors;
+}
+
+.cli-action-btn:hover {
+    @apply bg-emerald-400/10;
+}
+
+.cli-action-btn:hover {
+    @apply text-white;
+}
+
+.cli-action-btn:hover {
+    @apply shadow-lg;
+}
+
+.cli-action-btn:hover {
+    @apply shadow-emerald-400/20;
 }
 
 .cli-action-btn-secondary {
-  @apply font-mono rounded-lg border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-slate-600 hover:bg-slate-800/50 hover:text-white;
+    @apply font-mono rounded-lg border border-slate-700 bg-slate-800/30 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors;
+}
+
+.cli-action-btn-secondary:hover {
+    @apply border-slate-600;
+}
+
+.cli-action-btn-secondary:hover {
+    @apply bg-slate-800/50;
+}
+
+.cli-action-btn-secondary:hover {
+    @apply text-white;
 }
 
 .status-light {
@@ -116,7 +144,7 @@ body {
 
 /* Premium button styles */
 .btn-primary {
-  @apply relative overflow-hidden rounded-lg bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98];
+  @apply relative overflow-hidden rounded-lg bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all duration-300;
   transform-style: preserve-3d;
 }
 
@@ -137,16 +165,32 @@ body {
 }
 
 .btn-secondary {
-  @apply rounded-lg border border-slate-700/60 bg-slate-800/30 px-5 py-3 text-sm font-semibold text-slate-200 backdrop-blur-sm transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/50 hover:scale-[1.02] active:scale-[0.98];
+  @apply rounded-lg border border-slate-700/60 bg-slate-800/30 px-5 py-3 text-sm font-semibold text-slate-200 backdrop-blur-sm transition-all duration-300;
 }
 
 /* Card hover effects */
 .card-hover {
-  @apply transition-all duration-300 hover:border-slate-600/60 hover:bg-slate-900/60 hover:shadow-lg hover:shadow-slate-900/50 hover:-translate-y-0.5;
-  background-image: 
+    @apply transition-all duration-300;
+background-image: 
     linear-gradient(to bottom right, rgba(16, 185, 129, 0.02), rgba(6, 182, 212, 0.01)),
     linear-gradient(to top left, rgba(16, 185, 129, 0.01), rgba(6, 182, 212, 0.02));
   border-image: linear-gradient(to bottom right, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1)) 1;
+}
+
+.card-hover:hover {
+    @apply bg-slate-900/60;
+}
+
+.card-hover:hover {
+    @apply shadow-lg;
+}
+
+.card-hover:hover {
+    @apply shadow-slate-900/50;
+}
+
+.card-hover:hover {
+    @apply -translate-y-0.5;
 }
 
 .card-hover:hover {
