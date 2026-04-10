@@ -1,4 +1,7 @@
 export type SourceTier = "premium" | "verified" | "standard";
+export type ImpactLevel = "Low" | "Medium" | "High";
+export type IntensityLevel = "low" | "medium" | "high";
+export type ConfidenceLevel = "low" | "medium" | "high";
 
 export interface EventSource {
   name: string;
@@ -13,12 +16,27 @@ export interface EventItem {
   region: string;
   topic: string;
   score: number;
-  confidence: number;
+  confidence: ConfidenceLevel;
   timestamp: string;
   sources: (EventSource | string)[];
-  impact?: "Low" | "Medium" | "High";
-  intensity?: "low" | "medium" | "high";
-  timeAgo?: string;
+  impact: ImpactLevel;
+  intensity: IntensityLevel;
+  timeAgo: string;
+  whyItMatters: string;
+}
+
+export interface FeedEvent extends EventItem {
+  sources: string[];
+}
+
+export interface BriefingEvent extends EventItem {
+  sources: Array<{
+    sources: EventSource
+  }>;
+}
+
+export interface TrendEvent extends Pick<EventItem, 'topic' | 'region' | 'score' | 'timestamp'> {
+  id: string;
 }
 
 export interface Database {

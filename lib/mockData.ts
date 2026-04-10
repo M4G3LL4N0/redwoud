@@ -1,39 +1,13 @@
-export type Region =
-  | "All"
-  | "Americas"
-  | "Europe"
-  | "Asia"
-  | "Middle East"
-  | "Africa";
+import type { EventItem, EventSource, ImpactLevel, IntensityLevel, ConfidenceLevel } from "./types";
 
-export type Topic =
-  | "Geopolitics"
-  | "Markets"
-  | "Trade"
-  | "Energy"
-  | "Technology"
-  | "Security";
+export type Region = "All" | "Americas" | "Europe" | "Asia" | "Middle East" | "Africa";
+export type Topic = "Geopolitics" | "Markets" | "Trade" | "Energy" | "Technology" | "Security";
 
-export interface EventItem {
-  id: string;
-  entity: string;
+export interface MockEventItem extends EventItem {
   region: Region;
   topic: Topic;
-  title: string;
-  impact: "Low" | "Medium" | "High";
-  intensity: "low" | "medium" | "high";
-  confidence: "low" | "medium" | "high";
-  timeAgo: string;
-  summary: string;
-  whyItMatters: string;
-  score?: number;
-  sources?: {
-    name: string;
-    tier: 'premium' | 'verified' | 'standard';
-  }[];
-  isCritical?: boolean;
-  priorityScore?: number; // 1-100
-  timestamp?: string;
+  sources: EventSource[];
+  timestamp: string;
 }
 
 export type IntelligenceEvent = EventItem;
