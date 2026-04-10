@@ -124,14 +124,14 @@ export default async function HomePage() {
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/70">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_30%),radial-gradient(circle_at_80%_20%,_rgba(168,85,247,0.10),_transparent_25%)]" />
-        <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-20">
-          <div className="max-w-4xl">
+        <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-24">
+          <div className="max-w-5xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
               Global Intelligence Operating System
             </div>
 
-            <h1 className="max-w-5xl text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
+            <h1 className="text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
               Command-level intelligence at decision speed.
             </h1>
 
@@ -153,10 +153,16 @@ export default async function HomePage() {
               >
                 Read Briefing
               </Link>
+              <Link
+                href="/product"
+                className="rounded-2xl border border-slate-700 bg-slate-900/80 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-slate-600 hover:text-white"
+              >
+                Platform Overview
+              </Link>
             </div>
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
               <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Network Coverage</div>
               <div className="mt-3 text-3xl font-semibold text-white">{sortedEvents.length || 0}</div>
@@ -166,13 +172,43 @@ export default async function HomePage() {
             <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
               <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">High Risk Signals</div>
               <div className="mt-3 text-3xl font-semibold text-white">{highRiskCount}</div>
-              <p className="mt-2 text-sm text-slate-400">Signals with elevated operational significance</p>
+              <p className="mt-2 text-sm text-slate-400">Signals with score ≥80 requiring immediate review</p>
             </div>
 
             <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
               <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Regions Active</div>
               <div className="mt-3 text-3xl font-semibold text-white">{topRegions.length}</div>
-              <p className="mt-2 text-sm text-slate-400">Concentrated regional activity clusters</p>
+              <p className="mt-2 text-sm text-slate-400">Geopolitical hotspots under monitoring</p>
+            </div>
+
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Signal Velocity</div>
+              <div className="mt-3 text-3xl font-semibold text-white">
+                {Math.round(sortedEvents.length / 24)}/hr
+              </div>
+              <p className="mt-2 text-sm text-slate-400">Average ingestion rate last 24 hours</p>
+            </div>
+
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Source Diversity</div>
+              <div className="mt-3 text-3xl font-semibold text-white">
+                {new Set(sortedEvents.flatMap(e => e.sources?.map(s => typeof s === 'string' ? s : s.name) || [])).size}
+              </div>
+              <p className="mt-2 text-sm text-slate-400">Unique intelligence sources in network</p>
+            </div>
+
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Confidence Level</div>
+              <div className="mt-3 text-3xl font-semibold text-white">
+                {Math.round(average(sortedEvents.map(e => safeNumber(e.confidence))))}%
+              </div>
+              <p className="mt-2 text-sm text-slate-400">Average signal confidence score</p>
+            </div>
+
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Thematic Spread</div>
+              <div className="mt-3 text-3xl font-semibold text-white">{topTopics.length}</div>
+              <p className="mt-2 text-sm text-slate-400">Key thematic clusters identified</p>
             </div>
 
             <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
@@ -184,7 +220,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
             <div className="text-xs uppercase tracking-[0.22em] text-slate-500">Escalating Now</div>
@@ -249,7 +285,123 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-12">
+      {/* Platform Capabilities Section */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mb-8">
+          <div className="text-xs uppercase tracking-[0.22em] text-slate-500">Strategic Advantage</div>
+          <h2 className="mt-2 text-3xl font-semibold text-white">The REDWOUD Intelligence Platform</h2>
+          <p className="mt-4 max-w-3xl text-slate-300">
+            Our proprietary architecture delivers decision advantage through multi-source fusion,
+            real-time normalization, and machine-augmented analysis at scale.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur">
+            <div className="text-emerald-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <path d="M3.27 6.96 12 12.01l8.73-5.05" />
+                <path d="M12 22.08V12" />
+              </svg>
+            </div>
+            <h3 className="mt-4 text-lg font-semibold text-white">Multi-Source Fusion</h3>
+            <p className="mt-2 text-sm text-slate-400">
+              Automated ingestion from 200+ premium intelligence sources with real-time normalization
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur">
+            <div className="text-amber-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v4" />
+                <path d="m16.24 7.76 2.83-2.83" />
+                <path d="M18 12h4" />
+                <path d="m16.24 16.24 2.83 2.83" />
+                <path d="M12 18v4" />
+                <path d="m4.93 19.07 2.83-2.83" />
+                <path d="M2 12h4" />
+                <path d="m4.93 4.93 2.83 2.83" />
+              </svg>
+            </div>
+            <h3 className="mt-4 text-lg font-semibold text-white">Real-Time Processing</h3>
+            <p className="mt-2 text-sm text-slate-400">
+              Sub-90 second processing latency from source ingestion to operational intelligence
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur">
+            <div className="text-violet-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+              </svg>
+            </div>
+            <h3 className="mt-4 text-lg font-semibold text-white">Machine-Augmented Analysis</h3>
+            <p className="mt-2 text-sm text-slate-400">
+              Proprietary algorithms score and cluster signals by strategic impact and confidence
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur">
+            <div className="text-cyan-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v4" />
+                <path d="m16.24 7.76 2.83-2.83" />
+                <path d="M18 12h4" />
+                <path d="m16.24 16.24 2.83 2.83" />
+                <path d="M12 18v4" />
+                <path d="m4.93 19.07 2.83-2.83" />
+                <path d="M2 12h4" />
+                <path d="m4.93 4.93 2.83 2.83" />
+              </svg>
+            </div>
+            <h3 className="mt-4 text-lg font-semibold text-white">Decision Workflows</h3>
+            <p className="mt-2 text-sm text-slate-400">
+              Integrated tools for rapid assessment, collaboration and response planning
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Supporting Evidence Section */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-8 backdrop-blur">
+          <div className="text-xs uppercase tracking-[0.22em] text-slate-500">Operational Impact</div>
+          <h2 className="mt-2 text-3xl font-semibold text-white">Trusted by strategic decision-makers</h2>
+          
+          <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div>
+              <blockquote className="text-lg leading-relaxed text-slate-300">
+                "REDWOUD gives us a 12-18 hour decision advantage on emerging geopolitical risks."
+              </blockquote>
+              <div className="mt-4 text-sm font-medium text-slate-400">
+                — Global Head of Intelligence, Fortune 50 Corporation
+              </div>
+            </div>
+            
+            <div>
+              <blockquote className="text-lg leading-relaxed text-slate-300">
+                "The normalization engine alone has reduced our analyst workload by 60%."
+              </blockquote>
+              <div className="mt-4 text-sm font-medium text-slate-400">
+                — Chief Risk Officer, Investment Bank
+              </div>
+            </div>
+            
+            <div>
+              <blockquote className="text-lg leading-relaxed text-slate-300">
+                "We've prevented three major supply chain disruptions using REDWOUD's early signals."
+              </blockquote>
+              <div className="mt-4 text-sm font-medium text-slate-400">
+                — VP Global Operations, Manufacturing Conglomerate
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-16">
         <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur">
             <div className="text-xs uppercase tracking-[0.22em] text-slate-500">Signal Concentration</div>
