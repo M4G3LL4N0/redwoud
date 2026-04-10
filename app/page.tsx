@@ -139,28 +139,28 @@ export default async function HomePage() {
             </div>
 
             <h1 className="text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
-              <span className="bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent animate-[text-gradient_5s_ease-in-out_infinite]">Decision advantage</span><br />
-              at the speed of threat
+              <span className="bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent animate-[text-gradient_5s_ease-in-out_infinite]">Real-time geopolitical intelligence</span><br />
+              for decisive action
             </h1>
 
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-300/90 sm:text-xl">
-              REDWOUD delivers <span className="font-medium text-emerald-300">real-time strategic clarity</span> by fusing multi-source intelligence into actionable insights with machine precision.
+            <p className="mt-6 max-w-2xl text-xl leading-8 text-slate-300/90">
+              REDWOUD transforms <span className="font-medium text-emerald-300">raw intelligence into actionable signals</span>, giving you the earliest warning on emerging risks and strategic opportunities.
             </p>
 
-            <div className="mt-12 flex flex-wrap gap-4">
+            <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/stream"
-                className="group relative rounded-2xl border border-emerald-500/40 bg-emerald-500/10 px-6 py-3.5 text-sm font-medium text-emerald-100 transition-all hover:border-emerald-400/60 hover:bg-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/10 hover:-translate-y-0.5"
+                className="group relative rounded-2xl border border-emerald-500/40 bg-emerald-500/10 px-6 py-3.5 text-sm font-medium text-emerald-100 transition-all hover:border-emerald-400/60 hover:bg-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/10 hover:-translate-y-0.5 hover:scale-[1.02]"
               >
-                <span className="relative z-10">Open Intelligence Stream</span>
-                <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 opacity-0 transition-opacity group-hover:opacity-100" />
+                <span className="relative z-10">Monitor Live Threats</span>
+                <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
               <Link
                 href="/briefing"
-                className="group relative rounded-2xl border border-slate-700 bg-slate-900/80 px-6 py-3.5 text-sm font-medium text-slate-200 transition-all hover:border-slate-600 hover:bg-slate-800/80 hover:text-white hover:-translate-y-0.5"
+                className="group relative rounded-2xl border border-slate-700 bg-slate-900/80 px-6 py-3.5 text-sm font-medium text-slate-200 transition-all hover:border-slate-600 hover:bg-slate-800/80 hover:text-white hover:-translate-y-0.5 hover:scale-[1.02]"
               >
-                <span className="relative z-10">View Executive Briefing</span>
-                <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-slate-800/30 to-slate-900/30 opacity-0 transition-opacity group-hover:opacity-100" />
+                <span className="relative z-10">Get Strategic Analysis</span>
+                <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-slate-800/40 to-slate-900/40 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
             </div>
           </div>
