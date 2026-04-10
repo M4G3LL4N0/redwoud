@@ -73,17 +73,53 @@ export default function ProductPage() {
     <main className="min-h-screen bg-slate-950 text-slate-100">
       {/* Hero Section */}
       <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
-            Product Architecture
+            Intelligence Operating System
           </div>
           <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">
-            The Intelligence Operating System for Strategic Advantage
+            The Complete Platform for Strategic Intelligence
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            REDWOUD transforms unstructured global volatility into structured decision advantage 
-            through patented AI-powered analysis workflows and enterprise-grade intelligence infrastructure.
+            REDWOUD integrates real-time intelligence collection, advanced analytics, and decision support into a unified system for strategic advantage.
           </p>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              "Mission Control → Live Operations",
+              "Entity Intelligence → Strategic Forecasting", 
+              "Alert System → Workflow Automation"
+            ].map((flow) => (
+              <div key={flow} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+                <p className="text-sm font-medium text-emerald-300">{flow}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* System Architecture */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-semibold">System Architecture</h2>
+            <p className="mt-4 text-slate-300">
+              REDWOUD's architecture integrates intelligence collection, analysis, and decision support into a unified platform.
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                "Mission Control → Dashboard",
+                "Live Operations → Stream", 
+                "Executive Intelligence → Briefing",
+                "Alert System → Notifications",
+                "Entity Intelligence → Profiles",
+                "Intelligence Graph → Connections"
+              ].map((component) => (
+                <div key={component} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+                  <p className="text-sm font-medium text-emerald-300">{component}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -292,6 +328,32 @@ export default function ProductPage() {
               ].map((domain) => (
                 <div key={domain} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
                   <p className="text-sm font-medium text-emerald-300">{domain}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Operational Layers */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-semibold">Operational Layers</h2>
+            <p className="mt-4 text-slate-300">
+              REDWOUD processes intelligence through three core operational layers:
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                "Collection → 150+ sources",
+                "Analysis → 148 dimensions", 
+                "Decision → Strategic forecasting",
+                "Automation → Workflow engine",
+                "Integration → API/webhooks",
+                "Security → Enterprise-grade"
+              ].map((layer) => (
+                <div key={layer} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+                  <p className="text-sm font-medium text-emerald-300">{layer}</p>
                 </div>
               ))}
             </div>
