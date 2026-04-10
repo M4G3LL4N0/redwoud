@@ -99,6 +99,14 @@ export default function InvestorsPage() {
                 <div className="text-sm font-medium text-white">Operational Security</div>
                 <div className="mt-1 text-sm text-slate-400">$30B+ market growing at 20% CAGR</div>
               </div>
+              <div>
+                <div className="text-sm font-medium text-white">Corporate Strategy</div>
+                <div className="mt-1 text-sm text-slate-400">$25B+ market growing at 22% CAGR</div>
+              </div>
+              <div>
+                <div className="text-sm font-medium text-white">Investment Research</div>
+                <div className="mt-1 text-sm text-slate-400">$35B+ market growing at 16% CAGR</div>
+              </div>
             </div>
           </div>
 
