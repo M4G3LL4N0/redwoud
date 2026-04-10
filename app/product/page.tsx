@@ -71,6 +71,7 @@ const productModules = [
 export default function ProductPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
+      {/* Hero Section */}
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
@@ -83,6 +84,83 @@ export default function ProductPage() {
             REDWOUD transforms unstructured global volatility into structured decision advantage 
             through patented AI-powered analysis workflows and enterprise-grade intelligence infrastructure.
           </p>
+        </div>
+      </section>
+
+      {/* Platform Architecture */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid gap-16 md:grid-cols-2">
+          <div>
+            <h2 className="text-2xl font-semibold">Platform Architecture</h2>
+            <p className="mt-4 text-slate-300">
+              REDWOUD's modular architecture integrates real-time intelligence collection, 
+              advanced analytics, and decision support into a unified platform.
+            </p>
+            <div className="mt-8 space-y-6">
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+                <h3 className="text-sm font-medium text-emerald-300">Data Layer</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Real-time ingestion from 150+ sources with 4-minute processing latency
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+                <h3 className="text-sm font-medium text-emerald-300">Analytics Layer</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Multidimensional event analysis across 148 dimensions
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+                <h3 className="text-sm font-medium text-emerald-300">Decision Layer</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Automated synthesis and strategic forecasting
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+              <h3 className="text-sm font-medium text-emerald-300">Operational Layers</h3>
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Real-time monitoring</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Strategic forecasting</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Entity analysis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Workflow automation</span>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-6">
+              <h3 className="text-sm font-medium text-emerald-300">Enterprise Features</h3>
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Role-based access control</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Audit logging</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Enterprise-grade security</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-70" />
+                  <span className="text-sm text-slate-400">Scalable infrastructure</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -132,6 +210,30 @@ export default function ProductPage() {
               ].map((domain) => (
                 <div key={domain} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
                   <p className="text-sm font-medium text-emerald-300">{domain}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Expansion */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-semibold">Premium Expansion</h2>
+            <p className="mt-4 text-slate-300">
+              Extend REDWOUD's capabilities with advanced features and integrations:
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              {[
+                "Scenario Planning",
+                "Risk Modeling", 
+                "Custom Workflows",
+                "API Integrations"
+              ].map((feature) => (
+                <div key={feature} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
+                  <p className="text-sm font-medium text-emerald-300">{feature}</p>
                 </div>
               ))}
             </div>
