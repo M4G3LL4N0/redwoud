@@ -122,42 +122,38 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/70">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_30%),radial-gradient(circle_at_80%_20%,_rgba(168,85,247,0.10),_transparent_25%)]" />
-        <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-24">
-          <div className="max-w-5xl">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+      <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-950/90 to-slate-900/50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.15),_transparent_40%),radial-gradient(circle_at_80%_20%,_rgba(168,85,247,0.12),_transparent_30%)]" />
+        <div className="relative mx-auto max-w-7xl px-6 py-24 sm:py-28 lg:py-32">
+          <div className="max-w-4xl">
+            <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300/90 backdrop-blur">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               Global Intelligence Operating System
             </div>
 
             <h1 className="text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
-              Command-level intelligence at decision speed.
+              <span className="bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent">Decision advantage</span><br />
+              at the speed of threat
             </h1>
 
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
-              REDWOUD transforms global complexity into structured advantage through real-time
-              intelligence normalization, fusion, and operationalization.
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300/90 sm:text-xl">
+              REDWOUD delivers <span className="font-medium text-emerald-300">real-time strategic clarity</span> by fusing multi-source intelligence into actionable insights with machine precision.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/stream"
-                className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-medium text-emerald-200 transition hover:border-emerald-400/50 hover:bg-emerald-500/15"
+                className="group relative rounded-2xl border border-emerald-500/40 bg-emerald-500/10 px-6 py-3.5 text-sm font-medium text-emerald-100 transition-all hover:border-emerald-400/60 hover:bg-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/10"
               >
-                Open Stream
+                <span className="relative z-10">Open Intelligence Stream</span>
+                <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
               <Link
                 href="/briefing"
-                className="rounded-2xl border border-slate-700 bg-slate-900/80 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-slate-600 hover:text-white"
+                className="group relative rounded-2xl border border-slate-700 bg-slate-900/80 px-6 py-3.5 text-sm font-medium text-slate-200 transition-all hover:border-slate-600 hover:bg-slate-800/80 hover:text-white"
               >
-                Read Briefing
-              </Link>
-              <Link
-                href="/product"
-                className="rounded-2xl border border-slate-700 bg-slate-900/80 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-slate-600 hover:text-white"
-              >
-                Platform Overview
+                <span className="relative z-10">View Executive Briefing</span>
+                <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-slate-800/30 to-slate-900/30 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
             </div>
           </div>
