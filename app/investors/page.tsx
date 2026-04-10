@@ -77,7 +77,7 @@ export default function InvestorsPage() {
             <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Market Opportunity</div>
             <h2 className="mt-3 text-2xl font-semibold text-white">$200B+ Global Intelligence Market</h2>
             <p className="mt-4 text-sm leading-7 text-slate-400">
-              The global intelligence market spans geopolitical risk, market intelligence, competitive strategy, and operational security. REDWOUD addresses the growing need for real-time, structured intelligence across these domains.
+              The global intelligence market spans geopolitical risk, market intelligence, competitive strategy, and operational security. REDWOUD addresses the growing need for real-time, structured intelligence across these domains with a unified platform approach.
             </p>
             <div className="mt-6 grid grid-cols-2 gap-4">
               <div>
