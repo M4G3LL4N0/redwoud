@@ -1,799 +1,378 @@
-"use client"
-
 import Link from "next/link";
-import type { DailyBriefing, IntelligenceEvent, TrendSummary } from "@/lib/mockData";
-import DailyBriefingSection from "@/components/dashboard/DailyBriefing";
-import EntityActivityPanel from "@/components/dashboard/EntityActivityPanel";
-import IntelligenceMap from "@/components/dashboard/IntelligenceMap";
+import { getSourceName } from "@/lib/utils";
+import type { EventSource } from "@/lib/types";
 
-async function getLiveEvents(): Promise<IntelligenceEvent[]> {
+type EventItem = {
+  id?: string | number;
+  title: string;
+  summary?: string;
+  entity?: string;
+  region?: string;
+  topic?: string;
+  score?: number;
+  confidence?: number;
+  timestamp?: string;
+  sources?: Array<string | EventSource>;
+};
+
+async function getEvents(): Promise<EventItem[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-      ? process.env.NEXT_PUBLIC_SITE_URL
-      : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL?.startsWith("http")
+        ? process.env.NEXT_PUBLIC_APP_URL
+        : process.env.NEXT_PUBLIC_APP_URL
+          ? `https://${process.env.NEXT_PUBLIC_APP_URL}`
+          : "http://localhost:3000";
 
-    const response = await fetch(`${baseUrl}/api/feed`, {
-      next: { revalidate: 60 },
+    const res = await fetch(`${baseUrl}/api/feed`, {
+      cache: "no-store",
     });
 
-    if (!response.ok) return [];
+    if (!res.ok) return [];
 
-    const data = await response.json();
-    return Array.isArray(data.events) ? data.events : [];
+    const data = await res.json();
+
+    if (Array.isArray(data)) return data as EventItem[];
+    if (Array.isArray(data?.events)) return data.events as EventItem[];
+
+    return [];
   } catch {
     return [];
   }
 }
 
-async function getLiveTrends(): Promise<TrendSummary[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-      ? process.env.NEXT_PUBLIC_SITE_URL
-      : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
+function safeNumber(value: number | undefined, fallback = 0) {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
 
-    const response = await fetch(`${baseUrl}/api/trends`, {
-      next: { revalidate: 120 },
-    });
+function formatTimestamp(timestamp?: string) {
+  if (!timestamp) return "Time unavailable";
 
-    if (!response.ok) return [];
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return "Time unavailable";
 
-    const data = await response.json();
-    return Array.isArray(data.trends) ? data.trends : [];
-  } catch {
-    return [];
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function getSourceTier(source?: string | EventSource) {
+  if (!source || typeof source === "string") return null;
+  return source.tier;
+}
+
+function getTierClasses(tier: EventSource["tier"] | null) {
+  switch (tier) {
+    case "premium":
+      return "border-amber-500/30 bg-amber-500/10 text-amber-200";
+    case "verified":
+      return "border-emerald-500/30 bg-emerald-500/10 text-emerald-200";
+    case "standard":
+      return "border-slate-700 bg-slate-800/80 text-slate-300";
+    default:
+      return "border-slate-700 bg-slate-900 text-slate-400";
   }
 }
 
-async function getLiveBriefing(): Promise<DailyBriefing> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-      ? process.env.NEXT_PUBLIC_SITE_URL
-      : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
-
-    const response = await fetch(`${baseUrl}/api/briefing`, {
-      next: { revalidate: 120 },
-    });
-
-    if (!response.ok) throw new Error("Briefing fetch failed");
-
-    const data = await response.json();
-    if (data?.briefing) return data.briefing;
-
-    throw new Error("No briefing returned");
-  } catch {
-    return {
-      title: "Global intelligence briefing",
-      dateLabel: "Updated live",
-      lead: "REDWOUD is actively monitoring live global signals.",
-      summary:
-        "Live event data is being collected and normalized into structured intelligence for the dashboard.",
-      whyThisMatters:
-        "Clustering signals across regions and topics can indicate broader strategic pressure, volatility, and emerging risk patterns.",
-      keyThemes: ["Global monitoring active"],
-      primaryRisks: ["No high-intensity live risks currently surfaced"],
-    };
-  }
-}
-
-function slugify(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+function getCountMap(values: Array<string | undefined>, fallback: string) {
+  return values.reduce<Record<string, number>>((acc, value) => {
+    const key = value?.trim() || fallback;
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
 }
 
 export default async function HomePage() {
-  const liveEvents = await getLiveEvents();
-  const liveTrends = await getLiveTrends();
-  const liveBriefing = await getLiveBriefing();
+  const events = await getEvents();
 
-  const activeRegions = Array.from(
-    new Set(liveEvents.map((event) => event.region).filter((region) => region !== "All"))
+  const sortedEvents = [...events].sort((a, b) => {
+    const scoreDiff = safeNumber(b.score) - safeNumber(a.score);
+    if (scoreDiff !== 0) return scoreDiff;
+    return safeNumber(b.confidence) - safeNumber(a.confidence);
+  });
+
+  const prioritySignals = sortedEvents.slice(0, 4);
+  const latestSignals = sortedEvents.slice(0, 6);
+
+  const highRiskCount = sortedEvents.filter((event) => safeNumber(event.score) >= 80).length;
+
+  const regionMap = getCountMap(
+    sortedEvents.map((event) => event.region),
+    "Unattributed"
+  );
+  const entityMap = getCountMap(
+    sortedEvents.map((event) => event.entity),
+    "Unknown Entity"
+  );
+  const topicMap = getCountMap(
+    sortedEvents.map((event) => event.topic),
+    "General"
   );
 
-  const highIntensitySignals = liveEvents.filter((event) => event.intensity === "high").length;
+  const topRegions = Object.entries(regionMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const topEntities = Object.entries(entityMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const topTopics = Object.entries(topicMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
 
-  const topAlerts = liveEvents
-    .filter((event) => event.intensity === "high")
-    .sort((a, b) => (b.score || 0) - (a.score || 0))
-    .slice(0, 4);
+  const latestTimestamp = sortedEvents[0]?.timestamp
+    ? formatTimestamp(sortedEvents[0].timestamp)
+    : "No recent timestamp";
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Mission Frame */}
-      <section className="border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-950/90 backdrop-blur relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/10 via-slate-950/80 to-slate-950/90"></div>
-        <div className="mx-auto max-w-7xl px-6 py-16 relative">
-          <div className="animate-fade-in [animation-delay:100ms] opacity-0">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="relative flex h-3 w-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-medium text-emerald-300 tracking-[0.15em] animate-pulse [animation-duration:2s]">GLOBAL INTELLIGENCE OPERATING SYSTEM</span>
-                <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
-                  Strategic Intelligence Layer
-                </span>
-                <span className="rounded-full bg-amber-500/15 px-2 py-1 text-xs font-medium text-amber-300">
-                  SOC 2 Compliant
-                </span>
-                <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
-                  ISO 27001 Certified
-                </span>
-              </div>
+      <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/70">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_30%),radial-gradient(circle_at_80%_20%,_rgba(168,85,247,0.10),_transparent_25%)]" />
+        <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-20">
+          <div className="max-w-4xl">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-300">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              Global Intelligence Operating System
             </div>
-            <h1 className="text-5xl font-semibold tracking-tight text-white">
-              Command-Level Intelligence<br/>At Decision Speed
+
+            <h1 className="max-w-5xl text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
+              Command-level intelligence at decision speed.
             </h1>
-            <p className="text-xl text-slate-300 max-w-3xl">
-              REDWOUD transforms global complexity into structured advantage through real-time intelligence normalization, fusion, and operationalization.
+
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
+              REDWOUD transforms global complexity into structured advantage through real-time
+              intelligence normalization, fusion, and operationalization.
             </p>
-            <div className="grid gap-6 sm:grid-cols-2 max-w-3xl">
-              <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
-                <div className="text-xs font-medium text-slate-400 mb-2">NETWORK COVERAGE</div>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-semibold text-white">12,800+</span>
-                  <span className="text-sm text-slate-300">Verified intelligence sources across 92 countries</span>
-                </div>
-              </div>
-              <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
-                <div className="text-xs font-medium text-slate-400 mb-2">PROCESSING SPEED</div>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-semibold text-white">148ms</span>
-                  <span className="text-sm text-slate-300">Median event-to-intelligence latency</span>
-                </div>
-              </div>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-3">
+
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/stream"
-                className="rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-white/90 transition-all"
+                className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-medium text-emerald-200 transition hover:border-emerald-400/50 hover:bg-emerald-500/15"
               >
-                Enterprise Mission Control
+                Open Stream
               </Link>
               <Link
-                href="/product"
-                className="rounded-lg border border-slate-700 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white transition-all"
+                href="/briefing"
+                className="rounded-2xl border border-slate-700 bg-slate-900/80 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-slate-600 hover:text-white"
               >
-                Platform Architecture
-              </Link>
-              <Link
-                href="/investors"
-                className="rounded-lg border border-slate-700 px-6 py-3.5 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white transition-all"
-              >
-                Strategic Vision
+                Read Briefing
               </Link>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Platform Modules */}
-      <section className="border-b border-slate-800 bg-slate-950/60 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="mb-12 text-center">
-            <div className="inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-300">
-              ForeverLuvd Platform
-            </div>
-            <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
-              The Complete Continuity System
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
-              ForeverLuvd combines multiple preservation technologies into one integrated platform.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Memory Archive */}
-            <div className="animate-fade-in [animation-delay:200ms] opacity-0 rounded-2xl border border-slate-800/50 bg-gradient-to-b from-purple-950/20 to-slate-950/80 p-6 relative overflow-hidden group">
-              <div className="absolute -inset-1 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="text-purple-300 flex items-center gap-2 text-sm font-medium">
-                <span>Memory Archive</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Preserve photos, stories and moments in our secure digital archive.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Military-grade encryption
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Geo-redundant storage
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Permission controls
-                </span>
-              </div>
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Network Coverage</div>
+              <div className="mt-3 text-3xl font-semibold text-white">{sortedEvents.length || 0}</div>
+              <p className="mt-2 text-sm text-slate-400">Active normalized signals in current live flow</p>
             </div>
 
-            {/* Identity Engine */}
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-blue-950/20 to-slate-950/80 p-6">
-              <div className="text-blue-300 flex items-center gap-2 text-sm font-medium">
-                <span>Identity Engine</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Maintain a comprehensive, multi-dimensional profile of your loved one.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Life story preservation
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Personality mapping
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Timeline curation
-                </span>
-              </div>
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">High Risk Signals</div>
+              <div className="mt-3 text-3xl font-semibold text-white">{highRiskCount}</div>
+              <p className="mt-2 text-sm text-slate-400">Signals with elevated operational significance</p>
             </div>
 
-            {/* Voice Continuity */}
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-emerald-950/20 to-slate-950/80 p-6">
-              <div className="text-emerald-300 flex items-center gap-2 text-sm font-medium">
-                <span>Voice Continuity</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Preserve and treasure voice recordings in a private, respectful way.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Authentic recordings only
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Consent-based access
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Lossless quality
-                </span>
-              </div>
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Regions Active</div>
+              <div className="mt-3 text-3xl font-semibold text-white">{topRegions.length}</div>
+              <p className="mt-2 text-sm text-slate-400">Concentrated regional activity clusters</p>
             </div>
 
-            {/* Family Layer */}
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-amber-950/20 to-slate-950/80 p-6">
-              <div className="text-amber-300 flex items-center gap-2 text-sm font-medium">
-                <span>Family Layer</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Collaborate with family and friends to build a shared memory archive.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Multi-contributor
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Permission controls
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Stewardship tracking
-                </span>
-              </div>
-            </div>
-
-            {/* Legacy System */}
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-rose-950/20 to-slate-950/80 p-6">
-              <div className="text-rose-300 flex items-center gap-2 text-sm font-medium">
-                <span>Legacy System</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Ensure long-term preservation and generational continuity.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Multi-decade planning
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Succession tools
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Access scheduling
-                </span>
-              </div>
-            </div>
-
-            {/* Privacy Layer */}
-            <div className="rounded-2xl border border-slate-800/50 bg-gradient-to-b from-teal-950/20 to-slate-950/80 p-6">
-              <div className="text-teal-300 flex items-center gap-2 text-sm font-medium">
-                <span>Privacy Layer</span>
-              </div>
-              <p className="mt-2 text-sm text-slate-300">
-                Comprehensive controls over what's shared and with whom.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Granular permissions
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Encrypted storage
-                </span>
-                <span className="inline-flex items-center rounded-full border border-slate-800/50 bg-slate-950/60 px-2 py-1 text-xs text-slate-300">
-                  Consent tracking
-                </span>
-              </div>
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Last Update</div>
+              <div className="mt-3 text-lg font-semibold text-white">{latestTimestamp}</div>
+              <p className="mt-2 text-sm text-slate-400">Most recent signal ingested into the live layer</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* System Metrics */}
-      <section className="border-b border-slate-800 bg-slate-950/90 backdrop-blur relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/20 via-slate-950/80 to-slate-950/90"></div>
-        <div className="mx-auto max-w-7xl px-6 py-6 relative">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div className="animate-fade-in [animation-delay:300ms] opacity-0 rounded-xl border border-slate-800/50 bg-slate-950/60 p-4 hover:bg-slate-950/70 transition-colors">
-              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                Total Signals
-              </p>
-              <p className="mt-1 text-2xl font-semibold text-white">{liveEvents.length}</p>
-            </div>
-            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
-              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                High Risk
-              </p>
-              <p className="mt-1 text-2xl font-semibold text-white">{highIntensitySignals}</p>
-            </div>
-            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
-              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                Active Regions
-              </p>
-              <p className="mt-1 text-2xl font-semibold text-white">{activeRegions.length}</p>
-            </div>
-            <div className="rounded-xl border border-slate-800/50 bg-slate-950/60 p-4">
-              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                Entity Activity
-              </p>
-              <p className="mt-1 text-2xl font-semibold text-white">
-                {new Set(liveEvents.map((e) => e.entity)).size}
-              </p>
-            </div>
+      <section className="mx-auto max-w-7xl px-6 py-12">
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <div>
+            <div className="text-xs uppercase tracking-[0.22em] text-slate-500">Escalating Now</div>
+            <h2 className="mt-2 text-3xl font-semibold text-white">Priority signal snapshot</h2>
           </div>
+          <Link href="/stream" className="text-sm text-slate-300 transition hover:text-white">
+            View full stream
+          </Link>
         </div>
-      </section>
 
-      {/* Signal Clustering */}
-      <section className="border-b border-slate-800 bg-slate-950/60">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="grid gap-8 lg:grid-cols-12">
-            <div className="lg:col-span-7">
-              <div className="mb-6 inline-flex items-center gap-2">
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium tracking-wide text-emerald-300">
-                  REDWOUD · REAL-TIME GLOBAL INTELLIGENCE
-                </span>
-                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
-                  Verified Sources
-                </span>
-                <span className="rounded-full bg-slate-800/50 px-2 py-1 text-xs font-medium text-slate-300">
-                  Signal Integrity Monitoring
-                </span>
-              </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          {prioritySignals.length === 0 ? (
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 text-sm text-slate-400">
+              No live signals available yet.
+            </div>
+          ) : (
+            prioritySignals.map((event, index) => {
+              const primarySource = event.sources?.[0];
+              const tier = getSourceTier(primarySource);
 
-              <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
-                Mission Control for Strategic Intelligence
-              </h1>
-
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-                Monitor, analyze, and act on live global signals with REDWOUD's operational dashboard.
-                Track emerging risks, regional concentrations, and entity activity in real-time.
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href="/stream"
-                  className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-white/90"
+              return (
+                <article
+                  key={event.id ?? `${event.title}-${index}`}
+                  className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur"
                 >
-                  Open Live Stream
-                </Link>
-                <Link
-                  href="/briefing"
-                  className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white"
-                >
-                  Read Briefing
-                </Link>
-                <Link
-                  href="/investors"
-                  className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white"
-                >
-                  Investor Overview
-                </Link>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
-                <h2 className="text-lg font-semibold">Operational Overview</h2>
-                <p className="mt-2 text-sm text-slate-400">
-                  Current signal concentration and risk posture
-                </p>
-
-                <div className="mt-4 grid grid-cols-2 gap-4">
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-                    <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                      Signal Volume
-                    </div>
-                    <div className="mt-2 text-2xl font-semibold text-white">{liveEvents.length}</div>
+                  <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                    <span>{event.region || "Unattributed"}</span>
+                    <span>•</span>
+                    <span>{event.topic || "General"}</span>
                   </div>
 
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-                    <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                      High Risk
-                    </div>
-                    <div className="mt-2 text-2xl font-semibold text-white">{highIntensitySignals}</div>
-                  </div>
+                  <h3 className="text-xl font-semibold leading-7 text-white">{event.title}</h3>
 
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-                    <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                      Active Regions
-                    </div>
-                    <div className="mt-2 text-2xl font-semibold text-white">{activeRegions.length}</div>
-                  </div>
-
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-                    <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                      Entity Activity
-                    </div>
-                    <div className="mt-2 text-2xl font-semibold text-white">
-                      {new Set(liveEvents.map((e) => e.entity)).size}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                Events monitored now
-              </p>
-              <p className="mt-3 text-2xl font-semibold text-white">{liveEvents.length}</p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                Active regions
-              </p>
-              <p className="mt-3 text-2xl font-semibold text-white">{activeRegions.length}</p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                High-intensity signals
-              </p>
-              <p className="mt-3 text-2xl font-semibold text-white">{highIntensitySignals}</p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                Briefing status
-              </p>
-              <p className="mt-3 text-2xl font-semibold text-emerald-300">Updated</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Priority Signals */}
-      <section className="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Escalating Now</h2>
-            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
-              View full stream →
-            </Link>
-          </div>
-
-          <div className="mt-4 space-y-4">
-            {topAlerts.length ? (
-              topAlerts.map((event) => (
-                <div
-                  key={event.id}
-                  className="rounded-lg border border-slate-800 bg-slate-900/80 p-4"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-medium text-white">{event.title}</h3>
-                      <div className="mt-1 flex items-center gap-2 text-sm text-slate-400">
-                        <span>{event.entity}</span>
-                        <span>•</span>
-                        <span>{event.region}</span>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <span className="rounded-full bg-rose-500/15 px-2 py-1 text-xs font-medium text-rose-200">
-                        Score {event.score ?? 0}
-                      </span>
-                      <div className="flex items-center gap-1 text-xs">
-                        <span className="text-slate-500">
-                          {typeof event.sources?.[0] === "string"
-                            ? event.sources[0]
-                            : event.sources?.[0]?.name || "Unknown source"}
-                        </span>
-                        {event.sources?.[0]?.tier && (
-                          <span className={[
-                            "rounded-full px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
-                            event.sources?.[0]?.tier === "premium" 
-                              ? "bg-amber-500/15 text-amber-300"
-                              : event.sources?.[0]?.tier === "verified"
-                                ? "bg-emerald-500/15 text-emerald-300"
-                                : "bg-slate-700/20 text-slate-400"
-                          ].join(" ")}>
-                            {event.sources?.[0]?.tier}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-4 text-sm text-slate-400">
-                No high-priority alerts currently surfaced
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-slate-800 bg-slate-950/60">
-        <div className="mx-auto max-w-7xl px-6 py-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Signal Clusters</h2>
-            <p className="text-sm text-slate-400">Live signal concentration analysis</p>
-          </div>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {(() => {
-              // Calculate clusters
-              const totalSignals = liveEvents.length;
-              const regionCounts = new Map<string, number>();
-              const topicCounts = new Map<string, number>();
-              const entityCounts = new Map<string, number>();
-
-              liveEvents.forEach(event => {
-                regionCounts.set(event.region, (regionCounts.get(event.region) || 0) + 1);
-                topicCounts.set(event.topic, (topicCounts.get(event.topic) || 0) + 1);
-                entityCounts.set(event.entity, (entityCounts.get(event.entity) || 0) + 1);
-              });
-
-              // Get top clusters
-              const topRegions = Array.from(regionCounts.entries())
-                .filter(([_, count]) => count / totalSignals > 0.2)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 3);
-
-              const topTopics = Array.from(topicCounts.entries())
-                .filter(([_, count]) => count / totalSignals > 0.15)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 3);
-
-              const topEntities = Array.from(entityCounts.entries())
-                .filter(([_, count]) => count / totalSignals > 0.1)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 3);
-
-              const clusters = [
-                ...topRegions.map(([region, count]) => ({
-                  type: 'Region',
-                  name: region,
-                  count,
-                  percent: Math.round((count / totalSignals) * 100),
-                  events: liveEvents.filter(e => e.region === region).slice(0, 3)
-                })),
-                ...topTopics.map(([topic, count]) => ({
-                  type: 'Topic',
-                  name: topic,
-                  count,
-                  percent: Math.round((count / totalSignals) * 100),
-                  events: liveEvents.filter(e => e.topic === topic).slice(0, 3)
-                })),
-                ...topEntities.map(([entity, count]) => ({
-                  type: 'Entity',
-                  name: entity,
-                  count,
-                  percent: Math.round((count / totalSignals) * 100),
-                  events: liveEvents.filter(e => e.entity === entity).slice(0, 3)
-                }))
-              ].sort((a, b) => b.count - a.count);
-
-              return clusters.map((cluster, i) => (
-                <div
-                  key={`${cluster.type}-${cluster.name}`}
-                  className="animate-fade-in [animation-delay:400ms] opacity-0 group relative overflow-hidden rounded-2xl border border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950/80 p-5 hover:border-slate-700/50 transition-all"
-                >
-                  <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#1e293b_0%,#0f172a_50%,#1e293b_100%)] opacity-5 group-hover:opacity-10 transition-opacity"></div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                      {cluster.type}
-                    </span>
-                    <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-300">
-                      {cluster.percent}%
-                    </span>
-                  </div>
-                  <h3 className="mt-2 text-lg font-semibold">{cluster.name}</h3>
-                  <p className="mt-1 text-sm text-slate-300">
-                    {cluster.count} signals clustered
+                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                    {event.summary || "No summary available."}
                   </p>
 
-                  <div className="mt-4 space-y-2">
-                    {cluster.events.map((event) => (
-                      <div
-                        key={event.id}
-                        className="rounded-lg border border-slate-800/50 bg-slate-950/60 p-2 text-sm"
+                  <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                    <span className="font-medium text-slate-200">
+                      {event.entity || "Unknown Entity"}
+                    </span>
+                    <span>•</span>
+                    <span>Score {safeNumber(event.score)}</span>
+                    <span>•</span>
+                    <span>Confidence {safeNumber(event.confidence)}</span>
+                    <span>•</span>
+                    <span>{getSourceName(primarySource)}</span>
+                    {tier ? (
+                      <span
+                        className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${getTierClasses(
+                          tier
+                        )}`}
                       >
-                        <p className="truncate font-medium">{event.title}</p>
-                        <p className="text-xs text-slate-400">{event.timeAgo}</p>
-                      </div>
-                    ))}
+                        {tier}
+                      </span>
+                    ) : null}
                   </div>
-
-                  <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br from-slate-800/20 to-slate-900/50 opacity-50 transition-all group-hover:opacity-100" />
-                  <div className="absolute -left-8 -bottom-8 h-24 w-24 rounded-full bg-gradient-to-br from-slate-800/20 to-slate-900/50 opacity-50 transition-all group-hover:opacity-100" />
-                </div>
-              ));
-            })()}
-          </div>
+                </article>
+              );
+            })
+          )}
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-12">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-7">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Live Event Feed</h2>
-            <Link href="/stream" className="text-sm text-emerald-300 hover:text-emerald-200">
-              View full stream
-            </Link>
-          </div>
+      <section className="mx-auto max-w-7xl px-6 pb-12">
+        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur">
+            <div className="text-xs uppercase tracking-[0.22em] text-slate-500">Signal Concentration</div>
+            <h2 className="mt-2 text-3xl font-semibold text-white">Where activity is clustering</h2>
 
-          <div className="mt-5 space-y-4">
-            {liveEvents.slice(0, 6).map((event) => (
-              <article
-                key={event.id}
-                className={[
-                  "animate-fade-in rounded-xl border p-4 transition-all hover:border-slate-700 relative overflow-hidden",
-                  event.intensity === "high"
-                    ? "border-rose-800/30 bg-gradient-to-b from-rose-950/20 to-slate-950/80 hover:shadow-[0_0_15px_rgba(244,63,94,0.3)]"
-                    : "border-slate-800/50 bg-slate-950/60 hover:shadow-[0_0_15px_rgba(30,41,59,0.3)]",
-                ].join(" ")}
-              >
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800/10 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity"></div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-xs uppercase tracking-wide text-slate-400">
-                    {event.region}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-medium text-indigo-300">
-                        Score {event.score ?? 0}
-                      </span>
-                      <span className={[
-                        "rounded-full px-2 py-1 text-xs font-medium",
-                        event.confidence === "high"
-                          ? "bg-emerald-500/15 text-emerald-300"
-                          : event.confidence === "medium"
-                            ? "bg-amber-500/15 text-amber-300"
-                            : "bg-slate-700/20 text-slate-400"
-                      ].join(" ")}>
-                        Confidence {event.confidence}
-                      </span>
+            <div className="mt-8 grid gap-6 lg:grid-cols-3">
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
+                  Top Regions
+                </h3>
+                <div className="mt-4 space-y-3">
+                  {topRegions.map(([region, count]) => (
+                    <div key={region} className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-200">{region}</span>
+                        <span className="text-slate-400">{count}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-slate-800">
+                        <div
+                          className="h-2 rounded-full bg-cyan-400/70"
+                          style={{
+                            width: `${Math.max(
+                              18,
+                              Math.round((count / Math.max(sortedEvents.length, 1)) * 100)
+                            )}%`,
+                          }}
+                        />
+                      </div>
                     </div>
-                    <span className="text-xs text-slate-500">{event.timeAgo}</span>
-                  </div>
+                  ))}
                 </div>
+              </div>
 
-                <h3 className="mt-2 text-base font-semibold">{event.title}</h3>
-
-                <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
-                  <span>{event.topic}</span>
-                  <span>•</span>
-                  <Link
-                    href={`/entity/${slugify(event.entity)}`}
-                    className="hover:text-slate-200 hover:underline"
-                  >
-                    {event.entity}
-                  </Link>
-                  <span>•</span>
-                  <span>Confidence {event.confidence}</span>
-                  <span>•</span>
-                  <div className="flex items-center gap-1">
-                    <span>
-                      {typeof event.sources?.[0] === "string"
-                        ? event.sources[0]
-                        : event.sources?.[0]?.name || "Source unavailable"}
-                    </span>
-                    {event.sources?.[0]?.tier && (
-                      <span className={[
-                        "rounded-full px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider",
-                        event.sources?.[0]?.tier === "premium" 
-                          ? "bg-amber-500/15 text-amber-300"
-                          : event.sources?.[0]?.tier === "verified"
-                            ? "bg-emerald-500/15 text-emerald-300"
-                            : "bg-slate-700/20 text-slate-400"
-                      ].join(" ")}>
-                        {event.sources?.[0]?.tier}
-                      </span>
-                    )}
-                  </div>
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
+                  Top Entities
+                </h3>
+                <div className="mt-4 space-y-3">
+                  {topEntities.map(([entity, count]) => (
+                    <div key={entity} className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-200">{entity}</span>
+                        <span className="text-slate-400">{count}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-slate-800">
+                        <div
+                          className="h-2 rounded-full bg-emerald-400/70"
+                          style={{
+                            width: `${Math.max(
+                              18,
+                              Math.round((count / Math.max(sortedEvents.length, 1)) * 100)
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                <p className="mt-3 text-sm leading-6 text-slate-300">{event.summary}</p>
-
-                <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-                  <p className="text-xs leading-6 text-slate-400">
-                    <span className="font-medium text-slate-300">Why this matters:</span>{" "}
-                    {event.whyItMatters}
-                  </p>
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
+                  Top Topics
+                </h3>
+                <div className="mt-4 space-y-3">
+                  {topTopics.map(([topic, count]) => (
+                    <div key={topic} className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-200">{topic}</span>
+                        <span className="text-slate-400">{count}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-slate-800">
+                        <div
+                          className="h-2 rounded-full bg-violet-400/70"
+                          style={{
+                            width: `${Math.max(
+                              18,
+                              Math.round((count / Math.max(sortedEvents.length, 1)) * 100)
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </article>
-            ))}
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-6 lg:col-span-5">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <DailyBriefingSection briefing={liveBriefing} />
-          </div>
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur">
+            <div className="text-xs uppercase tracking-[0.22em] text-slate-500">Latest Signals</div>
+            <h2 className="mt-2 text-2xl font-semibold text-white">Recent flow</h2>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <h2 className="text-lg font-semibold">Entity Activity</h2>
-            <p className="mt-1 text-sm text-slate-400">Most active entities in current signals</p>
-
-            <div className="mt-4 space-y-3">
-              {Array.from(new Set(liveEvents.map((e) => e.entity)))
-                .slice(0, 5)
-                .map((entity) => (
-                  <div
-                    key={entity}
-                    className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2"
+            <div className="mt-6 space-y-4">
+              {latestSignals.length === 0 ? (
+                <div className="text-sm text-slate-400">No recent signals available.</div>
+              ) : (
+                latestSignals.map((event, index) => (
+                  <article
+                    key={event.id ?? `${event.title}-${index}`}
+                    className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4"
                   >
-                    <span className="text-sm text-slate-200">{entity}</span>
-                    <span className="text-xs text-slate-400">
-                      {liveEvents.filter((e) => e.entity === entity).length} signals
-                    </span>
-                  </div>
-                ))}
+                    <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                      <span>{event.region || "Unattributed"}</span>
+                      <span>•</span>
+                      <span>{event.topic || "General"}</span>
+                      <span>•</span>
+                      <span>{formatTimestamp(event.timestamp)}</span>
+                    </div>
+
+                    <h3 className="text-base font-semibold text-white">{event.title}</h3>
+
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                      <span>{event.entity || "Unknown Entity"}</span>
+                      <span>•</span>
+                      <span>Score {safeNumber(event.score)}</span>
+                    </div>
+                  </article>
+                ))
+              )}
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-8 lg:grid-cols-12">
-        <div className="lg:col-span-7">
-          <IntelligenceMap activeRegions={activeRegions.length ? (activeRegions as any) : undefined} />
-        </div>
-
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-5">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Trend Signals</h2>
-            <Link href="/trends" className="text-sm text-emerald-300 hover:text-emerald-200">
-              View all
-            </Link>
-          </div>
-
-          <div className="mt-5 space-y-4">
-            {liveTrends.slice(0, 6).map((card) => (
-              <div
-                key={card.id}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-sm font-semibold">{card.title}</h3>
-                  <span className="rounded-full bg-sky-500/15 px-2 py-1 text-xs font-medium text-sky-300">
-                    {card.value}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{card.detail}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 pb-16">
-        <EntityActivityPanel events={liveEvents} />
       </section>
     </main>
   );
